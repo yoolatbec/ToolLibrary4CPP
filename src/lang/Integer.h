@@ -1,0 +1,44 @@
+/*
+ * Integer.h
+ *
+ *  Created on: Sep 20, 2020
+ *      Author: yoolatbec
+ */
+
+#ifndef SRC_LANG_INTEGER_H_
+#define SRC_LANG_INTEGER_H_
+
+#include "Number.h"
+#include "String.h"
+
+namespace tl {
+namespace lang {
+
+class Integer: public Number {
+private:
+	static const hash_t CLASS_HASH = 3L << 32;
+	tlint mValue;
+	hash_t genHash();
+public:
+	static tlint MAX_VALUE = 0xFFFFFFFF - 1;
+	static tlint MIN_VALUE = 0xFFFFFFFF;
+	explicit Integer(tlint);
+	explicit Integer(const String&);
+	byte byteValue() const;
+	word shortValue() const;
+	tlint intValue() const;
+	tlint64 longValue() const;
+	double doubleValue() const;
+	float floatValue() const;
+	bool compareTo(const Integer&) const;
+	tlint getBitAt(tlint) const;
+	String toString() const;
+	static tlint max(tlint, tlint);
+	static tlint min(tlint, tlint);
+	static tlint reverse(tlint);
+};
+
+} /* namespace lang */
+} /* namespace tl */
+
+#endif /* SRC_LANG_INTEGER_H_ */
