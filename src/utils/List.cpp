@@ -10,20 +10,18 @@
 namespace tl {
 namespace utils {
 
-List::List(size_t element_size) {
+List::List(hash_t element_type)
+		: mElementType(element_type) {
 
 }
 
-List::List(size_t element_size, size_t reserved) {
+List::List(hash_t element_type, size_t reserved)
+		: mElementType(element_type) {
 
 }
 
 List::List(const List &other)
-		: Object(other) {
-
-}
-
-List& List::operator=(List &other) {
+		: Object(other), mElementType(other.mElementType) {
 
 }
 
@@ -32,15 +30,15 @@ List::~List() {
 }
 
 size_t List::getCapacity() const {
-
+	return mCapacity;
 }
 
-size_t List::getUsed() const{
-
+size_t List::getSize() const {
+	return mSize;
 }
 
-size_t List::getElementSize() const {
-
+hash_t List::elementType() const{
+	return mElementType;
 }
 
 } /* namespace utils */

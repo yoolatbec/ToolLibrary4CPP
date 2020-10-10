@@ -17,13 +17,14 @@ class Reference: public lang::Object {
 private:
 	const static hash_t CLASS_HASH = 1L << 32;
 	size_t *mRef;
-	Object *const mEntity;
+	Object *mEntity;
 public:
 	Reference(Object*);
-	virtual ~Reference();
+	~Reference();
 	Reference(const Reference &other);
+	Reference& operator=(const Reference &other);
 	hash_t getType() const;
-	void* getEntity() const;
+	Object* getEntity() const;
 };
 
 } /* namespace lang */

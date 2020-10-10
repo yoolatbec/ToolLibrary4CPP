@@ -9,7 +9,7 @@
 #define SRC_UTILS_FACTORY_H_
 
 #include "List.h"
-#include "Reference.h"
+#include "../lang/Reference.h"
 
 namespace tl {
 namespace utils {

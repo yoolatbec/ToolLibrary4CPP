@@ -18,14 +18,14 @@ String::String() {
 	mLength = 0;
 }
 
-String::String(const char *str) {
+String::String(const byte *str) {
 	mLength = strlen(str);
 	mStr = new char[mLength + 1];
 	mStr[mLength] = '\0';
 	strncpy(mStr, str, mLength);
 }
 
-String::String(size_t length, char c) {
+String::String(size_t length, byte c) {
 	mLength = length;
 	mStr = new char[mLength + 1];
 	mStr[mLength] = '\0';
@@ -45,27 +45,39 @@ String::~String() {
 	delete[] mStr;
 }
 
-String String::append(char c) const {
-	char *str = new char[mLength + 2];
+String* String::append(byte c) const {
+	byte *str = new byte[mLength + 2];
 	strncpy(str, mStr, mLength);
 	str[mLength + 1] = c;
 	str[mLength + 2] = '\0';
-	String nstr(str);
+	String *r_value = new String(str);
 	delete[] str;
-	return nstr;
+	return r_value;
 }
 
-String String::append(const String &other) const {
+String* String::append(const String &other) const {
 	char *str = new char[mLength + other.mLength + 1];
 	strncpy(str, mStr, mLength);
 	strncpy(str + mLength, other.mStr, other.mLength);
 	str[mLength + other.mLength] = '\0';
-	String nstr(str);
+	String *r_value = new String(str);
 	delete[] str;
-	return nstr;
+	return r_value;
 }
 
-String String::append(int i) const{
+String* String::append(tlint i) const {
+	byte ivalue[32];
+	sprintf(ivalue, "%d", i);
+	byte *str = new byte[mLength + sizeof(ivalue) + 1];
+	strncpy(str, mStr, mLength);
+	strncpy(str + mLength, ivalue, sizeof(ivalue));
+	str[mLength + sizeof(ivalue)] = '\0';
+	String *r_value = new String(str);
+	delete[] str;
+	return r_value;
+}
+
+String* String::append(double d) const {
 
 }
 

@@ -20,8 +20,8 @@ private:
 	tlint mValue;
 	hash_t genHash();
 public:
-	static tlint MAX_VALUE = 0xFFFFFFFF - 1;
-	static tlint MIN_VALUE = 0xFFFFFFFF;
+	static const tlint MAX_INTEGER = 0xFFFFFFFF - 1;
+	static const tlint MIN_INTEGER = 0xFFFFFFFF;
 	explicit Integer(tlint);
 	explicit Integer(const String&);
 	byte byteValue() const;
@@ -35,7 +35,6 @@ public:
 	String toString() const;
 	static tlint max(tlint, tlint);
 	static tlint min(tlint, tlint);
-	static tlint reverse(tlint);
 };
 
 } /* namespace lang */

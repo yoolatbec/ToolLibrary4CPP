@@ -22,7 +22,21 @@ Reference::~Reference() {
 	if ((*mRef) == 1) {
 		delete mEntity;
 		delete mRef;
+	} else {
+		(*mRef)--;
 	}
+}
+
+Reference& Reference::operator=(const Reference &other) {
+	if ((*mRef) == 1) {
+		delete mEntity;
+		delete mRef;
+	} else {
+		(*mRef)--;
+	}
+	mEntity = other.mEntity;
+	mRef = other.mRef;
+	(*mRef)++;
 }
 
 Reference::Reference(const Reference &other)
@@ -36,7 +50,7 @@ hash_t Reference::getType() const {
 	return Object::instanceof(*mEntity);
 }
 
-void* Reference::getEntity() const {
+Object* Reference::getEntity() const {
 	return mEntity;
 }
 
