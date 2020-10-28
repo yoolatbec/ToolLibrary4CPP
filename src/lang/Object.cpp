@@ -49,10 +49,10 @@ hash_t Object::instanceof(const Object &instance) {
 	return mHash & CLASS_HASH;
 }
 
-String Object::toString() const{
+tl::lang::String* Object::toString() const{
 	char str[20];
 	sprintf(str, "%X", mHash);
-	return String(str);
+	return new String(str);
 }
 
 

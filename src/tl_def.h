@@ -10,16 +10,14 @@
 
 typedef char byte;
 typedef short word;
-typedef struct {
-	int: 32;
-} tlint;
-typedef struct{
-	long long: 64;
-} tlint64;
+typedef int tlint;
+typedef long long tlint64;
 typedef unsigned int tluint;
 typedef unsigned long long tluint64;
 typedef unsigned long long size_t;
 typedef unsigned long long hash_t;
 
+#define max(x, y) (((x) > (y)) ? (x) : (y))
+#define min(x, y) (((x) > (y)) ? (y) : (x))
 
 #endif /* SRC_TL_DEF_H_ */

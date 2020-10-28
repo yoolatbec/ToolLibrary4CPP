@@ -18,7 +18,7 @@ private:
 	const static hash_t CLASS_HASH = 12L << 32;
 public:
 	Comparable();
-	virtual tlint compare(const Comparable&) const = 0;
+	virtual tlint compareTo(const Comparable&) const = 0;
 };
 
 } /* namespace lang */

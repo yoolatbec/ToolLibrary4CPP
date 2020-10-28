@@ -35,7 +35,7 @@ public:
 	virtual bool equals(const Object&) const;
 	virtual bool operator==(const Object&) const;
 	virtual Object clone() const;
-	String toString() const;
+	String* toString() const;
 	static hash_t instanceof(const Object&);
 };
 
