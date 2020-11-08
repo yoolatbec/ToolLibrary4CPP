@@ -10,11 +10,11 @@
 
 #include "../tl_def.h"
 
-class String;
 
 namespace tl {
 namespace lang {
 
+class String;
 class Object {
 private:
 	const static hash_t CLASS_HASH = 0L << 32;
@@ -29,14 +29,16 @@ protected:
 public:
 	const static Object null;
 	Object();
-	Object(const Object &other);
+	Object(const Object* other);
+	Object(const Object&) = delete;
 	virtual Object& operator=(const Object&);
 	virtual ~Object();
-	virtual bool equals(const Object&) const;
-	virtual bool operator==(const Object&) const;
-	virtual Object clone() const;
+	virtual bool equals(const Object*) const;
+	virtual bool operator==(const Object*) const;
+	virtual Object* clone() const;
 	String* toString() const;
-	static hash_t instanceof(const Object&);
+	bool instanceof(hash_t) const;
+	hash_t type() const;
 };
 
 } /* namespace lang */

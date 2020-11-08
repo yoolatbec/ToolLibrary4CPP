@@ -12,17 +12,16 @@ namespace utils {
 
 List::List(hash_t element_type)
 		: mElementType(element_type) {
-
+	mCapacity = DEFAULT_CAPACITY;
+	mSize = 0;
+	mModified = false;
 }
 
 List::List(hash_t element_type, size_t reserved)
 		: mElementType(element_type) {
-
-}
-
-List::List(const List &other)
-		: Object(other), mElementType(other.mElementType) {
-
+	mCapacity = reserved > 0 ? reserved : DEFAULT_CAPACITY;
+	mSize = 0;
+	mModified = false;
 }
 
 List::~List() {

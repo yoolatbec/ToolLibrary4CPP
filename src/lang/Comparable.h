@@ -17,8 +17,7 @@ class Comparable: public virtual Object {
 private:
 	const static hash_t CLASS_HASH = 12L << 32;
 public:
-	Comparable();
-	virtual tlint compareTo(const Comparable&) const = 0;
+	virtual tlint compareTo(const Comparable*) const = 0;
 };
 
 } /* namespace lang */

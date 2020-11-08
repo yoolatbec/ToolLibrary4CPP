@@ -13,45 +13,65 @@ namespace lang {
 Reference::Reference(Object *entity)
 		: mEntity(entity) {
 	// TODO Auto-generated constructor stub
-	mRef = new size_t;
-	*mRef = 1;
+	if (mEntity != nullptr) {
+		mRef = new size_t;
+		*mRef = 1;
+	}
 }
 
 Reference::~Reference() {
 	// TODO Auto-generated destructor stub
-	if ((*mRef) == 1) {
-		delete mEntity;
-		delete mRef;
-	} else {
-		(*mRef)--;
+	if (mEntity != nullptr) {
+		if ((*mRef) == 1) {
+			delete mEntity;
+			delete mRef;
+		} else {
+			(*mRef)--;
+		}
 	}
 }
 
 Reference& Reference::operator=(const Reference &other) {
-	if ((*mRef) == 1) {
-		delete mEntity;
-		delete mRef;
-	} else {
-		(*mRef)--;
+	if (other.mEntity != nullptr) {
+		if (mEntity != nullptr) {
+			if ((*mRef) == 1) {
+				delete mEntity;
+				delete mRef;
+			} else {
+				(*mRef)--;
+			}
+		}
+		mEntity = other.mEntity;
+		mRef = other.mRef;
+		(*mRef)++;
 	}
-	mEntity = other.mEntity;
-	mRef = other.mRef;
-	(*mRef)++;
+
+	return *this;
 }
 
 Reference::Reference(const Reference &other)
 		: mEntity(other.mEntity) {
 	// TODO Auto-generated constructor stub
-	mRef = other.mRef;
-	(*mRef)++;
+	if (mEntity != nullptr) {
+		mRef = other.mRef;
+		(*mRef)++;
+	}
 }
 
 hash_t Reference::getType() const {
-	return Object::instanceof(*mEntity);
+	return mEntity->type();
 }
 
 Object* Reference::getEntity() const {
 	return mEntity;
+}
+
+bool Reference::equals(const Reference &another) const {
+	return mEntity == another.mEntity;
+}
+
+bool Reference::isNull() const {
+	return mEntity == nullptr;
 }
 
 } /* namespace lang */

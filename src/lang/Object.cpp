@@ -16,13 +16,13 @@ Object::Object() {
 	mHash = genHash();
 }
 
-Object::Object(const Object &other) {
+Object::Object(const Object *other) {
 	// TODO Auto-generated constructor stub
 	mHash = genHash();
 }
 
 Object& Object::operator =(const Object &other) {
-
+	return *this;
 }
 
 Object::~Object() {
@@ -33,29 +33,35 @@ hash_t Object::genHash() {
 	return CLASS_HASH & CLASS_MASK + this & INSTANCE_MASK;
 }
 
-bool Object::equals(const Object &other) const {
-	return this->mHash == other.mHash;
+bool Object::equals(const Object *other) const {
+	if (other == nullptr) {
+		return false;
+	}
+
+	return this->mHash == other->mHash;
 }
 
-bool Object::operator==(const Object& other) const{
+bool Object::operator==(const Object *other) const {
 	return equals(other);
 }
 
-Object Object::clone() const{
-
+Object* Object::clone() const {
+	return new Object;
 }
 
-hash_t Object::instanceof(const Object &instance) {
-	return mHash & CLASS_HASH;
+bool Object::instanceof(hash_t type) const {
+	return mHash & CLASS_MASK == type;
 }
 
-tl::lang::String* Object::toString() const{
+String* Object::toString() const {
 	char str[20];
 	sprintf(str, "%X", mHash);
 	return new String(str);
 }
 
-
+hash_t Object::type() const{
+	return mHash & CLASS_MASK;
+}
 
 } /* namespace lang */
 } /* namespace tl */

@@ -10,10 +10,5 @@
 namespace tl {
 namespace lang {
 
-Comparable::Comparable() {
-	// TODO Auto-generated constructor stub
-
-}
-
 } /* namespace lang */
 } /* namespace tl */
