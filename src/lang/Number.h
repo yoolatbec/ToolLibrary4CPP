@@ -25,6 +25,7 @@ public:
 	tlint64 longValue() const = 0;
 	double doubleValue() const = 0;
 	float floatValue() const = 0;
+	virtual bool instanceof(hash_t type) const;
 };
 
 } /* namespace lang */

@@ -20,10 +20,17 @@ private:
 	const static hash_t CLASS_HASH = 13L << 32;
 	Reference *mElements;
 	class ArrayListIterator : public Iterator{
+	private:
+		const static hash_t CLASS_HASH = 14L << 32;
+	};
 
+	class ArrayListConstIterator : public ConstantIterator{
+	private:
+		const static hash_t CLASS_HASH = 15L << 32;
 	};
 
 	friend class ArrayListIterator;
+	friend class ArrayListConstantIterator;
 
 	void expand();
 public:
@@ -34,6 +41,7 @@ public:
 	ArrayList& operator=(const ArrayList&) = delete;
 	bool add(const Reference&);
 	void addAll(const List*);
+	bool contains(const Reference&) const;
 	bool insert(const Reference&, size_t position);
 	void insertAll(const List*, size_t);
 	bool remove(size_t);
@@ -45,6 +53,7 @@ public:
 	ArrayList* each(Reference (*)(const Object*));
 	void each(void (*)(const Object*));
 	Iterator* iterator();
+	virtual bool instanceof(hash_t) const;
 };
 
 } /* namespace utils */

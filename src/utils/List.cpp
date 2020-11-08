@@ -40,5 +40,9 @@ hash_t List::elementType() const{
 	return mElementType;
 }
 
+bool List::instanceof(hash_t type) const{
+	return (CLASS_HASH == type) || Object::instanceof(type);
+}
+
 } /* namespace utils */
 } /* namespace tl */

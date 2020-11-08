@@ -23,18 +23,19 @@ public:
 	static const tlint MAX_INTEGER = 0xFFFFFFFF - 1;
 	static const tlint MIN_INTEGER = 0xFFFFFFFF;
 	explicit Integer(tlint);
-	explicit Integer(const String&);
+	explicit Integer(const String*);
 	byte byteValue() const;
 	word shortValue() const;
 	tlint intValue() const;
 	tlint64 longValue() const;
 	double doubleValue() const;
 	float floatValue() const;
-	bool compareTo(const Integer&) const;
+	bool compareTo(const Integer*) const;
 	tlint getBitAt(tlint) const;
 	String toString() const;
-	static tlint max(tlint, tlint);
-	static tlint min(tlint, tlint);
+	static tlint larger(tlint, tlint);
+	static tlint smaller(tlint, tlint);
+	bool instanceof(hash_t) const;
 };
 
 } /* namespace lang */

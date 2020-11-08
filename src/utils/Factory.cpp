@@ -19,5 +19,9 @@ tl::lang::Reference Factory::generate(const Reference &argument) const {
 	return generator(argument);
 }
 
+bool Factory::instanceof(hash_t type) const{
+	return (mHash & CLASS_MASK == type) || Object::instanceof(type);
+}
+
 } /* namespace utils */
 } /* namespace tl */

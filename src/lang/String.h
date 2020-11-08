@@ -41,6 +41,7 @@ public:
 	List* split(byte) const;
 	List* split(const String*) const;
 	const byte* bytes() const;
+	bool instanceof(hash_t) const;
 };
 
 } /* namespace lang */

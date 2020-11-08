@@ -145,5 +145,9 @@ tlint String::compareTo(const String* another) const {
 	return 0;
 }
 
+bool String::instanceof(hash_t type) const{
+	return (mHash & CLASS_MASK == type) || Comparable::instanceof(type);
+}
+
 } /* namespace lang */
 } /* namespace tl */

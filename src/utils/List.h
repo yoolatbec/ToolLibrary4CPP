@@ -10,15 +10,17 @@
 
 #include "../lang/Reference.h"
 #include "../lang/Comparable.h"
+#include "ConstantIterator.h"
 #include "Iterator.h"
-#include "ConstIterator.h"
 
 namespace tl {
 namespace utils {
 
-class List: public lang::Object {
+class List: public virtual lang::Object {
 	using tl::lang::Reference;
 	using tl::lang::Comparable;
+private:
+	const static hash_t CLASS_HASH = 12L << 32;
 protected:
 	static const size_t DEFAULT_CAPACITY = 10;
 	const hash_t mElementType;
@@ -32,11 +34,11 @@ public:
 	virtual List& operator=(const List&) = delete;
 	virtual ~List();
 	virtual bool add(const Reference&) = 0;
-	virtual bool addAll(const List*) = 0;
+	virtual void addAll(const List*) = 0;
 	virtual bool contains(const Reference&) = 0;
 	virtual Reference get(size_t) = 0;
 	virtual bool insert(const Reference&, size_t position) = 0;
-	virtual bool insertAll(const List*, size_t) = 0;
+	virtual void insertAll(const List*, size_t) = 0;
 	virtual bool remove(size_t) = 0;
 	virtual bool remove(const Reference&) = 0;
 	virtual bool empty() const = 0;
@@ -49,7 +51,8 @@ public:
 	size_t getSize() const;
 	hash_t elementType() const;
 	Iterator* iterator() = 0;
-	ConstIterator* constIterator() const = 0;
+	ConstantIterator* constIterator() const = 0;
+	virtual bool instanceof(hash_t) const;
 };
 
 } /* namespace utils */

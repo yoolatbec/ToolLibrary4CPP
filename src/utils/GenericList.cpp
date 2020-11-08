@@ -1,21 +1,21 @@
 /*
- * ConstIterator.cpp
+ * GenericList.cpp
  *
  *  Created on: Nov 8, 2020
  *      Author: yoolatbec
  */
 
-#include "ConstIterator.h"
+#include "GenericList.h"
 
 namespace tl {
 namespace utils {
 
-ConstIterator::ConstIterator() {
+GenericList::GenericList() {
 	// TODO Auto-generated constructor stub
 
 }
 
-ConstIterator::~ConstIterator() {
+GenericList::~GenericList() {
 	// TODO Auto-generated destructor stub
 }
 

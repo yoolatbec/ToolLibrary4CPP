@@ -37,7 +37,7 @@ public:
 	virtual bool operator==(const Object*) const;
 	virtual Object* clone() const;
 	String* toString() const;
-	bool instanceof(hash_t) const;
+	virtual bool instanceof(hash_t) const;
 	hash_t type() const;
 };
 

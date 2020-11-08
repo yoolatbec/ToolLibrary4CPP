@@ -19,5 +19,9 @@ Number::~Number() {
 	// TODO Auto-generated destructor stub
 }
 
+bool Number::instanceof(hash_t type) const{
+	return (CLASS_HASH == type) || Object::instanceof(type);
+}
+
 } /* namespace lang */
 } /* namespace tl */

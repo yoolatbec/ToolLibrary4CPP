@@ -22,6 +22,7 @@ private:
 public:
 	explicit Factory(Reference (*)(Reference));
 	Reference generate(const Reference&) const;
+	virtual bool instanceof(hash_t type) const;
 };
 
 } /* namespace utils */

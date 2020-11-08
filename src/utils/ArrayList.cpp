@@ -55,13 +55,15 @@ void ArrayList::addAll(const List* anotherList){
 		expand();
 	}
 
-	ConstIterator* iterator = anotherList->constIterator();
+	ConstantIterator* iterator = anotherList->constIterator();
 	while(iterator->hasNext()){
 		add(iterator->next());
 	}
 }
 
-
+bool ArrayList::instanceof(hash_t type) const{
+	return (mHash & CLASS_MASK == type) || List::instanceof(type);
+}
 
 } /* namespace utils */
 } /* namespace tl */

@@ -27,6 +27,7 @@ public:
 	Object* getEntity() const;
 	bool equals(const Reference&) const;
 	bool isNull() const;
+	bool instanceof(hash_t) const;
 };
 
 } /* namespace lang */
