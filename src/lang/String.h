@@ -25,23 +25,24 @@ public:
 	String();
 	explicit String(const byte*);
 	String(size_t, byte);
-	String(const String *other);
+	String(const Reference&);
 	String(const String&) = delete;
 	String& operator=(const String&) = delete;
 	~String();
-	String* append(const String*) const;
+	String* append(const Reference&) const;
 	String* append(byte) const;
 	String* append(tlint) const;
 	String* append(tlint64) const;
 	String* append(double) const;
 	tlint charAt(size_t) const;
-	tlint compareTo(const String*) const;
+	tlint compareTo(const Reference&) const;
 	String* substring(size_t length) const;
 	String* substring(size_t start, size_t length) const;
 	List* split(byte) const;
-	List* split(const String*) const;
+	List* split(const Reference&) const;
 	const byte* bytes() const;
 	bool instanceof(hash_t) const;
+	static hash_t getType();
 };
 
 } /* namespace lang */

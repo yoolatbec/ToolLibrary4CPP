@@ -75,7 +75,7 @@ bool Reference::isNull() const {
 }
 
 bool Reference::instanceof(hash_t type) const{
-	return (mHash & CLASS_MASK == type) || Object::instanceof(type);
+	return mEntity->instanceof(type);
 }
 
 } /* namespace lang */

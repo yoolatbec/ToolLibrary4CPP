@@ -32,12 +32,17 @@ String::String(size_t length, byte c) {
 	memset(mStr, c, mLength);
 }
 
-String::String(const String *other) {
+String::String(const Reference& ref) {
 	// TODO Auto-generated constructor stub
-	mLength = other->mLength;
-	mStr = new char[mLength + 1];
-	mStr[mLength] = '\0';
-	strncpy(mStr, other->mStr, mLength);
+	if(ref.instanceof(String::getType())){
+		String* other = (String*)ref.getEntity();
+		mLength = other->mLength;
+		mStr = new char[mLength + 1];
+		mStr[mLength] = '\0';
+		strncpy(mStr, other->mStr, mLength);
+	} else {
+		Object* other = ref.getEntity();
+	}
 }
 
 String::~String() {
@@ -147,6 +152,10 @@ tlint String::compareTo(const String* another) const {
 
 bool String::instanceof(hash_t type) const{
 	return (mHash & CLASS_MASK == type) || Comparable::instanceof(type);
+}
+
+hash_t String::getType(){
+	return CLASS_HASH;
 }
 
 } /* namespace lang */

@@ -23,5 +23,9 @@ bool LinkedList::instanceof(hash_t type) const{
 	return (mHash & CLASS_HASH == type) || List::instanceof(type);
 }
 
+hash_t LinkedList::getType(){
+	return CLASS_HASH;
+}
+
 } /* namespace utils */
 } /* namespace tl */

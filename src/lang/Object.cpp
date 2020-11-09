@@ -5,6 +5,7 @@
  *      Author: yoolatbec
  */
 
+#include "Reference.h"
 #include "String.h"
 #include <cstdio>
 
@@ -16,13 +17,9 @@ Object::Object() {
 	mHash = genHash();
 }
 
-Object::Object(const Object *other) {
+Object::Object(const Reference& another) {
 	// TODO Auto-generated constructor stub
 	mHash = genHash();
-}
-
-Object& Object::operator =(const Object &other) {
-	return *this;
 }
 
 Object::~Object() {
@@ -33,15 +30,15 @@ hash_t Object::genHash() {
 	return CLASS_HASH & CLASS_MASK + this & INSTANCE_MASK;
 }
 
-bool Object::equals(const Object *other) const {
-	if (other == nullptr) {
+bool Object::equals(const Reference& other) const {
+	if (other.getEntity() == nullptr) {
 		return false;
 	}
 
-	return this->mHash == other->mHash;
+	return this->mHash == other.getEntity()->mHash;
 }
 
-bool Object::operator==(const Object *other) const {
+bool Object::operator==(const Reference& other) const {
 	return equals(other);
 }
 
@@ -61,6 +58,10 @@ String* Object::toString() const {
 
 hash_t Object::type() const{
 	return mHash & CLASS_MASK;
+}
+
+hash_t Object::type(){
+	return CLASS_HASH;
 }
 
 } /* namespace lang */

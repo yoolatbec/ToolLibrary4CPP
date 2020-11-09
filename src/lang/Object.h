@@ -14,7 +14,9 @@
 namespace tl {
 namespace lang {
 
+class Reference;
 class String;
+
 class Object {
 private:
 	const static hash_t CLASS_HASH = 0L << 32;
@@ -27,14 +29,15 @@ public:
 protected:
 	virtual hash_t genHash();
 public:
+	static hash_t getType();
 	const static Object null;
 	Object();
-	Object(const Object* other);
+	Object(const Reference&);
 	Object(const Object&) = delete;
 	virtual Object& operator=(const Object&);
 	virtual ~Object();
-	virtual bool equals(const Object*) const;
-	virtual bool operator==(const Object*) const;
+	virtual bool equals(const Reference&) const;
+	virtual bool operator==(const Reference&) const;
 	virtual Object* clone() const;
 	String* toString() const;
 	virtual bool instanceof(hash_t) const;

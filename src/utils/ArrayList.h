@@ -54,6 +54,7 @@ public:
 	void each(void (*)(const Object*));
 	Iterator* iterator();
 	virtual bool instanceof(hash_t) const;
+	static hash_t getType();
 };
 
 } /* namespace utils */

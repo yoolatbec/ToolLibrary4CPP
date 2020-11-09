@@ -55,7 +55,7 @@ public:
 	bool insert(const Reference&);
 	bool insertFirst(const Reference&);
 	bool insertLast(const Reference&);
-	void insertAll(const List*);
+	void insertAll(const Reference&);
 	void insertAllFirst(const List*);
 	void insertAllLast(const List*);
 	bool remove(const Reference&);
@@ -66,6 +66,7 @@ public:
 	void clear();
 	bool replace(const Reference&, size_t);
 	virtual bool instanceof(hash_t) const;
+	static hash_t getType();
 };
 
 } /* namespace utils */

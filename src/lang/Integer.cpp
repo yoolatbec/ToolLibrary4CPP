@@ -14,16 +14,27 @@ namespace lang {
 Integer::Integer(tlint value) {
 	// TODO Auto-generated constructor stub
 	mValue = value;
+	mHash = genHash();
 }
 
-Integer::Integer(const String *str) {
-	const char *characters = str->bytes();
-	int value;
-	if (sscanf(characters, "%d", &value) != 1) {
-		mValue = 0;
+Integer::Integer(const Reference &ref) {
+	if (ref.instanceof(String::getType())) {
+		String *str = (String*)ref.getEntity();
+		const char *characters = str->bytes();
+		int value;
+		if (sscanf(characters, "%d", &value) != 1) {
+			mValue = 0;
+		} else {
+			mValue = value;
+		}
+	} else if(ref.instanceof(Integer::getType())){
+		Integer* another = ref.getEntity();
+		mValue = another->mValue;
 	} else {
-		mValue = value;
+		mValue = 0;
 	}
+
+	mHash = genHash();
 }
 
 byte Integer::byteValue() const {
@@ -50,8 +61,12 @@ float Integer::floatValue() const {
 	return (float)mValue;
 }
 
-bool Integer::compareTo(const Integer *other) const {
-	return mValue == other->mValue;
+tlint Integer::compareTo(const Reference &ref) const {
+	if(ref.instanceof(Integer::getType())){
+		Integer* another = ref.getEntity();
+		return mValue - another->mValue;
+	}
+	return mValue;
 }
 
 tlint Integer::getBitAt(tlint position) const {
@@ -80,6 +95,14 @@ String Integer::toString() const {
 
 bool Integer::instanceof(hash_t type) const {
 	return (mHash & CLASS_MASK == type) || Number::instanceof(type);
+}
+
+hash_t Integer::getType() {
+	return CLASS_HASH;
+}
+
+hash_t Integer::genHash(){
+	return CLASS_HASH + mValue;
 }
 
 } /* namespace lang */

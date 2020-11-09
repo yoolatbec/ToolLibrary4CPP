@@ -8,12 +8,12 @@
 #ifndef SRC_LANG_NUMBER_H_
 #define SRC_LANG_NUMBER_H_
 
-#include "Object.h"
+#include "Comparable.h"
 
 namespace tl {
 namespace lang {
 
-class Number: public Object {
+class Number: virtual public Comparable {
 private:
 	static const hash_t CLASS_HASH = 2L << 32;
 public:
@@ -26,6 +26,7 @@ public:
 	double doubleValue() const = 0;
 	float floatValue() const = 0;
 	virtual bool instanceof(hash_t type) const;
+	static hash_t getType();
 };
 
 } /* namespace lang */

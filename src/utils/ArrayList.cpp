@@ -61,8 +61,14 @@ void ArrayList::addAll(const List* anotherList){
 	}
 }
 
+
+
 bool ArrayList::instanceof(hash_t type) const{
 	return (mHash & CLASS_MASK == type) || List::instanceof(type);
+}
+
+hash_t ArrayList::getType(){
+	return CLASS_HASH;
 }
 
 } /* namespace utils */

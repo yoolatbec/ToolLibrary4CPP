@@ -20,7 +20,11 @@ Number::~Number() {
 }
 
 bool Number::instanceof(hash_t type) const{
-	return (CLASS_HASH == type) || Object::instanceof(type);
+	return (CLASS_HASH == type) || Comparable::instanceof(type);
+}
+
+hash_t Number::getType(){
+	return CLASS_HASH;
 }
 
 } /* namespace lang */
