@@ -10,9 +10,10 @@
 namespace tl {
 namespace utils {
 
-Collection::Collection() {
+Collection::Collection(hash_t type)
+		: mElementType(type) {
 	// TODO Auto-generated constructor stub
-
+	mSize = 0;
 }
 
 Collection::~Collection() {
@@ -25,6 +26,10 @@ bool Collection::instanceof(hash_t type) const {
 
 hash_t Collection::getType() {
 	return CLASS_HASH;
+}
+
+hash_t Collection::getElementType() const{
+	return mElementType;
 }
 
 } /* namespace utils */

@@ -10,6 +10,7 @@
 
 #include "../lang/Object.h"
 #include "Iterator.h"
+#include "ConstantIterator.h"
 
 namespace tl {
 namespace utils {
@@ -21,7 +22,9 @@ public:
 	Iterable();
 	virtual ~Iterable();
 	Iterable(const Iterable &other) = delete;
+	Iterable& operator=(const Iterator&) = delete;
 	virtual Iterator iterator() = 0;
+	virtual ConstantIterator constantIterator() = 0;
 	virtual bool instanceof(hash_t) const;
 };
 

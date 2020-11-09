@@ -24,8 +24,6 @@ private:
 	const static hash_t CLASS_HASH = 12L << 32;
 protected:
 	static const size_t DEFAULT_CAPACITY = 10;
-	const hash_t mElementType;
-	size_t mSize;
 	size_t mCapacity;
 	bool mModified;
 public:

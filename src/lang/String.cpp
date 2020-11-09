@@ -32,16 +32,16 @@ String::String(size_t length, byte c) {
 	memset(mStr, c, mLength);
 }
 
-String::String(const Reference& ref) {
+String::String(const Reference &ref) {
 	// TODO Auto-generated constructor stub
-	if(ref.instanceof(String::getType())){
-		String* other = (String*)ref.getEntity();
+	if (ref.instanceof(String::getType())) {
+		String *other = (String*)ref.getEntity();
 		mLength = other->mLength;
 		mStr = new char[mLength + 1];
 		mStr[mLength] = '\0';
 		strncpy(mStr, other->mStr, mLength);
 	} else {
-		Object* other = ref.getEntity();
+		Object *other = ref.getEntity();
 	}
 }
 
@@ -60,13 +60,23 @@ String* String::append(byte c) const {
 	return r_value;
 }
 
-String* String::append(const String *other) const {
-	char *str = new char[mLength + other->mLength + 1];
-	strncpy(str, mStr, mLength);
-	strncpy(str + mLength, other->mStr, other->mLength);
-	str[mLength + other->mLength] = '\0';
-	String *r_value = new String(str);
-	delete[] str;
+String* String::append(const Reference &ref) const {
+	String* r_value;
+
+	if (ref.instanceof(String::getType())) {
+		String *other = (String*)ref.getEntity();
+		char *str = new char[mLength + other->mLength + 1];
+		strncpy(str, mStr, mLength);
+		strncpy(str + mLength, other->mStr, other->mLength);
+		str[mLength + other->mLength] = '\0';
+		*r_value = new String(str);
+		delete[] str;
+	} else {
+		Object* obj = ref.getEntity();
+		Reference str = Reference(obj->toString());
+		r_value = append(str);
+	}
+
 	return r_value;
 }
 
@@ -142,19 +152,22 @@ String* String::substring(size_t start, size_t length) const {
 	return r_value;
 }
 
-const byte* String::bytes() const{
+const byte* String::bytes() const {
 	return mStr;
 }
 
-tlint String::compareTo(const String* another) const {
+tlint String::compareTo(const Reference& ref) const {
+	if(ref.instanceof(String::getType())){
+
+	}
 	return 0;
 }
 
-bool String::instanceof(hash_t type) const{
+bool String::instanceof(hash_t type) const {
 	return (mHash & CLASS_MASK == type) || Comparable::instanceof(type);
 }
 
-hash_t String::getType(){
+hash_t String::getType() {
 	return CLASS_HASH;
 }
 

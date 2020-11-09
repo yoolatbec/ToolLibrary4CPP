@@ -30,6 +30,10 @@ bool ArrayList::add(const Reference& value){
 		return false;
 	}
 
+	if(!value.instanceof(mElementType)){
+		return false;
+	}
+
 	for(int i = 0; i < mSize; i++){
 		if(mElements[i].equals(value)){
 			return false;
@@ -46,19 +50,22 @@ bool ArrayList::add(const Reference& value){
 	return true;
 }
 
-void ArrayList::addAll(const List* anotherList){
-	if(anotherList == nullptr){
-		return;
+bool ArrayList::addAll(const Reference& ref){
+	if(!ref.instanceof(Collection::getType())){
+		return false;
 	}
 
-	while(mCapacity - mSize <= anotherList->mSize){
-		expand();
+	Collection* collection = (Collection*)ref.getEntity();
+	if(collection->getElementType() != mElementType){
+		return false;
 	}
 
-	ConstantIterator* iterator = anotherList->constIterator();
+	ConstantIterator* iterator = collection->constantIterator();
 	while(iterator->hasNext()){
-		add(iterator->next());
+		Reference ref = iterator->next();
+		add(ref);
 	}
+	return true;
 }
 
 
