@@ -8,16 +8,20 @@
 #ifndef SRC_UTILS_GENERICLIST_H_
 #define SRC_UTILS_GENERICLIST_H_
 
-#include "../lang/Object.h"
+#include "GenericCollection.h"
 
 namespace tl {
 namespace utils {
 
-class GenericList: public virtual lang::Object {
+class GenericList: public virtual GenericCollection {
+private:
+	static const hash_t CLASS_HASH = 21L << 32;
 public:
 	GenericList();
 	virtual ~GenericList();
 	GenericList(const GenericList &other) = delete;
+	static hash_t getType();
+	bool instanceof(hash_t) const;
 };
 
 } /* namespace utils */

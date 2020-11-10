@@ -19,5 +19,13 @@ GenericList::~GenericList() {
 	// TODO Auto-generated destructor stub
 }
 
+hash_t GenericList::getType(){
+	return CLASS_HASH;
+}
+
+bool GenericList::instanceof(hash_t type) const{
+	return (CLASS_HASH == type) || GenericCollection::instanceof(type);
+}
+
 } /* namespace utils */
 } /* namespace tl */
