@@ -60,7 +60,7 @@ hash_t Object::type() const{
 	return mHash & CLASS_MASK;
 }
 
-hash_t Object::type(){
+hash_t Object::getType(){
 	return CLASS_HASH;
 }
 

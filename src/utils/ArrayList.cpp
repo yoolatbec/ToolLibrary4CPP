@@ -68,7 +68,58 @@ bool ArrayList::addAll(const Reference& ref){
 	return true;
 }
 
+bool ArrayList::contains(const Reference& ref) const{
+	if(ref.isNull()){
+		return false;
+	}
 
+	if(!ref.instanceof(mElementType)){
+		return false;
+	}
+
+	if(mSize == 0){
+		return false;
+	}
+
+	for(tlint index = 0; index < mSize; index++){
+		if(mElements[index].equals(ref)){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool ArrayList::insert(const Reference& ref, size_t position){
+	if(ref.isNull()){
+		return false;
+	}
+
+	if(!ref.instanceof(mElementType)){
+		return false;
+	}
+
+	if(mSize < position){
+		return false;
+	}
+
+	if(mSize == position){
+		return add(ref);
+	}
+
+	if(contains(ref)){
+		return false;
+	}
+
+	if(mSize == mCapacity){
+		expand();
+	}
+
+	for(tlint index = mSize; index > position; index--){
+		mElements[index] = mElements[index - 1];
+	}
+	mElements[position] = ref;
+	return true;
+}
 
 bool ArrayList::instanceof(hash_t type) const{
 	return (mHash & CLASS_MASK == type) || List::instanceof(type);

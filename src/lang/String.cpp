@@ -34,6 +34,11 @@ String::String(size_t length, byte c) {
 
 String::String(const Reference &ref) {
 	// TODO Auto-generated constructor stub
+	if(ref.isNull()){
+		mStr = nullptr;
+		mLength = 0;
+	}
+
 	if (ref.instanceof(String::getType())) {
 		String *other = (String*)ref.getEntity();
 		mLength = other->mLength;
@@ -61,6 +66,10 @@ String* String::append(byte c) const {
 }
 
 String* String::append(const Reference &ref) const {
+	if(ref.isNull()){
+		return new String(mStr);
+	}
+
 	String* r_value;
 
 	if (ref.instanceof(String::getType())) {
