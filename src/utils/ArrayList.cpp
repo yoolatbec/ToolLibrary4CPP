@@ -121,6 +121,23 @@ bool ArrayList::insert(const Reference& ref, size_t position){
 	return true;
 }
 
+bool ArrayList::insertAll(const Reference& ref, size_t position){
+	if(ref.isNull()){
+		return false;
+	}
+
+	if(!ref.instanceof(Collection::getType())){
+		return false;
+	}
+
+	Collection* collection = ref.getEntity();
+	if(collection->getElementType() != mElementType()){
+		return false;
+	}
+
+
+}
+
 bool ArrayList::instanceof(hash_t type) const{
 	return (mHash & CLASS_MASK == type) || List::instanceof(type);
 }
