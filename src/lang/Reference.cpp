@@ -12,6 +12,7 @@ namespace lang {
 
 Reference::Reference(Object *entity)
 		: mEntity(entity) {
+	mRef = nullptr;
 	// TODO Auto-generated constructor stub
 	if (mEntity != nullptr) {
 		mRef = new size_t;
@@ -32,17 +33,17 @@ Reference::~Reference() {
 }
 
 Reference& Reference::operator=(const Reference &other) {
-	if (other.mEntity != nullptr) {
-		if (mEntity != nullptr) {
-			if ((*mRef) == 1) {
-				delete mEntity;
-				delete mRef;
-			} else {
-				(*mRef)--;
-			}
+	if (mEntity != nullptr) {
+		if ((*mRef) == 1) {
+			delete mEntity;
+			delete mRef;
+		} else {
+			(*mRef)--;
 		}
-		mEntity = other.mEntity;
-		mRef = other.mRef;
+	}
+	mEntity = other.mEntity;
+	mRef = other.mRef;
+	if(mRef != nullptr){
 		(*mRef)++;
 	}
 
@@ -52,8 +53,8 @@ Reference& Reference::operator=(const Reference &other) {
 Reference::Reference(const Reference &other)
 		: mEntity(other.mEntity) {
 	// TODO Auto-generated constructor stub
+	mRef = other.mRef;
 	if (mEntity != nullptr) {
-		mRef = other.mRef;
 		(*mRef)++;
 	}
 }
@@ -74,7 +75,7 @@ bool Reference::isNull() const {
 	return mEntity == nullptr;
 }
 
-bool Reference::instanceof(hash_t type) const{
+bool Reference::instanceof(hash_t type) const {
 	return mEntity->instanceof(type);
 }
 

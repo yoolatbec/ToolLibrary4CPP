@@ -65,6 +65,7 @@ public:
 	bool removeAll(const Reference&);
 	bool empty() const;
 	void clear();
+	Reference get(size_t);
 	bool replace(const Reference&, size_t);
 	virtual bool instanceof(hash_t) const;
 	static hash_t getType();
