@@ -14,11 +14,11 @@
 namespace tl {
 namespace utils {
 
+using tl::lang::Reference;
 class Factory: public lang::Object {
-	using tl::lang::Reference;
 private:
 	static const hash_t CLASS_HASH = 32L << 32;
-	const Reference (*generator)(Reference);
+	Reference (* const generator)(Reference);
 public:
 	explicit Factory(Reference (*)(Reference));
 	Reference generate(const Reference&) const;

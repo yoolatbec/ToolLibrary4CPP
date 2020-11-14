@@ -32,5 +32,9 @@ hash_t Collection::getElementType() const{
 	return mElementType;
 }
 
+size_t Collection::size() const{
+	return mSize;
+}
+
 } /* namespace utils */
 } /* namespace tl */

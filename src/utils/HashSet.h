@@ -1,7 +1,7 @@
 /*
  * HashSet.h
  *
- *  Created on: 2020Äê11ÔÂ11ÈÕ
+ *  Created on: Nov, 11, 2020
  *      Author: Yoolatbec
  */
 
@@ -15,7 +15,7 @@ namespace utils {
 
 class HashSet: public Set {
 public:
-	HashSet();
+	HashSet(hash_t);
 	virtual ~HashSet();
 	HashSet(const HashSet &other) = delete;
 	HashSet& operator=(const HashSet &other) = delete;

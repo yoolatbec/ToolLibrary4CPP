@@ -19,6 +19,7 @@ private:
 public:
 	virtual tlint compareTo(const Reference&) const = 0;
 	virtual bool instanceof(hash_t) const;
+	static hash_t getType();
 };
 
 } /* namespace lang */

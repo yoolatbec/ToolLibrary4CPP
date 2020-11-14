@@ -1,7 +1,7 @@
 /*
  * HashSet.cpp
  *
- *  Created on: 2020Äê11ÔÂ11ÈÕ
+ *  Created on: Nov, 11, 2020
  *      Author: Yoolatbec
  */
 
@@ -10,7 +10,8 @@
 namespace tl {
 namespace utils {
 
-HashSet::HashSet() {
+HashSet::HashSet(hash_t type)
+		: Set(type) {
 	// TODO Auto-generated constructor stub
 
 }

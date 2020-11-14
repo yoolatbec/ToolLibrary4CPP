@@ -5,6 +5,8 @@
  *      Author: yoolatbec
  */
 
+#if 0
+
 #include "AVLTree.h"
 
 namespace tl {
@@ -130,3 +132,5 @@ AVLTree::Node* AVLTree::Node::remove(Node* n, const Reference& v){
 
 } /* namespace utils */
 } /* namespace tl */
+
+#endif

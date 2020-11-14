@@ -10,7 +10,7 @@
 namespace tl {
 namespace utils {
 
-Factory::Factory(Reference (*g)(Reference), hash_t type)
+Factory::Factory(Reference (*g)(Reference))
 		: generator(g) {
 
 }

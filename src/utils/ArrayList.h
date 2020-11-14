@@ -13,8 +13,11 @@
 namespace tl {
 namespace utils {
 
+using lang::Reference;
+using lang::Comparable;
+using lang::Array;
+
 class ArrayList: public List {
-	using tl::lang::Comparable;
 private:
 	const static hash_t CLASS_HASH = 13L << 32;
 	Reference *mElements;
@@ -22,15 +25,19 @@ private:
 	class ArrayListIterator : public Iterator{
 	private:
 		const static hash_t CLASS_HASH = 14L << 32;
-	};
-
-	class ArrayListConstIterator : public ConstantIterator{
-	private:
-		const static hash_t CLASS_HASH = 15L << 32;
+		ArrayList* const mList;
+		size_t mCurrent;
+	public:
+		ArrayListIterator(ArrayList*);
+		static hash_t getType();
+		bool instanceof(hash_t) const;
+		bool hasNext() const;
+		Reference next();
+		bool remove();
+		bool insert(const Reference&);
 	};
 
 	friend class ArrayListIterator;
-	friend class ArrayListConstantIterator;
 
 	void expand();
 public:
@@ -42,14 +49,17 @@ public:
 	bool add(const Reference&);
 	bool addAll(const Reference&);
 	bool contains(const Reference&) const;
+	bool containsAll(const Reference&) const;
 	bool insert(const Reference&, size_t position);
 	bool insertAll(const Reference&, size_t);
 	bool remove(size_t);
 	bool remove(const Reference&);
+	bool removeAll(const Reference&);
+	Array* toArray() const;
 	bool empty() const;
 	void clear();
+	Reference get(size_t);
 	bool replace(const Reference&, size_t);
-	ArrayList* sort(int (*)(Comparable*, Comparable*, hash_t));
 	Iterator* iterator();
 	virtual bool instanceof(hash_t) const;
 	static hash_t getType();

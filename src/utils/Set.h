@@ -1,7 +1,7 @@
 /*
  * Set.h
  *
- *  Created on: 2020Äê11ÔÂ11ÈÕ
+ *  Created on: Nov, 11, 2020
  *      Author: Yoolatbec
  */
 
@@ -14,11 +14,15 @@ namespace tl {
 namespace utils {
 
 class Set: public Collection {
+private:
+	const static hash_t CLASS_HASH = 500L << 32;
 public:
-	Set();
+	Set(hash_t type);
 	virtual ~Set();
 	Set(const Set &other) = delete;
 	Set& operator=(const Set &other) = delete;
+	virtual bool instanceof(hash_t) const;
+	static hash_t getType();
 };
 
 } /* namespace utils */

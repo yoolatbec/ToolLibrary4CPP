@@ -14,5 +14,9 @@ bool Comparable::instanceof(hash_t type) const{
 	return (CLASS_HASH == type) || Object::instanceof(type);
 }
 
+hash_t Comparable::getType(){
+	return CLASS_HASH;
+}
+
 } /* namespace lang */
 } /* namespace tl */

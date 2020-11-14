@@ -169,7 +169,43 @@ tlint String::compareTo(const Reference& ref) const {
 	if(ref.instanceof(String::getType())){
 
 	}
+
 	return 0;
+}
+
+List* String::split(byte b) const{
+	ArrayList* list = new ArrayList(String::getType());
+
+	char token[2]{0};
+	token[0] = b;
+	byte* str = strtok(mStr, token);
+	while(str != nullptr){
+		list->add(Reference(new String(str)));
+		str = strtok(nullptr, token);
+	}
+
+	return list;
+}
+
+List* String::split(const Reference& ref) const{
+	if(ref.isNull()){
+		return new ArrayList(String::getType());
+	}
+
+	if(!ref.instanceof(String::getType())){
+		return new ArrayList(String::getType());
+	}
+
+	ArrayList* list = new ArrayList(String::getType());
+
+	byte* token = dynamic_cast<String*>(ref.getEntity())->mStr;
+	byte* str = strtok(mStr, token);
+	while(str != nullptr){
+		list->add(Reference(new String(str)));
+		str = strtok(nullptr, token);
+	}
+
+	return list;
 }
 
 bool String::instanceof(hash_t type) const {

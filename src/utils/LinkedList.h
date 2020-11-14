@@ -16,48 +16,52 @@ namespace utils {
 class LinkedList: public List {
 private:
 	const static hash_t CLASS_HASH = 16L << 32;
-	class LinkedListNode : public Object{
+	class LinkedListNode: public Object {
 		friend class LinkedList;
-		LinkedListNode* previous;
-		LinkedListNode* next;
+	private:
+		const static hash_t CLASS_HASH = 17L << 32;
+		Reference previous;
+		Reference next;
 		Reference value;
+	public:
+		LinkedListNode(const Reference&);
+		LinkedListNode(const LinkedListNode&) = delete;
+		LinkedListNode& operator=(const LinkedListNode&) = delete;
+		static hash_t getType();
+		bool instanceof(hash_t) const;
 	};
 
-	class LinkedListIterator : public Iterator{
+	Reference head, tail;
+
+	class LinkedListIterator: public Iterator {
 
 	};
 
-	class LinkedListConstantIterator : public ConstantIterator{
-
-	};
-
-	class LinkedListReversedIterator : public Iterator{
-
-	};
-
-	class LinkedListReversedConstantIterator : public ConstantIterator{
+	class LinkedListReversedIterator: public Iterator {
 
 	};
 
 	friend class LinkedListNode;
+	friend class LinkedListIterator;
+	friend class LinkedListReversedIterator;
 public:
-	LinkedList();
+	LinkedList(hash_t);
 	virtual ~LinkedList();
 	LinkedList(const LinkedList &other) = delete;
 	LinkedList& operator=(const LinkedList&) = delete;
 	bool add(const Reference&);
 	bool addFirst(const Reference&);
 	bool addLast(const Reference&);
-	void addAll(const List*);
-	void addAllFirst(const List*);
-	void addAllLast(const List*);
+	bool addAll(const Reference&);
+	bool addAllFirst(const Reference&);
+	bool addAllLast(const Reference&);
 	bool contains(const Reference&) const;
 	bool insert(const Reference&);
 	bool insertFirst(const Reference&);
 	bool insertLast(const Reference&);
-	void insertAll(const Reference&);
-	void insertAllFirst(const List*);
-	void insertAllLast(const List*);
+	bool insertAll(const Reference&);
+	bool insertAllFirst(const Reference&);
+	bool insertAllLast(const Reference&);
 	bool remove(const Reference&);
 	bool removeFirst();
 	bool removeLast();

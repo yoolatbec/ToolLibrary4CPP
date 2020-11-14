@@ -42,5 +42,9 @@ bool List::instanceof(hash_t type) const {
 	return (CLASS_HASH == type) || Object::instanceof(type);
 }
 
+hash_t List::getType(){
+	return CLASS_HASH;
+}
+
 } /* namespace utils */
 } /* namespace tl */

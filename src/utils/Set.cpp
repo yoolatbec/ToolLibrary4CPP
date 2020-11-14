@@ -1,7 +1,7 @@
 /*
  * Set.cpp
  *
- *  Created on: 2020Äê11ÔÂ11ÈÕ
+ *  Created on: Nov, 11, 2020
  *      Author: Yoolatbec
  */
 
@@ -10,13 +10,22 @@
 namespace tl {
 namespace utils {
 
-Set::Set() {
+Set::Set(hash_t type)
+		: Collection(type) {
 	// TODO Auto-generated constructor stub
 
 }
 
 Set::~Set() {
 	// TODO Auto-generated destructor stub
+}
+
+bool Set::instanceof(hash_t type) const{
+	return (type == CLASS_HASH) || Collection::instanceof(type);
+}
+
+hash_t Set::getType(){
+	return CLASS_HASH;
 }
 
 } /* namespace utils */

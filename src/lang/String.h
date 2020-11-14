@@ -8,13 +8,14 @@
 #ifndef SRC_LANG_STRING_H_
 #define SRC_LANG_STRING_H_
 
-#include "../utils/List.h"
+#include "../utils/ArrayList.h"
 #include "Comparable.h"
 
 namespace tl {
 namespace lang {
 
 using tl::utils::List;
+using tl::utils::ArrayList;
 class String : public Comparable{
 private:
 	const static hash_t CLASS_HASH = 9L << 32;

@@ -43,6 +43,7 @@ bool Array::set(const Reference& ref, size_t index){
 	}
 
 	mElements[index] = ref;
+	return true;
 }
 
 size_t Array::size() const{
