@@ -11,13 +11,13 @@ namespace tl {
 namespace utils {
 
 List::List(hash_t element_type)
-		: Collection(element_type) {
+		:Collection(element_type) {
 	mCapacity = DEFAULT_CAPACITY;
 	mModified = false;
 }
 
 List::List(hash_t element_type, size_t reserved)
-		: Collection(element_type) {
+		:Collection(element_type) {
 	mCapacity = reserved > 0 ? reserved : DEFAULT_CAPACITY;
 	mModified = false;
 }

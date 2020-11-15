@@ -10,7 +10,6 @@
 
 #include "../lang/Reference.h"
 #include "../lang/Comparable.h"
-#include "Iterator.h"
 #include "Collection.h"
 #include "../lang/Array.h"
 
@@ -36,15 +35,14 @@ public:
 	virtual ~List();
 	virtual bool add(const Reference&) = 0;
 	virtual bool addAll(const Reference&) = 0;
-	virtual bool contains(const Reference&) = 0;
-	virtual bool containsAll(const Reference&) = 0;
+	virtual bool contains(const Reference&) const = 0;
+	virtual bool containsAll(const Reference&) const = 0;
 	virtual Reference get(size_t) = 0;
 	virtual bool insert(const Reference&, size_t position) = 0;
 	virtual bool insertAll(const Reference&, size_t) = 0;
 	virtual bool remove(size_t) = 0;
 	virtual bool remove(const Reference&) = 0;
 	virtual bool removeAll(const Reference&) = 0;
-	virtual bool empty() const = 0;
 	virtual void clear() = 0;
 	virtual bool replace(const Reference&, size_t) = 0;
 	virtual Array* toArray() const = 0;

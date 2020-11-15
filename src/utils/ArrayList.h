@@ -17,7 +17,7 @@ using lang::Reference;
 using lang::Comparable;
 using lang::Array;
 
-class ArrayList: public List {
+class ArrayList: virtual public List {
 private:
 	const static hash_t CLASS_HASH = 13L << 32;
 	Reference *mElements;
@@ -56,7 +56,6 @@ public:
 	bool remove(const Reference&);
 	bool removeAll(const Reference&);
 	Array* toArray() const;
-	bool empty() const;
 	void clear();
 	Reference get(size_t);
 	bool replace(const Reference&, size_t);

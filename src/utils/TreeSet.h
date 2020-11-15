@@ -43,8 +43,7 @@ public:
 	bool contains(const Reference&) const;
 	bool containsAll(const Reference&) const;
 	bool empty() const;
-	Iterator iterator();
-	ConstantIterator constantIterator();
+	Iterator* iterator();
 	bool remove(const Reference&);
 	bool removeAll(const Reference&);
 	bool instanceof(hash_t) const;

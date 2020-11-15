@@ -40,13 +40,13 @@ String::String(const Reference &ref) {
 	}
 
 	if (ref.instanceof(String::getType())) {
-		String *other = (String*)ref.getEntity();
+		String *other = dynamic_cast<String*>(ref.getEntity());
 		mLength = other->mLength;
 		mStr = new char[mLength + 1];
 		mStr[mLength] = '\0';
 		strncpy(mStr, other->mStr, mLength);
 	} else {
-		Object *other = ref.getEntity();
+
 	}
 }
 
@@ -73,12 +73,12 @@ String* String::append(const Reference &ref) const {
 	String* r_value;
 
 	if (ref.instanceof(String::getType())) {
-		String *other = (String*)ref.getEntity();
+		String *other = dynamic_cast<String*>(ref.getEntity());
 		char *str = new char[mLength + other->mLength + 1];
 		strncpy(str, mStr, mLength);
 		strncpy(str + mLength, other->mStr, other->mLength);
 		str[mLength + other->mLength] = '\0';
-		*r_value = new String(str);
+		r_value = new String(str);
 		delete[] str;
 	} else {
 		Object* obj = ref.getEntity();
@@ -91,6 +91,7 @@ String* String::append(const Reference &ref) const {
 
 String* String::append(tlint i) const {
 	byte ivalue[32];
+	ivalue[31] = '\0';
 	sprintf(ivalue, "%d", i);
 	byte *str = new byte[mLength + strlen(ivalue) + 1];
 	strncpy(str, mStr, mLength);
@@ -103,6 +104,7 @@ String* String::append(tlint i) const {
 
 String* String::append(double d) const {
 	byte doubleValue[64];
+	doubleValue[63] = '\0';
 	sprintf(doubleValue, "%lf", d);
 	byte *str = new byte[mLength + strlen(doubleValue) + 1];
 	strncpy(str, mStr, mLength);
@@ -209,7 +211,7 @@ List* String::split(const Reference& ref) const{
 }
 
 bool String::instanceof(hash_t type) const {
-	return (mHash & CLASS_MASK == type) || Comparable::instanceof(type);
+	return ((mHash & CLASS_MASK) == type) || Comparable::instanceof(type);
 }
 
 hash_t String::getType() {

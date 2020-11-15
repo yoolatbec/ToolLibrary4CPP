@@ -13,7 +13,7 @@
 namespace tl {
 namespace utils {
 
-class LinkedList: public List {
+class LinkedList: virtual public List {
 private:
 	const static hash_t CLASS_HASH = 16L << 32;
 	class LinkedListNode: public Object {
@@ -34,6 +34,9 @@ private:
 	Reference head, tail;
 
 	class LinkedListIterator: public Iterator {
+	private:
+		const static hash_t CLASS_HASH = 18L << 32;
+	public:
 
 	};
 
@@ -41,7 +44,6 @@ private:
 
 	};
 
-	friend class LinkedListNode;
 	friend class LinkedListIterator;
 	friend class LinkedListReversedIterator;
 public:
@@ -63,8 +65,8 @@ public:
 	bool removeLast();
 	bool remove(size_t);
 	bool removeAll(const Reference&);
-	bool empty() const;
 	void clear();
+	Array* toArray() const;
 	Reference get(size_t);
 	bool replace(const Reference&, size_t);
 	virtual bool instanceof(hash_t) const;

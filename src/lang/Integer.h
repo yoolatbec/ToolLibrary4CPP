@@ -14,7 +14,7 @@
 namespace tl {
 namespace lang {
 
-class Integer: public Number {
+class Integer: virtual public Number {
 private:
 	static const hash_t CLASS_HASH = 3L << 32;
 	tlint mValue;
@@ -32,7 +32,7 @@ public:
 	float floatValue() const;
 	tlint compareTo(const Reference&) const;
 	tlint getBitAt(tlint) const;
-	String toString() const;
+	String* toString() const;
 	static tlint larger(tlint, tlint);
 	static tlint smaller(tlint, tlint);
 	static hash_t getType();

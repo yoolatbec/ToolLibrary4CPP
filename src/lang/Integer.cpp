@@ -19,7 +19,7 @@ Integer::Integer(tlint value) {
 
 Integer::Integer(const Reference &ref) {
 	if (ref.instanceof(String::getType())) {
-		String *str = (String*)ref.getEntity();
+		String *str = dynamic_cast<String*>(ref.getEntity());
 		const char *characters = str->bytes();
 		int value;
 		if (sscanf(characters, "%d", &value) != 1) {
@@ -28,7 +28,7 @@ Integer::Integer(const Reference &ref) {
 			mValue = value;
 		}
 	} else if(ref.instanceof(Integer::getType())){
-		Integer* another = ref.getEntity();
+		Integer* another = dynamic_cast<Integer*>(ref.getEntity());
 		mValue = another->mValue;
 	} else {
 		mValue = 0;
@@ -63,7 +63,7 @@ float Integer::floatValue() const {
 
 tlint Integer::compareTo(const Reference &ref) const {
 	if(ref.instanceof(Integer::getType())){
-		Integer* another = ref.getEntity();
+		Integer* another = dynamic_cast<Integer*>(ref.getEntity());
 		return mValue - another->mValue;
 	}
 	return mValue;
@@ -73,8 +73,8 @@ tlint Integer::getBitAt(tlint position) const {
 	position %= 32;
 
 	tlint bits = mValue;
-	bits << position;
-	bits >> 31;
+	bits = bits << position;
+	bits = bits >> 31;
 
 	return bits;
 }
@@ -87,14 +87,14 @@ tlint Integer::smaller(tlint a, tlint b) {
 	return a > b ? b : a;
 }
 
-String Integer::toString() const {
+String* Integer::toString() const {
 	char str[20];
 	sprintf(str, "%d", mValue);
-	return String(str);
+	return new String(str);
 }
 
 bool Integer::instanceof(hash_t type) const {
-	return (mHash & CLASS_MASK == type) || Number::instanceof(type);
+	return ((mHash & CLASS_MASK) == type) || Number::instanceof(type);
 }
 
 hash_t Integer::getType() {

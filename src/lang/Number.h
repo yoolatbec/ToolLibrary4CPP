@@ -19,12 +19,12 @@ private:
 public:
 	Number();
 	virtual ~Number();
-	byte byteValue() const = 0;
-	word shortValue() const = 0;
-	tlint intValue() const = 0;
-	tlint64 longValue() const = 0;
-	double doubleValue() const = 0;
-	float floatValue() const = 0;
+	virtual byte byteValue() const = 0;
+	virtual word shortValue() const = 0;
+	virtual tlint intValue() const = 0;
+	virtual tlint64 longValue() const = 0;
+	virtual double doubleValue() const = 0;
+	virtual float floatValue() const = 0;
 	virtual bool instanceof(hash_t type) const;
 	static hash_t getType();
 };

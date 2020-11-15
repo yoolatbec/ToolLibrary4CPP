@@ -10,14 +10,8 @@
 namespace tl {
 namespace utils {
 
-LinkedList::LinkedListNode::LinkedListNode(const Reference &ref) {
-	previous = Reference(nullptr);
-	next = Reference(nullptr);
-	value = ref;
-}
-
 LinkedList::LinkedList(hash_t type)
-		: List(type) {
+		: Collection(type), List(type) {
 	// TODO Auto-generated constructor stub
 	head = Reference(new LinkedListNode(Reference()));
 	tail = Reference(new LinkedListNode(Reference()));
@@ -175,9 +169,9 @@ bool LinkedList::insert(const Reference &ref, size_t position) {
 		return false;
 	}
 
-	Reference current = ((LinkedListNode*)head.getEntity())->next;
+	Reference current = head;
 	size_t index = 0;
-	while (index < position - 1) {
+	while (index < position) {
 		current = ((LinkedListNode*)current.getEntity())->next;
 		index++;
 	}
@@ -193,6 +187,164 @@ bool LinkedList::insert(const Reference &ref, size_t position) {
 	mSize++;
 	mModified = true;
 	return true;
+}
+
+bool LinkedList::insertAll(const Reference &ref, size_t position) {
+	if (ref.isNull()) {
+		return false;
+	}
+
+	if (!ref.instanceof(Collection::getType())) {
+		return false;
+	}
+
+	if (position < 0 || position > mSize) {
+		return false;
+	}
+
+	if (position == mSize) {
+		return addAll(ref);
+	}
+
+	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
+	if (collection->getElementType() != mElementType) {
+		return false;
+	}
+
+	if (collection->size() == 0) {
+		return true;
+	}
+
+	Reference current = head;
+	size_t index = 0;
+	while (index < position) {
+		current = ((LinkedListNode*)current.getEntity())->next;
+	}
+
+	Iterator *iterator = collection->iterator();
+	while (iterator->hasNext()) {
+		Reference value = iterator->next();
+		Reference node = Reference(new LinkedListNode(value));
+		((LinkedListNode*)node.getEntity())->next =
+				((LinkedListNode*)current.getEntity())->next;
+		((LinkedListNode*)node.getEntity())->previous = current;
+		((LinkedListNode*)current.getEntity())->next = node;
+		((LinkedListNode*)(((LinkedListNode*)node.getEntity())->next.getEntity()))->previous =
+				node;
+		current = ((LinkedListNode*)current.getEntity())->next;
+	}
+
+	mModified = true;
+	mSize += collection->size();
+	return true;
+}
+
+bool LinkedList::remove(const Reference &ref) {
+	if (empty()) {
+		return false;
+	}
+
+	if (ref.isNull()) {
+		return false;
+	}
+
+	if (!ref.instanceof(mElementType)) {
+		return false;
+	}
+
+	Reference current = ((LinkedListNode*)head.getEntity())->next;
+	bool found = false;
+	while (!current.equals(tail)) {
+		if (ref.equals(((LinkedListNode*)current.getEntity())->value)) {
+			Reference target = current;
+			current = ((LinkedListNode*)current.getEntity())->next;
+			((LinkedListNode*)((LinkedListNode*)target.getEntity())->previous.getEntity())->next =
+					current;
+			((LinkedListNode*)(LinkedListNode*)current.getEntity())->previous =
+					((LinkedListNode*)target.getEntity())->previous;
+			mSize--;
+			mModified = true;
+		}
+	}
+
+	return found;
+}
+
+bool LinkedList::remove(size_t position) {
+	if (empty()) {
+		return false;
+	}
+
+	if (position < 0 || position >= mSize) {
+		return false;
+	}
+
+	Reference current = ((LinkedListNode*)head.getEntity())->next;
+	for (size_t index = 0; index < position; index++) {
+		current = ((LinkedListNode*)current.getEntity())->next;
+	}
+
+	Reference target = current;
+	current = ((LinkedListNode*)current.getEntity())->next;
+	((LinkedListNode*)((LinkedListNode*)target.getEntity())->previous.getEntity())->next =
+			current;
+	((LinkedListNode*)(LinkedListNode*)current.getEntity())->previous =
+			((LinkedListNode*)target.getEntity())->previous;
+
+	mModified = true;
+	mSize--;
+	return true;
+}
+
+bool LinkedList::removeFirst() {
+	return remove(0);
+}
+
+bool LinkedList::removeLast() {
+	if (empty()) {
+		return false;
+	}
+
+	Reference target = ((LinkedListNode*)tail.getEntity())->previous;
+	((LinkedListNode*)((LinkedListNode*)target.getEntity())->previous.getEntity())->next =
+			tail;
+	((LinkedListNode*)(LinkedListNode*)tail.getEntity())->previous =
+			((LinkedListNode*)target.getEntity())->previous;
+
+	mModified = true;
+	mSize--;
+	return true;
+}
+
+bool LinkedList::removeAll(const Reference& ref){
+	if(empty()){
+		return false;
+	}
+
+	if(ref.isNull()){
+		return false;
+	}
+
+	if(!ref.instanceof(Collection::getType())){
+		return false;
+	}
+
+	Collection* collection = dynamic_cast<Collection*>(ref.getEntity());
+	if(collection->getElementType() != mElementType){
+		return false;
+	}
+
+	Iterator* iterator = collection->iterator();
+	while(iterator->hasNext()){
+		Reference value = iterator->next();
+		remove(value);
+	}
+
+	return true;
+}
+
+void LinkedList::clear(){
+
 }
 
 bool LinkedList::instanceof(hash_t type) const {

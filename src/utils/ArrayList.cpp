@@ -13,12 +13,12 @@ namespace tl {
 namespace utils {
 
 ArrayList::ArrayList(hash_t type)
-		: List(type) {
+		: Collection(type), List(type) {
 	mElements = new Reference[mCapacity];
 }
 
 ArrayList::ArrayList(hash_t type, size_t reserved)
-		: List(type, reserved) {
+		: Collection(type), List(type, reserved) {
 	mElements = new Reference[mCapacity];
 }
 
@@ -60,7 +60,7 @@ bool ArrayList::addAll(const Reference &ref) {
 		return false;
 	}
 
-	Iterator* iterator = collection->iterator();
+	Iterator *iterator = collection->iterator();
 	while (iterator->hasNext()) {
 		Reference ref = iterator->next();
 		add(ref);
@@ -152,7 +152,7 @@ bool ArrayList::insertAll(const Reference &ref, size_t position) {
 	}
 
 	index = position;
-	Iterator* iterator = collection->iterator();
+	Iterator *iterator = collection->iterator();
 	while (iterator->hasNext()) {
 		mElements[index] = iterator->next();
 		index++;
@@ -164,6 +164,10 @@ bool ArrayList::insertAll(const Reference &ref, size_t position) {
 }
 
 bool ArrayList::remove(const Reference &ref) {
+	if(empty()){
+		return false;
+	}
+
 	if (ref.isNull()) {
 		return false;
 	}
@@ -173,17 +177,24 @@ bool ArrayList::remove(const Reference &ref) {
 	}
 
 	bool found = false;
-	for (size_t index = 0; index < mSize; index++) {
-		if (mElements[index].equals(ref)) {
+	size_t index = 0;
+	while(index < mSize){
+		if(mElements[index].equals(ref)){
 			remove(index);
 			found = true;
+			continue;
 		}
+		index++;
 	}
 
 	return found;
 }
 
 bool ArrayList::remove(size_t position) {
+	if(empty()){
+		return false;
+	}
+
 	if (position < 0 || position >= mSize) {
 		return false;
 	}
@@ -199,6 +210,10 @@ bool ArrayList::remove(size_t position) {
 }
 
 bool ArrayList::removeAll(const Reference &ref) {
+	if(empty()){
+		return false;
+	}
+
 	if (ref.isNull()) {
 		return false;
 	}
@@ -266,8 +281,16 @@ void ArrayList::clear() {
 	mModified = true;
 }
 
-bool ArrayList::empty() const {
-	return mSize == 0;
+void ArrayList::expand(){
+	size_t newCapacity = mCapacity * 2;
+	Reference* newElements = new Reference[newCapacity];
+	for(size_t index = 0; index < mSize; index++){
+		newElements[index] = mElements[index];
+	}
+
+	delete [] mElements;
+	mElements = newElements;
+	mCapacity = newCapacity;
 }
 
 Iterator* ArrayList::iterator() {
@@ -278,45 +301,46 @@ hash_t ArrayList::getType() {
 	return CLASS_HASH;
 }
 
-ArrayList::ArrayListIterator::ArrayListIterator(ArrayList* list)
+ArrayList::ArrayListIterator::ArrayListIterator(ArrayList *list)
 		: mList(list) {
 	mCurrent = 0;
+	mList->mModified = false;
 }
 
-hash_t ArrayList::ArrayListIterator::getType(){
+hash_t ArrayList::ArrayListIterator::getType() {
 	return CLASS_HASH;
 }
 
-bool ArrayList::ArrayListIterator::instanceof(hash_t type) const{
+bool ArrayList::ArrayListIterator::instanceof(hash_t type) const {
 	return ((mHash & CLASS_MASK) == type) || Iterator::instanceof(type);
 }
 
-bool ArrayList::ArrayListIterator::hasNext() const{
-	if(!mValidate){
+bool ArrayList::ArrayListIterator::hasNext() const {
+	if (!mValidate) {
 
 	}
 
 	return mCurrent < mList->mSize;
 }
 
-Reference ArrayList::ArrayListIterator::next(){
-	if(!mValidate){
+Reference ArrayList::ArrayListIterator::next() {
+	if (!mValidate) {
 
 	}
 
 	return mList->mElements[mCurrent++];
 }
 
-bool ArrayList::ArrayListIterator::remove(){
-	if(!mValidate){
+bool ArrayList::ArrayListIterator::remove() {
+	if (!mValidate) {
 
 	}
 
-	if(mList->mSize == 0){
+	if (mList->mSize == 0) {
 		return false;
 	}
 
-	for(size_t index = mCurrent; index < mList->mSize - 1; index++){
+	for (size_t index = mCurrent; index < mList->mSize - 1; index++) {
 		mList->mElements[index] = mList->mElements[index + 1];
 	}
 	(mList->mSize)--;
@@ -325,24 +349,24 @@ bool ArrayList::ArrayListIterator::remove(){
 	return true;
 }
 
-bool ArrayList::ArrayListIterator::insert(const Reference& ref){
-	if(!mValidate){
+bool ArrayList::ArrayListIterator::insert(const Reference &ref) {
+	if (!mValidate) {
 
 	}
 
-	if(ref.isNull()){
+	if (ref.isNull()) {
 		return false;
 	}
 
-	if(!ref.instanceof(mList->mElementType)){
+	if (!ref.instanceof(mList->mElementType)) {
 		return false;
 	}
 
-	if(mList->mSize == mList->mCapacity){
+	if (mList->mSize == mList->mCapacity) {
 		mList->expand();
 	}
 
-	for(size_t index = mList->mSize; index > mCurrent; index--){
+	for (size_t index = mList->mSize; index > mCurrent; index--) {
 		mList->mElements[index] = mList->mElements[index - 1];
 	}
 	mList->mElements[mCurrent] = ref;

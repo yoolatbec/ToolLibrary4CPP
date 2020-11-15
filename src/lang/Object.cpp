@@ -27,7 +27,7 @@ Object::~Object() {
 }
 
 hash_t Object::genHash() {
-	return CLASS_HASH & CLASS_MASK + this & INSTANCE_MASK;
+	return (CLASS_HASH & CLASS_MASK) + ((hash_t)this & INSTANCE_MASK);
 }
 
 bool Object::equals(const Reference& other) const {
@@ -47,12 +47,12 @@ Object* Object::clone() const {
 }
 
 bool Object::instanceof(hash_t type) const {
-	return mHash & CLASS_MASK == type;
+	return (mHash & CLASS_MASK) == type;
 }
 
 String* Object::toString() const {
 	char str[20];
-	sprintf(str, "%X", mHash);
+	sprintf(str, "%llX", mHash);
 	return new String(str);
 }
 
