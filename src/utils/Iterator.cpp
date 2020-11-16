@@ -12,15 +12,23 @@ namespace utils {
 
 Iterator::Iterator() {
 	// TODO Auto-generated constructor stub
-	mValidate = true;
+	mValid = true;
 }
 
 Iterator::~Iterator() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Iterator::isValidate() const{
-	return mValidate;
+bool Iterator::isValid() const{
+	return mValid;
+}
+
+hash_t Iterator::getType(){
+	return CLASS_HASH;
+}
+
+bool Iterator::instanceof(hash_t type) const{
+	return (CLASS_HASH == type) || Object::instanceof(type);
 }
 
 } /* namespace utils */

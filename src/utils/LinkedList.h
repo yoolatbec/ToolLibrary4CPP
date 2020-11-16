@@ -13,6 +13,8 @@
 namespace tl {
 namespace utils {
 
+using lang::Array;
+
 class LinkedList: virtual public List {
 private:
 	const static hash_t CLASS_HASH = 16L << 32;
@@ -20,9 +22,9 @@ private:
 		friend class LinkedList;
 	private:
 		const static hash_t CLASS_HASH = 17L << 32;
-		Reference previous;
-		Reference next;
-		Reference value;
+		Reference mPrevious;
+		Reference mNext;
+		Reference mValue;
 	public:
 		LinkedListNode(const Reference&);
 		LinkedListNode(const LinkedListNode&) = delete;
@@ -31,17 +33,36 @@ private:
 		bool instanceof(hash_t) const;
 	};
 
-	Reference head, tail;
+	Reference mHead, mTail;
 
 	class LinkedListIterator: public Iterator {
 	private:
 		const static hash_t CLASS_HASH = 18L << 32;
+		LinkedList* const mList;
+		Reference mCurrent;
 	public:
-
+		LinkedListIterator(LinkedList*);
+		bool hasNext() const;
+		Reference next();
+		bool insert(const Reference&);
+		bool remove();
+		static hash_t getType();
+		bool instanceof(hash_t) const;
 	};
 
 	class LinkedListReversedIterator: public Iterator {
-
+	private:
+		const static hash_t CLASS_HASH = 19L << 32;
+		LinkedList* const mList;
+		Reference mCurrent;
+	public:
+		LinkedListReversedIterator(LinkedList*);
+		bool hasNext() const;
+		Reference next();
+		bool insert(const Reference&);
+		bool remove();
+		static hash_t getType();
+		bool instanceof(hash_t) const;
 	};
 
 	friend class LinkedListIterator;
@@ -68,6 +89,8 @@ public:
 	void clear();
 	Array* toArray() const;
 	Reference get(size_t);
+	Iterator* iterator();
+	Iterator* reversedIterator();
 	bool replace(const Reference&, size_t);
 	virtual bool instanceof(hash_t) const;
 	static hash_t getType();

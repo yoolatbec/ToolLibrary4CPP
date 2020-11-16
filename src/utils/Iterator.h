@@ -15,8 +15,10 @@ namespace utils {
 
 using lang::Reference;
 class Iterator: public virtual tl::lang::Object {
+private:
+	const static hash_t CLASS_HASH = 15L << 32;
 protected:
-	bool mValidate;
+	bool mValid;
 public:
 	Iterator();
 	virtual ~Iterator();
@@ -26,7 +28,9 @@ public:
 	virtual bool insert(const Reference&);
 	virtual bool hasNext() const = 0;
 	virtual bool remove() = 0;
-	bool isValidate() const;
+	bool isValid() const;
+	static hash_t getType();
+	bool instanceof(hash_t) const;
 };
 
 } /* namespace utils */

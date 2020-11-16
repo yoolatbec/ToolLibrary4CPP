@@ -31,7 +31,6 @@ public:
 	virtual bool addAll(const Reference&) = 0;
 	virtual bool contains(const Reference&) const = 0;
 	virtual bool containsAll(const Reference&) const = 0;
-	virtual bool empty() const = 0;
 	virtual Iterator* iterator() = 0;
 	virtual bool remove(const Reference&) = 0;
 	virtual bool removeAll(const Reference&) = 0;

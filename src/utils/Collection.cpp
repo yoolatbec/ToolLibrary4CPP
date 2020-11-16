@@ -36,5 +36,9 @@ size_t Collection::size() const{
 	return mSize;
 }
 
+bool Collection::empty() const{
+	return mSize == 0;
+}
+
 } /* namespace utils */
 } /* namespace tl */

@@ -316,7 +316,7 @@ bool ArrayList::ArrayListIterator::instanceof(hash_t type) const {
 }
 
 bool ArrayList::ArrayListIterator::hasNext() const {
-	if (!mValidate) {
+	if (!mValid) {
 
 	}
 
@@ -324,7 +324,7 @@ bool ArrayList::ArrayListIterator::hasNext() const {
 }
 
 Reference ArrayList::ArrayListIterator::next() {
-	if (!mValidate) {
+	if (!mValid) {
 
 	}
 
@@ -332,7 +332,7 @@ Reference ArrayList::ArrayListIterator::next() {
 }
 
 bool ArrayList::ArrayListIterator::remove() {
-	if (!mValidate) {
+	if (!mValid) {
 
 	}
 
@@ -350,7 +350,7 @@ bool ArrayList::ArrayListIterator::remove() {
 }
 
 bool ArrayList::ArrayListIterator::insert(const Reference &ref) {
-	if (!mValidate) {
+	if (!mValid) {
 
 	}
 
