@@ -35,7 +35,7 @@ private:
 
 	Reference mHead, mTail;
 
-	class LinkedListIterator: public Iterator {
+	class LinkedListIterator: public ListIterator {
 	private:
 		const static hash_t CLASS_HASH = 18L << 32;
 		LinkedList* const mList;
@@ -44,13 +44,15 @@ private:
 		LinkedListIterator(LinkedList*);
 		bool hasNext() const;
 		Reference next();
+		bool hasPrevious() const;
+		Reference previous();
 		bool insert(const Reference&);
 		bool remove();
 		static hash_t getType();
 		bool instanceof(hash_t) const;
 	};
 
-	class LinkedListReversedIterator: public Iterator {
+	class LinkedListReversedIterator: public ListIterator {
 	private:
 		const static hash_t CLASS_HASH = 19L << 32;
 		LinkedList* const mList;
@@ -59,6 +61,8 @@ private:
 		LinkedListReversedIterator(LinkedList*);
 		bool hasNext() const;
 		Reference next();
+		bool hasPrevious() const;
+		Reference previous();
 		bool insert(const Reference&);
 		bool remove();
 		static hash_t getType();

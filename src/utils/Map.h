@@ -13,7 +13,7 @@
 namespace tl {
 namespace utils {
 
-class Map: public lang::Object {
+class Map: virtual public lang::Object {
 public:
 	Map();
 	virtual ~Map();

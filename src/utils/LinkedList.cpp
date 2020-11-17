@@ -366,7 +366,7 @@ Reference LinkedList::get(size_t position) {
 		current = ((LinkedListNode*)current.getEntity())->mNext;
 	}
 
-	return current;
+	return ((LinkedListNode*)current.getEntity())->mValue;
 }
 
 bool LinkedList::replace(const Reference &ref, size_t position) {
@@ -450,7 +450,24 @@ Reference LinkedList::LinkedListIterator::next() {
 	}
 
 	mCurrent = ((LinkedListNode*)mCurrent.getEntity())->mNext;
-	return mCurrent;
+	return ((LinkedListNode*)mCurrent.getEntity())->mValue;
+}
+
+bool LinkedList::LinkedListIterator::hasPrevious() const{
+	if(mList->mModified){
+
+	}
+
+	return !(((LinkedListNode*)mCurrent.getEntity())->mPrevious.equals(mList->mHead));
+}
+
+Reference LinkedList::LinkedListIterator::previous(){
+	if(mList->mModified){
+
+	}
+
+	mCurrent = ((LinkedListNode*)mCurrent.getEntity())->mPrevious;
+	return ((LinkedListNode*)mCurrent.getEntity())->mValue;
 }
 
 bool LinkedList::LinkedListIterator::insert(const Reference &ref) {
@@ -474,6 +491,7 @@ bool LinkedList::LinkedListIterator::insert(const Reference &ref) {
 	((LinkedListNode*)(((LinkedListNode*)node.getEntity())->mNext.getEntity()))->mPrevious =
 			node;
 
+	(mList->mSize)++;
 	return true;
 }
 
@@ -498,6 +516,8 @@ bool LinkedList::LinkedListIterator::remove() {
 		((LinkedListNode*)mCurrent.getEntity())->mPrevious =
 				((LinkedListNode*)target.getEntity())->mPrevious;
 	}
+
+	(mList->mSize)--;
 
 	return true;
 }
@@ -531,7 +551,24 @@ Reference LinkedList::LinkedListReversedIterator::next() {
 	}
 
 	mCurrent = ((LinkedListNode*)mCurrent.getEntity())->mPrevious;
-	return mCurrent;
+	return ((LinkedListNode*)mCurrent.getEntity())->mValue;
+}
+
+bool LinkedList::LinkedListReversedIterator::hasPrevious() const{
+	if(mList->mModified){
+
+	}
+
+	return !(((LinkedListNode*)mCurrent.getEntity())->mNext.equals(mList->mTail));
+}
+
+Reference LinkedList::LinkedListReversedIterator::previous(){
+	if(mList->mModified){
+
+	}
+
+	mCurrent = ((LinkedListNode*)mCurrent.getEntity())->mNext;
+	return ((LinkedListNode*)mCurrent.getEntity())->mValue;
 }
 
 bool LinkedList::LinkedListReversedIterator::insert(const Reference &ref) {

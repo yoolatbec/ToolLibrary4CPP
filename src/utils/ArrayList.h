@@ -22,7 +22,7 @@ private:
 	const static hash_t CLASS_HASH = 13L << 32;
 	Reference *mElements;
 
-	class ArrayListIterator : public Iterator{
+	class ArrayListIterator : public ListIterator{
 	private:
 		const static hash_t CLASS_HASH = 14L << 32;
 		ArrayList* const mList;
@@ -33,6 +33,8 @@ private:
 		bool instanceof(hash_t) const;
 		bool hasNext() const;
 		Reference next();
+		bool hasPrevious() const;
+		Reference previous();
 		bool remove();
 		bool insert(const Reference&);
 	};

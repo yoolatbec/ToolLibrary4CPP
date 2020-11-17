@@ -53,6 +53,23 @@ public:
 	static hash_t getType();
 };
 
+class ListIterator: public virtual Iterator{
+private:
+	const static hash_t CLASS_HASH = 13L << 32;
+public:
+	ListIterator();
+	ListIterator& operator=(const ListIterator&) = delete;
+	ListIterator(const ListIterator&) = delete;
+	bool hasNext() const = 0;
+	bool hasPrevious() const = 0;
+	Reference next() = 0;
+	Reference previous() = 0;
+	bool insert() = 0;
+	bool remove() = 0;
+	static hash_t getType();
+	bool instanceof(hash_t) const;
+};
+
 } /* namespace utils */
 } /* namespace tl */
 

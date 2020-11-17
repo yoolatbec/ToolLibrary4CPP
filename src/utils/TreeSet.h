@@ -26,10 +26,16 @@ private:
 		tlint mHeight;
 		Reference mLeft;
 		Reference mRight;
-		TreeNode(const Reference& ref){
-			mValue = ref;
-			mHeight = 0;
-		}
+	public:
+		TreeNode(const Reference& ref);
+		static Reference balance(const Reference&);
+		static tlint getHeight(const Reference&);
+		static hash_t getType();
+		bool instanceof(hash_t type) const;
+	};
+
+	class TreeSetIterator : public Iterator{
+
 	};
 
 	Reference root;

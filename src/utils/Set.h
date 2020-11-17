@@ -25,6 +25,7 @@ public:
 	static hash_t getType();
 };
 
+
 } /* namespace utils */
 } /* namespace tl */
 

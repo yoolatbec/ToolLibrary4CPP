@@ -31,10 +31,6 @@ hash_t Object::genHash() {
 }
 
 bool Object::equals(const Reference& other) const {
-	if (other.getEntity() == nullptr) {
-		return false;
-	}
-
 	return this->mHash == other.getEntity()->mHash;
 }
 

@@ -1,20 +1,21 @@
 /*
- * Map.cpp
+ * TreeMap.cpp
  *
- *  Created on: Nov, 11, 2020
- *      Author: Yoolatbec
+ *  Created on: Nov 16, 2020
+ *      Author: yoolatbec
  */
 
+#include "TreeMap.h"
 
 namespace tl {
 namespace utils {
 
-Map::Map() {
+TreeMap::TreeMap() {
 	// TODO Auto-generated constructor stub
 
 }
 
-Map::~Map() {
+TreeMap::~TreeMap() {
 	// TODO Auto-generated destructor stub
 }
 

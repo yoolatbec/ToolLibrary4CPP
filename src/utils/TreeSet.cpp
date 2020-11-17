@@ -20,6 +20,13 @@ TreeSet::~TreeSet() {
 	// TODO Auto-generated destructor stub
 }
 
+TreeSet::TreeNode::TreeNode(const Reference& ref){
+	mValue = ref;
+	mHeight = 0;
+	mLeft = Reference();
+	mRight = Reference();
+}
+
 bool TreeSet::add(const Reference& ref){
 	if(ref.isNull()){
 		return false;
@@ -34,7 +41,7 @@ bool TreeSet::add(const Reference& ref){
 		return true;
 	}
 
-
+	Reference node = Reference(new TreeNode(ref));
 }
 
 } /* namespace utils */

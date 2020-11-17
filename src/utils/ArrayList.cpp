@@ -303,7 +303,7 @@ hash_t ArrayList::getType() {
 
 ArrayList::ArrayListIterator::ArrayListIterator(ArrayList *list)
 		: mList(list) {
-	mCurrent = 0;
+	mCurrent = -1;
 	mList->mModified = false;
 }
 
@@ -316,27 +316,47 @@ bool ArrayList::ArrayListIterator::instanceof(hash_t type) const {
 }
 
 bool ArrayList::ArrayListIterator::hasNext() const {
-	if (!mValid) {
+	if (mList->mModified) {
 
 	}
 
-	return mCurrent < mList->mSize;
+	return mCurrent < mList->mSize - 1;
 }
 
 Reference ArrayList::ArrayListIterator::next() {
-	if (!mValid) {
+	if (mList->mModified) {
 
 	}
 
-	return mList->mElements[mCurrent++];
+	return mList->mElements[++mCurrent];
+}
+
+bool ArrayList::ArrayListIterator::hasPrevious() const{
+	if(mList->mModified){
+
+	}
+
+	return mCurrent > 0;
+}
+
+Reference ArrayList::ArrayListIterator::previous(){
+	if(mList-mModified){
+
+	}
+
+	return mList->mElements[--mCurrent];
 }
 
 bool ArrayList::ArrayListIterator::remove() {
-	if (!mValid) {
+	if (mList->mModified) {
 
 	}
 
 	if (mList->mSize == 0) {
+		return false;
+	}
+
+	if(mCurrent < 0){
 		return false;
 	}
 
@@ -350,7 +370,7 @@ bool ArrayList::ArrayListIterator::remove() {
 }
 
 bool ArrayList::ArrayListIterator::insert(const Reference &ref) {
-	if (!mValid) {
+	if (mList->mModified) {
 
 	}
 
@@ -366,10 +386,11 @@ bool ArrayList::ArrayListIterator::insert(const Reference &ref) {
 		mList->expand();
 	}
 
-	for (size_t index = mList->mSize; index > mCurrent; index--) {
+	for (size_t index = mList->mSize; index > mCurrent + 1; index--) {
 		mList->mElements[index] = mList->mElements[index - 1];
 	}
-	mList->mElements[mCurrent] = ref;
+	mList->mElements[mCurrent + 1] = ref;
+	(mList->mSize)++;
 
 	return true;
 }
