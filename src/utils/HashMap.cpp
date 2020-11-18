@@ -12,7 +12,7 @@ namespace utils {
 
 HashMap::HashMap() {
 	// TODO Auto-generated constructor stub
-
+	mHash &= CLASS_HASH;
 }
 
 HashMap::~HashMap() {

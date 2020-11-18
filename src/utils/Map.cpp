@@ -11,7 +11,7 @@ namespace utils {
 
 Map::Map() {
 	// TODO Auto-generated constructor stub
-
+	mHash &= CLASS_HASH;
 }
 
 Map::~Map() {

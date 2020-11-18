@@ -12,6 +12,7 @@ namespace utils {
 
 Collection::Collection(hash_t type)
 		: mElementType(type) {
+	mHash &= CLASS_HASH;
 	// TODO Auto-generated constructor stub
 	mSize = 0;
 }

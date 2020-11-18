@@ -16,6 +16,7 @@ String::String() {
 	// TODO Auto-generated constructor stub
 	mStr = nullptr;
 	mLength = 0;
+	mHash = genHash();
 }
 
 String::String(const byte *str) {
@@ -23,6 +24,7 @@ String::String(const byte *str) {
 	mStr = new char[mLength + 1];
 	mStr[mLength] = '\0';
 	strncpy(mStr, str, mLength);
+	mHash = genHash();
 }
 
 String::String(size_t length, byte c) {
@@ -30,6 +32,7 @@ String::String(size_t length, byte c) {
 	mStr = new char[mLength + 1];
 	mStr[mLength] = '\0';
 	memset(mStr, c, mLength);
+	mHash = genHash();
 }
 
 String::String(const Reference &ref) {
@@ -48,6 +51,8 @@ String::String(const Reference &ref) {
 	} else {
 
 	}
+
+	mHash = genHash();
 }
 
 String::~String() {
@@ -211,11 +216,20 @@ List* String::split(const Reference& ref) const{
 }
 
 bool String::instanceof(hash_t type) const {
-	return ((mHash & CLASS_MASK) == type) || Comparable::instanceof(type);
+	return (CLASS_HASH == type) || Comparable::instanceof(type);
 }
 
 hash_t String::getType() {
 	return CLASS_HASH;
+}
+
+hash_t String::genHash(){
+	hash_t hash = 5381;
+	for(tlint index = 0; index < mLength; index++){
+		hash = ((hash << 5) + hash) + mStr[index];
+	}
+
+	return (CLASS_HASH & CLASS_MASK) + (hash & INSTANCE_MASK);
 }
 
 } /* namespace lang */

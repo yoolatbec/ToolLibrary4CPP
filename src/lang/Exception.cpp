@@ -12,7 +12,7 @@ namespace lang {
 
 Exception::Exception() {
 	// TODO Auto-generated constructor stub
-
+	mHash &= CLASS_HASH;
 }
 
 Exception::~Exception() {

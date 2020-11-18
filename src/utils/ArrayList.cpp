@@ -14,11 +14,13 @@ namespace utils {
 
 ArrayList::ArrayList(hash_t type)
 		: Collection(type), List(type) {
+	mHash &= CLASS_HASH;
 	mElements = new Reference[mCapacity];
 }
 
 ArrayList::ArrayList(hash_t type, size_t reserved)
 		: Collection(type), List(type, reserved) {
+	mHash &= CLASS_HASH;
 	mElements = new Reference[mCapacity];
 }
 
@@ -270,7 +272,7 @@ lang::Array* ArrayList::toArray() const {
 }
 
 bool ArrayList::instanceof(hash_t type) const {
-	return ((mHash & CLASS_MASK) == type) || List::instanceof(type);
+	return (CLASS_HASH == type) || List::instanceof(type);
 }
 
 void ArrayList::clear() {
@@ -312,7 +314,7 @@ hash_t ArrayList::ArrayListIterator::getType() {
 }
 
 bool ArrayList::ArrayListIterator::instanceof(hash_t type) const {
-	return ((mHash & CLASS_MASK) == type) || Iterator::instanceof(type);
+	return (CLASS_HASH == type) || Iterator::instanceof(type);
 }
 
 bool ArrayList::ArrayListIterator::hasNext() const {

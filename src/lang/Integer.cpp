@@ -94,7 +94,7 @@ String* Integer::toString() const {
 }
 
 bool Integer::instanceof(hash_t type) const {
-	return ((mHash & CLASS_MASK) == type) || Number::instanceof(type);
+	return (CLASS_HASH == type) || Number::instanceof(type);
 }
 
 hash_t Integer::getType() {

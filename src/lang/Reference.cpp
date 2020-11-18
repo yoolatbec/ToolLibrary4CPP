@@ -12,6 +12,7 @@ namespace lang {
 
 Reference::Reference(Object *entity)
 		: mEntity(entity) {
+	mHash &= CLASS_HASH;
 	mRef = nullptr;
 	// TODO Auto-generated constructor stub
 	if (mEntity != nullptr) {

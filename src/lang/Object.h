@@ -42,6 +42,7 @@ public:
 	String* toString() const;
 	virtual bool instanceof(hash_t) const;
 	hash_t type() const;
+	hash_t hashcode() const;
 };
 
 } /* namespace lang */

@@ -12,7 +12,7 @@ namespace utils {
 
 Iterable::Iterable() {
 	// TODO Auto-generated constructor stub
-
+	mHash &= CLASS_HASH;
 }
 
 Iterable::~Iterable() {

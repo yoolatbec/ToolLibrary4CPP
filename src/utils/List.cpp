@@ -18,6 +18,7 @@ List::List(hash_t element_type)
 
 List::List(hash_t element_type, size_t reserved)
 		:Collection(element_type) {
+	mHash &= CLASS_HASH;
 	mCapacity = reserved > 0 ? reserved : DEFAULT_CAPACITY;
 	mModified = false;
 }

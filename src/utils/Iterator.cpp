@@ -12,6 +12,7 @@ namespace utils {
 
 Iterator::Iterator() {
 	// TODO Auto-generated constructor stub
+	mHash &= CLASS_HASH;
 	mValid = true;
 }
 

@@ -13,6 +13,7 @@ namespace lang {
 Array::Array(size_t size, hash_t element_type)
 		: mSize(size), mElementType(element_type) {
 	// TODO Auto-generated constructor stub
+	mHash &= CLASS_HASH;
 	mElements = new Reference[mSize];
 }
 
@@ -55,7 +56,7 @@ hash_t Array::getType(){
 }
 
 bool Array::instanceof(hash_t type) const{
-	return (mHash & CLASS_MASK == type) || Object::instanceof(type);
+	return (CLASS_HASH == type) || Object::instanceof(type);
 }
 
 } /* namespace lang */

@@ -13,6 +13,7 @@ namespace utils {
 TreeSet::TreeSet(hash_t type)
 	:Set(type){
 	// TODO Auto-generated constructor stub
+	mHash &= CLASS_HASH;
 	mSize = 0;
 }
 

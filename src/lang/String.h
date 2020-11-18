@@ -22,6 +22,7 @@ private:
 	byte* mStr;
 	size_t mLength;
 	hash_t genHash();
+	hash_t genHash();
 public:
 	String();
 	explicit String(const byte*);

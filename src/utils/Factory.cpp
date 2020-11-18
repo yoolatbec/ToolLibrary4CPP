@@ -12,7 +12,7 @@ namespace utils {
 
 Factory::Factory(Reference (*g)(Reference))
 		: generator(g) {
-
+	mHash &= CLASS_HASH;
 }
 
 tl::lang::Reference Factory::generate(const Reference &argument) const {
@@ -20,7 +20,7 @@ tl::lang::Reference Factory::generate(const Reference &argument) const {
 }
 
 bool Factory::instanceof(hash_t type) const{
-	return (mHash & CLASS_MASK == type) || Object::instanceof(type);
+	return (CLASS_HASH == type) || Object::instanceof(type);
 }
 
 } /* namespace utils */

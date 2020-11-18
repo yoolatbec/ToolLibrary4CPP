@@ -13,6 +13,7 @@ namespace utils {
 LinkedList::LinkedList(hash_t type)
 		: Collection(type), List(type) {
 	// TODO Auto-generated constructor stub
+	mHash &= CLASS_HASH;
 	mHead = Reference(new LinkedListNode(Reference()));
 	mTail = Reference(new LinkedListNode(Reference()));
 	((LinkedListNode*)mHead.getEntity())->mNext = mTail;
@@ -410,7 +411,7 @@ Iterator* LinkedList::reversedIterator() {
 }
 
 bool LinkedList::instanceof(hash_t type) const {
-	return ((mHash & CLASS_HASH) == type) || List::instanceof(type);
+	return (CLASS_HASH == type) || List::instanceof(type);
 }
 
 hash_t LinkedList::getType() {
@@ -428,7 +429,7 @@ hash_t LinkedList::LinkedListNode::getType() {
 }
 
 bool LinkedList::LinkedListNode::instanceof(hash_t type) const {
-	return ((mHash & CLASS_MASK) == type) || Object::instanceof(type);
+	return (CLASS_HASH == type) || Object::instanceof(type);
 }
 
 LinkedList::LinkedListIterator::LinkedListIterator(LinkedList *list)
@@ -527,7 +528,7 @@ hash_t LinkedList::LinkedListIterator::getType() {
 }
 
 bool LinkedList::LinkedListIterator::instanceof(hash_t type) const {
-	return ((mHash & CLASS_MASK) == type) || Iterator::instanceof(type);
+	return (CLASS_HASH || Iterator::instanceof(type);
 }
 
 LinkedList::LinkedListReversedIterator::LinkedListReversedIterator(
@@ -620,7 +621,7 @@ hash_t LinkedList::LinkedListReversedIterator::getType(){
 }
 
 bool LinkedList::LinkedListReversedIterator::instanceof(hash_t type) const{
-	return ((mHash & CLASS_MASK) == type) || Object::instanceof(type);
+	return (CLASS_HASH == type) || Object::instanceof(type);
 }
 
 } /* namespace utils */

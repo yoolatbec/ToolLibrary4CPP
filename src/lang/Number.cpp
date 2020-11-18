@@ -12,7 +12,7 @@ namespace lang {
 
 Number::Number() {
 	// TODO Auto-generated constructor stub
-
+	mHash &= CLASS_HASH;
 }
 
 Number::~Number() {

@@ -13,7 +13,7 @@ namespace utils {
 HashSet::HashSet(hash_t type)
 		: Set(type) {
 	// TODO Auto-generated constructor stub
-
+	mHash &= CLASS_HASH;
 }
 
 HashSet::~HashSet() {

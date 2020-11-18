@@ -12,7 +12,7 @@ namespace utils {
 
 TreeMap::TreeMap() {
 	// TODO Auto-generated constructor stub
-
+	mHash &= CLASS_HASH;
 }
 
 TreeMap::~TreeMap() {

@@ -43,7 +43,7 @@ Object* Object::clone() const {
 }
 
 bool Object::instanceof(hash_t type) const {
-	return (mHash & CLASS_MASK) == type;
+	return CLASS_HASH == type;
 }
 
 String* Object::toString() const {
@@ -58,6 +58,10 @@ hash_t Object::type() const{
 
 hash_t Object::getType(){
 	return CLASS_HASH;
+}
+
+hash_t Object::hashcode() const{
+	return mHash;
 }
 
 } /* namespace lang */
