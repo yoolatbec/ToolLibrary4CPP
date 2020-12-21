@@ -12,13 +12,14 @@ namespace lang {
 
 Reference::Reference(Object *entity)
 		: mEntity(entity) {
-	mHash &= CLASS_HASH;
-	mRef = nullptr;
-	// TODO Auto-generated constructor stub
 	if (mEntity != nullptr) {
 		mRef = new size_t;
-		*mRef = 1;
+		(*mRef) = 1;
+	} else {
+		mRef = nullptr;
 	}
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Reference::~Reference() {
@@ -33,7 +34,7 @@ Reference::~Reference() {
 	}
 }
 
-Reference& Reference::operator=(const Reference &other) {
+Reference& Reference::operator=(Reference other) {
 	if (mEntity != nullptr) {
 		if ((*mRef) == 1) {
 			delete mEntity;
@@ -44,40 +45,46 @@ Reference& Reference::operator=(const Reference &other) {
 	}
 	mEntity = other.mEntity;
 	mRef = other.mRef;
-	if(mRef != nullptr){
+	if (mRef != nullptr) {
 		(*mRef)++;
 	}
 
 	return *this;
 }
 
-Reference::Reference(const Reference &other)
+Reference::Reference(Reference other)
 		: mEntity(other.mEntity) {
 	// TODO Auto-generated constructor stub
 	mRef = other.mRef;
 	if (mEntity != nullptr) {
 		(*mRef)++;
 	}
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-hash_t Reference::getType() const {
-	return mEntity->type();
-}
-
-Object* Reference::getEntity() const {
+Object* Reference::getEntity() {
 	return mEntity;
 }
 
-bool Reference::equals(const Reference &another) const {
+type_t Reference::entityType() {
+	return mEntity->type();
+}
+
+bool Reference::equals(Reference another) {
 	return mEntity == another.mEntity;
 }
 
-bool Reference::isNull() const {
+bool Reference::isNull() {
 	return mEntity == nullptr;
 }
 
-bool Reference::instanceof(hash_t type) const {
-	return mEntity->instanceof(type);
+type_t Reference::type() {
+	return CLASS_SERIAL;
+}
+
+bool Reference::instanceof(type_t type){
+	return CLASS_SERIAL == type || Object::instanceof(type);
 }
 
 } /* namespace lang */

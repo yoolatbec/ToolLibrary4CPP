@@ -16,27 +16,27 @@ namespace lang {
 
 class Integer: virtual public Number {
 private:
-	static const hash_t CLASS_HASH = 3L << 32;
+	static const type_t CLASS_SERIAL = 3;
 	tlint mValue;
-	hash_t genHash();
+	hash_t genHashCode();
 public:
 	static const tlint MAX_INTEGER = 0xFFFFFFFF - 1;
 	static const tlint MIN_INTEGER = 0xFFFFFFFF;
 	explicit Integer(tlint);
-	explicit Integer(const Reference&);
-	byte byteValue() const;
-	word shortValue() const;
-	tlint intValue() const;
-	tlint64 longValue() const;
-	double doubleValue() const;
-	float floatValue() const;
-	tlint compareTo(const Reference&) const;
-	tlint getBitAt(tlint) const;
-	String* toString() const;
+	explicit Integer(Reference);
+	byte byteValue();
+	word shortValue();
+	tlint intValue();
+	tlint64 longValue();
+	double doubleValue();
+	float floatValue();
+	tlint compareTo(Reference);
+	tlint getBitAt(tlint);
+	String* toString();
 	static tlint larger(tlint, tlint);
 	static tlint smaller(tlint, tlint);
-	static hash_t getType();
-	virtual bool instanceof(hash_t) const;
+	static type_t type();
+	virtual bool instanceof(type_t);
 };
 
 } /* namespace lang */

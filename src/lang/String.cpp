@@ -13,10 +13,10 @@ namespace tl {
 namespace lang {
 
 String::String() {
-	// TODO Auto-generated constructor stub
+	// TODO Auto-generated ructor stub
 	mStr = nullptr;
 	mLength = 0;
-	mHash = genHash();
+	mHashCode = genHashCode();
 }
 
 String::String(const byte *str) {
@@ -24,7 +24,7 @@ String::String(const byte *str) {
 	mStr = new char[mLength + 1];
 	mStr[mLength] = '\0';
 	strncpy(mStr, str, mLength);
-	mHash = genHash();
+	mHashCode = genHashCode();
 }
 
 String::String(size_t length, byte c) {
@@ -32,27 +32,34 @@ String::String(size_t length, byte c) {
 	mStr = new char[mLength + 1];
 	mStr[mLength] = '\0';
 	memset(mStr, c, mLength);
-	mHash = genHash();
+	mHashCode = genHashCode();
 }
 
-String::String(const Reference &ref) {
-	// TODO Auto-generated constructor stub
-	if(ref.isNull()){
+String::String(Reference ref) {
+	// TODO Auto-generated ructor stub
+	if (ref.isNull()) {
 		mStr = nullptr;
 		mLength = 0;
-	}
-
-	if (ref.instanceof(String::getType())) {
-		String *other = dynamic_cast<String*>(ref.getEntity());
-		mLength = other->mLength;
-		mStr = new char[mLength + 1];
-		mStr[mLength] = '\0';
-		strncpy(mStr, other->mStr, mLength);
 	} else {
-
+		String *other = ref.getEntity()->toString();
+		const byte *str = other->bytes();
+		mLength = other->mLength;
+		mStr = new byte[mLength + 1];
+		strncpy(mStr, str, mLength);
+		mStr[mLength] = '\0';
 	}
 
-	mHash = genHash();
+//	if (ref.getEntity()->instanceof(String::type())) {
+//		String *other = dynamic_cast<String*>(ref.getEntity());
+//		mLength = other->mLength;
+//		mStr = new char[mLength + 1];
+//		mStr[mLength] = '\0';
+//		strncpy(mStr, other->mStr, mLength);
+//	} else {
+//
+//	}
+
+	mHashCode = genHashCode();
 }
 
 String::~String() {
@@ -60,7 +67,7 @@ String::~String() {
 	delete[] mStr;
 }
 
-String* String::append(byte c) const {
+String* String::append(byte c) {
 	byte *str = new byte[mLength + 2];
 	strncpy(str, mStr, mLength);
 	str[mLength + 1] = c;
@@ -70,31 +77,39 @@ String* String::append(byte c) const {
 	return r_value;
 }
 
-String* String::append(const Reference &ref) const {
-	if(ref.isNull()){
+String* String::append(Reference ref) {
+	if (ref.isNull()) {
 		return new String(mStr);
 	}
 
-	String* r_value;
+	String *r_value;
+	String *ref_str = ref.getEntity()->toString();
+	byte *str = new byte[mLength + ref_str->mLength + 1];
+	strncpy(str, mStr, mLength);
+	strncpy(str + mLength, ref_str->bytes(), ref_str->mLength);
+	str[mLength + ref_str->mLength] = '\0';
+	r_value = new String(str);
 
-	if (ref.instanceof(String::getType())) {
-		String *other = dynamic_cast<String*>(ref.getEntity());
-		char *str = new char[mLength + other->mLength + 1];
-		strncpy(str, mStr, mLength);
-		strncpy(str + mLength, other->mStr, other->mLength);
-		str[mLength + other->mLength] = '\0';
-		r_value = new String(str);
-		delete[] str;
-	} else {
-		Object* obj = ref.getEntity();
-		Reference str = Reference(obj->toString());
-		r_value = append(str);
-	}
+//	if (ref.instanceof(String::type())) {
+//		String *other = dynamic_cast<String*>(ref.getEntity());
+//		char *str = new char[mLength + other->mLength + 1];
+//		strncpy(str, mStr, mLength);
+//		strncpy(str + mLength, other->mStr, other->mLength);
+//		str[mLength + other->mLength] = '\0';
+//		r_value = new String(str);
+//		delete[] str;
+//	} else {
+//		Object *obj = ref.getEntity();
+//		Reference str = Reference(obj->toString());
+//		r_value = append(str);
+//	}
+
+	delete[] str;
 
 	return r_value;
 }
 
-String* String::append(tlint i) const {
+String* String::append(tlint i) {
 	byte ivalue[32];
 	ivalue[31] = '\0';
 	sprintf(ivalue, "%d", i);
@@ -107,7 +122,7 @@ String* String::append(tlint i) const {
 	return r_value;
 }
 
-String* String::append(double d) const {
+String* String::append(double d) {
 	byte doubleValue[64];
 	doubleValue[63] = '\0';
 	sprintf(doubleValue, "%lf", d);
@@ -120,7 +135,7 @@ String* String::append(double d) const {
 	return r_value;
 }
 
-tlint String::charAt(size_t position) const {
+tlint String::charAt(size_t position) {
 	if (position < 0 || position >= mLength) {
 		return -1;
 	}
@@ -128,7 +143,7 @@ tlint String::charAt(size_t position) const {
 	return mStr[position];
 }
 
-String* String::substring(size_t length) const {
+String* String::substring(size_t length) {
 	if (length <= 0) {
 		return new String("");
 	}
@@ -146,7 +161,7 @@ String* String::substring(size_t length) const {
 	return r_value;
 }
 
-String* String::substring(size_t start, size_t length) const {
+String* String::substring(size_t start, size_t length) {
 	if (start < 0) {
 		start = 0;
 	}
@@ -168,25 +183,27 @@ String* String::substring(size_t start, size_t length) const {
 	return r_value;
 }
 
-const byte* String::bytes() const {
+const byte* String::bytes() {
 	return mStr;
 }
 
-tlint String::compareTo(const Reference& ref) const {
-	if(ref.instanceof(String::getType())){
-
+tlint String::compareTo(Reference ref) {
+	if (ref.getEntity()->instanceof(String::type())) {
+		String* other = dynamic_cast<String*>(ref.getEntity());
+		return strcmp(other->mStr, mStr);
 	}
 
 	return 0;
 }
 
-List* String::split(byte b) const{
-	ArrayList* list = new ArrayList(String::getType());
+List* String::split(byte b) {
+	ArrayList *list = new ArrayList(String::type());
 
-	char token[2]{0};
+	char token[2]
+		{ 0 };
 	token[0] = b;
-	byte* str = strtok(mStr, token);
-	while(str != nullptr){
+	byte *str = strtok(mStr, token);
+	while (str != nullptr) {
 		list->add(Reference(new String(str)));
 		str = strtok(nullptr, token);
 	}
@@ -194,20 +211,20 @@ List* String::split(byte b) const{
 	return list;
 }
 
-List* String::split(const Reference& ref) const{
-	if(ref.isNull()){
-		return new ArrayList(String::getType());
+List* String::split(Reference ref) {
+	if (ref.isNull()) {
+		return new ArrayList(String::type());
 	}
 
-	if(!ref.instanceof(String::getType())){
-		return new ArrayList(String::getType());
+	if (!ref.getEntity()->instanceof(String::type())) {
+		return new ArrayList(String::type());
 	}
 
-	ArrayList* list = new ArrayList(String::getType());
+	ArrayList *list = new ArrayList(String::type());
 
-	byte* token = dynamic_cast<String*>(ref.getEntity())->mStr;
-	byte* str = strtok(mStr, token);
-	while(str != nullptr){
+	byte *token = dynamic_cast<String*>(ref.getEntity())->mStr;
+	byte *str = strtok(mStr, token);
+	while (str != nullptr) {
 		list->add(Reference(new String(str)));
 		str = strtok(nullptr, token);
 	}
@@ -215,21 +232,25 @@ List* String::split(const Reference& ref) const{
 	return list;
 }
 
-bool String::instanceof(hash_t type) const {
-	return (CLASS_HASH == type) || Comparable::instanceof(type);
+bool String::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Comparable::instanceof(type);
 }
 
-hash_t String::getType() {
-	return CLASS_HASH;
-}
-
-hash_t String::genHash(){
+hash_t String::genHashCode() {
 	hash_t hash = 5381;
-	for(tlint index = 0; index < mLength; index++){
+	for (tlint index = 0; index < mLength; index++) {
 		hash = ((hash << 5) + hash) + mStr[index];
 	}
 
-	return (CLASS_HASH & CLASS_MASK) + (hash & INSTANCE_MASK);
+	return (hash ^ (hash >> 32)) | CLASS_SERIAL << 32;
+}
+
+type_t String::type() {
+	return CLASS_SERIAL;
+}
+
+String* String::toString() {
+	return this;
 }
 
 } /* namespace lang */

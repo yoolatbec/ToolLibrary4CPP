@@ -12,64 +12,64 @@ namespace tl {
 namespace lang {
 
 Integer::Integer(tlint value) {
-	// TODO Auto-generated constructor stub
+	// TODO Auto-generated ructor stub
 	mValue = value;
-	mHash = genHash();
+	mHashCode = genHashCode();
 }
 
-Integer::Integer(const Reference &ref) {
-	if (ref.instanceof(String::getType())) {
+Integer::Integer(Reference ref) {
+	if (ref.getEntity()->instanceof(String::type())) {
 		String *str = dynamic_cast<String*>(ref.getEntity());
-		const char *characters = str->bytes();
+		char *characters = str->bytes();
 		int value;
 		if (sscanf(characters, "%d", &value) != 1) {
 			mValue = 0;
 		} else {
 			mValue = value;
 		}
-	} else if(ref.instanceof(Integer::getType())){
-		Integer* another = dynamic_cast<Integer*>(ref.getEntity());
+	} else if (ref.getEntity()->instanceof(Integer::type())) {
+		Integer *another = dynamic_cast<Integer*>(ref.getEntity());
 		mValue = another->mValue;
 	} else {
 		mValue = 0;
 	}
 
-	mHash = genHash();
+	mHashCode = genHashCode();
 }
 
-byte Integer::byteValue() const {
+byte Integer::byteValue() {
 	return (byte)mValue;
 }
 
-word Integer::shortValue() const {
+word Integer::shortValue() {
 	return (word)mValue;
 }
 
-tlint Integer::intValue() const {
+tlint Integer::intValue() {
 	return mValue;
 }
 
-tlint64 Integer::longValue() const {
+tlint64 Integer::longValue() {
 	return (tlint64)mValue;
 }
 
-double Integer::doubleValue() const {
+double Integer::doubleValue() {
 	return (double)mValue;
 }
 
-float Integer::floatValue() const {
+float Integer::floatValue() {
 	return (float)mValue;
 }
 
-tlint Integer::compareTo(const Reference &ref) const {
-	if(ref.instanceof(Integer::getType())){
-		Integer* another = dynamic_cast<Integer*>(ref.getEntity());
-		return mValue - another->mValue;
+tlint Integer::compareTo(Reference ref) {
+	if (ref.getEntity()->instanceof(Number::type())) {
+		Number *another = dynamic_cast<Number*>(ref.getEntity());
+		return another->intValue() = mValue;
 	}
 	return mValue;
 }
 
-tlint Integer::getBitAt(tlint position) const {
+tlint Integer::getBitAt(tlint position) {
 	position %= 32;
 
 	tlint bits = mValue;
@@ -87,22 +87,28 @@ tlint Integer::smaller(tlint a, tlint b) {
 	return a > b ? b : a;
 }
 
-String* Integer::toString() const {
+String* Integer::toString() {
 	char str[20];
 	sprintf(str, "%d", mValue);
 	return new String(str);
 }
 
-bool Integer::instanceof(hash_t type) const {
-	return (CLASS_HASH == type) || Number::instanceof(type);
+bool Integer::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Number::instanceof(type);
 }
 
-hash_t Integer::getType() {
-	return CLASS_HASH;
+type_t Integer::type() {
+	return CLASS_SERIAL;
 }
 
-hash_t Integer::genHash(){
-	return CLASS_HASH + mValue;
+hash_t Integer::genHashCode() {
+	return CLASS_SERIAL << 32 + mValue;
+}
+
+String* Integer::toString() {
+	char str[20];
+	sprintf(str, "%d", mValue);
+	return new String(str);
 }
 
 } /* namespace lang */

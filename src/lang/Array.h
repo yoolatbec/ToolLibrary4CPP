@@ -15,21 +15,21 @@ namespace lang {
 
 class Array: public Object {
 private:
-	const static hash_t CLASS_HASH = 8L << 32;
+	const static type_t CLASS_SERIAL = 8;
 protected:
 	const size_t mSize;
-	const hash_t mElementType;
+	const type_t mElementType;
 	Reference* mElements;
 public:
-	Array(size_t, hash_t);
+	Array(size_t, type_t);
 	virtual ~Array();
 	Array(const Array &other) = delete;
 	Array& operator=(const Array &other) = delete;
-	Reference get(size_t) const;
-	bool set(const Reference&, size_t);
-	size_t size() const;
-	static hash_t getType();
-	bool instanceof(hash_t) const;
+	Reference get(size_t);
+	bool set(Reference, size_t);
+	size_t size();
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace lang */

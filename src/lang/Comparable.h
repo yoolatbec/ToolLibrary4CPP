@@ -15,11 +15,11 @@ namespace lang {
 
 class Comparable: public virtual Object {
 private:
-	const static hash_t CLASS_HASH = 11L << 32;
+	const static type_t CLASS_SERIAL = 11;
 public:
-	virtual tlint compareTo(const Reference&) const = 0;
-	virtual bool instanceof(hash_t) const;
-	static hash_t getType();
+	virtual tlint compareTo(Reference) = 0;
+	virtual bool instanceof(type_t);
+	static type_t type();
 };
 
 } /* namespace lang */

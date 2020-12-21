@@ -10,41 +10,56 @@
 namespace tl {
 namespace utils {
 
-List::List(hash_t element_type)
+List::List(type_t element_type)
 		:Collection(element_type) {
 	mCapacity = DEFAULT_CAPACITY;
 	mModified = false;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-List::List(hash_t element_type, size_t reserved)
+List::List(type_t element_type, size_t reserved)
 		:Collection(element_type) {
-	mHash &= CLASS_HASH;
 	mCapacity = reserved > 0 ? reserved : DEFAULT_CAPACITY;
 	mModified = false;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 List::~List() {
 
 }
 
-size_t List::getCapacity() const {
+size_t List::getCapacity() {
 	return mCapacity;
 }
 
-size_t List::getSize() const {
+size_t List::getSize() {
 	return mSize;
 }
 
-hash_t List::elementType() const {
+type_t List::elementType() {
 	return mElementType;
 }
 
-bool List::instanceof(hash_t type) const {
-	return (CLASS_HASH == type) || Object::instanceof(type);
+bool List::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Collection::instanceof(type);
 }
 
-hash_t List::getType(){
-	return CLASS_HASH;
+type_t List::type(){
+	return CLASS_SERIAL;
+}
+
+ListIterator::ListIterator(){
+
+}
+
+bool ListIterator::instanceof(type_t type){
+	return CLASS_SERIAL == type || Iterator::instanceof(type);
+}
+
+type_t ListIterator::type(){
+	return CLASS_SERIAL;
 }
 
 } /* namespace utils */

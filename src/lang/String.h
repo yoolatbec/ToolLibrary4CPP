@@ -18,33 +18,33 @@ using tl::utils::List;
 using tl::utils::ArrayList;
 class String : public Comparable{
 private:
-	const static hash_t CLASS_HASH = 9L << 32;
+	const static type_t CLASS_SERIAL = 9;
 	byte* mStr;
 	size_t mLength;
-	hash_t genHash();
-	hash_t genHash();
+	hash_t genHashCode();
 public:
 	String();
 	explicit String(const byte*);
 	String(size_t, byte);
-	String(const Reference&);
+	String(Reference);
 	String(const String&) = delete;
-	String& operator=(const String&) = delete;
+	String& operator=(String) = delete;
 	~String();
-	String* append(const Reference&) const;
-	String* append(byte) const;
-	String* append(tlint) const;
-	String* append(tlint64) const;
-	String* append(double) const;
-	tlint charAt(size_t) const;
-	tlint compareTo(const Reference&) const;
-	String* substring(size_t length) const;
-	String* substring(size_t start, size_t length) const;
-	List* split(byte) const;
-	List* split(const Reference&) const;
-	const byte* bytes() const;
-	bool instanceof(hash_t) const;
-	static hash_t getType();
+	String* append(Reference);
+	String* append(byte);
+	String* append(tlint);
+	String* append(tlint64);
+	String* append(double);
+	tlint charAt(size_t);
+	tlint compareTo(Reference);
+	String* substring(size_t length);
+	String* substring(size_t start, size_t length);
+	List* split(byte);
+	List* split(Reference);
+	String* toString();
+	const byte* bytes();
+	bool instanceof(type_t);
+	static type_t type();
 };
 
 } /* namespace lang */

@@ -10,7 +10,6 @@
 
 #include "../tl_def.h"
 
-
 namespace tl {
 namespace lang {
 
@@ -19,30 +18,25 @@ class String;
 
 class Object {
 private:
-	const static hash_t CLASS_HASH = 0L << 32;
+	const static type_t CLASS_SERIAL = 0;
 protected:
-	hash_t mHash;
+	hash_t mHashCode;
 public:
-	const static hash_t INSTANCE_MASK = 0xFFFFFFFFL;
-	const static hash_t CLASS_MASK = 0xFFFFFFFFL << 32;
 
 protected:
-	virtual hash_t genHash();
+	virtual hash_t genHashCode(type_t);
 public:
-	static hash_t getType();
-	const static Object null;
 	Object();
-	Object(const Reference&);
 	Object(const Object&) = delete;
-	virtual Object& operator=(const Object&);
+	virtual Object& operator=(const Object&) = delete;
 	virtual ~Object();
-	virtual bool equals(const Reference&) const;
-	virtual bool operator==(const Reference&) const;
-	virtual Object* clone() const;
-	String* toString() const;
-	virtual bool instanceof(hash_t) const;
-	hash_t type() const;
-	hash_t hashcode() const;
+	virtual bool equals(Reference);
+	virtual bool operator==(Reference);
+	virtual Object* clone();
+	virtual String* toString();
+	virtual bool instanceof(type_t);
+	static type_t type();
+	virtual hash_t hashCode();
 };
 
 } /* namespace lang */

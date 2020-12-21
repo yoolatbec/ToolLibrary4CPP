@@ -15,19 +15,20 @@ namespace lang {
 
 class Reference: public lang::Object {
 private:
-	const static hash_t CLASS_HASH = 1L << 32;
+	const static type_t CLASS_SERIAL = 1;
 	size_t *mRef;
 	Object *mEntity;
 public:
 	Reference(Object* entity = nullptr);
 	~Reference();
-	Reference(const Reference &other);
-	Reference& operator=(const Reference &other);
-	hash_t getType() const;
-	Object* getEntity() const;
-	bool equals(const Reference&) const;
-	bool isNull() const;
-	bool instanceof(hash_t) const;
+	Reference(Reference other);
+	Reference& operator=(Reference other);
+	Object* getEntity();
+	type_t entityType();
+	bool equals(Reference);
+	bool isNull();
+	static type_t type();
+	virtual bool instanceof(type_t);
 };
 
 } /* namespace lang */

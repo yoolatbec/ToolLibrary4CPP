@@ -9,24 +9,26 @@
 #define SRC_LANG_NUMBER_H_
 
 #include "Comparable.h"
+#include "String.h"
 
 namespace tl {
 namespace lang {
 
 class Number: virtual public Comparable {
 private:
-	static const hash_t CLASS_HASH = 2L << 32;
+	static const type_t CLASS_SERIAL = 2;
 public:
 	Number();
 	virtual ~Number();
-	virtual byte byteValue() const = 0;
-	virtual word shortValue() const = 0;
-	virtual tlint intValue() const = 0;
-	virtual tlint64 longValue() const = 0;
-	virtual double doubleValue() const = 0;
-	virtual float floatValue() const = 0;
-	virtual bool instanceof(hash_t type) const;
-	static hash_t getType();
+	virtual byte byteValue() = 0;
+	virtual word shortValue() = 0;
+	virtual tlint intValue() = 0;
+	virtual tlint64 longValue() = 0;
+	virtual double doubleValue() = 0;
+	virtual float floatValue() = 0;
+	virtual String toString() = 0;
+	virtual bool instanceof(type_t type);
+	static type_t type();
 };
 
 } /* namespace lang */

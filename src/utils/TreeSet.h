@@ -9,7 +9,6 @@
 #define SRC_UTILS_TREESET_H_
 
 #include "Set.h"
-#include "LinkedList.h"
 
 namespace tl {
 namespace utils {
@@ -22,6 +21,7 @@ private:
 		friend class TreeSet;
 	private:
 		const static hash_t CLASS_HASH = 502L << 32;
+		tlint64 mWeight;
 		Reference mValue;
 		tlint mHeight;
 		Reference mLeft;

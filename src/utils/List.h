@@ -22,35 +22,35 @@ using tl::lang::Array;
 
 class List: public virtual Collection {
 private:
-	const static hash_t CLASS_HASH = 12L << 32;
+	const static type_t CLASS_SERIAL = 512;
 protected:
 	static const size_t DEFAULT_CAPACITY = 10;
 	size_t mCapacity;
 	bool mModified;
 public:
-	explicit List(hash_t);
-	List(hash_t, size_t reserved);
+	explicit List(type_t);
+	List(type_t, size_t reserved);
 	List(const List&) = delete;
 	virtual List& operator=(const List&) = delete;
 	virtual ~List();
-	virtual bool add(const Reference&) = 0;
-	virtual bool addAll(const Reference&) = 0;
-	virtual bool contains(const Reference&) const = 0;
-	virtual bool containsAll(const Reference&) const = 0;
+	virtual bool add(Reference) = 0;
+	virtual bool addAll(Reference) = 0;
+	virtual bool contains(Reference) = 0;
+	virtual bool containsAll(Reference) = 0;
 	virtual Reference get(size_t) = 0;
-	virtual bool insert(const Reference&, size_t position) = 0;
-	virtual bool insertAll(const Reference&, size_t) = 0;
+	virtual bool insert(Reference, size_t position) = 0;
+	virtual bool insertAll(Reference, size_t) = 0;
 	virtual bool remove(size_t) = 0;
-	virtual bool remove(const Reference&) = 0;
-	virtual bool removeAll(const Reference&) = 0;
+	virtual bool remove(Reference) = 0;
+	virtual bool removeAll(Reference) = 0;
 	virtual void clear() = 0;
-	virtual bool replace(const Reference&, size_t) = 0;
-	virtual Array* toArray() const = 0;
-	size_t getCapacity() const;
-	size_t getSize() const;
-	hash_t elementType() const;
-	virtual bool instanceof(hash_t) const;
-	static hash_t getType();
+	virtual bool replace(Reference, size_t) = 0;
+	virtual Array* toArray() = 0;
+	size_t getCapacity();
+	size_t getSize();
+	type_t elementType();
+	virtual bool instanceof(type_t);
+	static type_t type();
 };
 
 class ListIterator: public virtual Iterator{
@@ -60,14 +60,14 @@ public:
 	ListIterator();
 	ListIterator& operator=(const ListIterator&) = delete;
 	ListIterator(const ListIterator&) = delete;
-	bool hasNext() const = 0;
-	bool hasPrevious() const = 0;
+	bool hasNext() = 0;
+	bool hasPrevious() = 0;
 	Reference next() = 0;
 	Reference previous() = 0;
 	bool insert() = 0;
 	bool remove() = 0;
-	static hash_t getType();
-	bool instanceof(hash_t) const;
+	virtual bool instanceof(type_t);
+	static type_t type();
 };
 
 } /* namespace utils */

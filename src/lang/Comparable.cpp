@@ -10,12 +10,12 @@
 namespace tl {
 namespace lang {
 
-bool Comparable::instanceof(hash_t type) const{
-	return (CLASS_HASH == type) || Object::instanceof(type);
+bool Comparable::instanceof(type_t t){
+	return (CLASS_SERIAL == type) || Object::instanceof(t);
 }
 
-hash_t Comparable::getType(){
-	return CLASS_HASH;
+type_t Comparable::type(){
+	return CLASS_SERIAL;
 }
 
 } /* namespace lang */

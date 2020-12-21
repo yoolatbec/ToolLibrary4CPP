@@ -10,53 +10,52 @@
 namespace tl {
 namespace lang {
 
-Array::Array(size_t size, hash_t element_type)
+Array::Array(size_t size, type_t element_type)
 		: mSize(size), mElementType(element_type) {
 	// TODO Auto-generated constructor stub
-	mHash &= CLASS_HASH;
 	mElements = new Reference[mSize];
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Array::~Array() {
 	// TODO Auto-generated destructor stub
-	delete [] mElements;
+	delete[] mElements;
 }
 
-Reference Array::get(size_t index) const{
-	if(index < 0 || index >= mSize){
-
+Reference Array::get(size_t index) {
+	if (index < 0 || index >= mSize) {
+		//should cast an exception
 	}
 
 	return mElements[index];
 }
 
-bool Array::set(const Reference& ref, size_t index){
-	if(ref.isNull()){
+bool Array::set(Reference ref, size_t index) {
+	if (!ref.getEntity()->instanceof(mElementType)) {
 		return false;
+		//or cast an exception
 	}
 
-	if(!ref.instanceof(mElementType)){
+	if (index < 0 || index >= mSize) {
 		return false;
-	}
-
-	if(index < 0 || index >= mSize){
-		return false;
+		//or cast an exception
 	}
 
 	mElements[index] = ref;
 	return true;
 }
 
-size_t Array::size() const{
+size_t Array::size() {
 	return mSize;
 }
 
-hash_t Array::getType(){
-	return CLASS_HASH;
+type_t Array::type() {
+	return CLASS_SERIAL;
 }
 
-bool Array::instanceof(hash_t type) const{
-	return (CLASS_HASH == type) || Object::instanceof(type);
+bool Array::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Object::instanceof(type);
 }
 
 } /* namespace lang */

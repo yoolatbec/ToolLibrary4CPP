@@ -12,19 +12,18 @@ namespace lang {
 
 Number::Number() {
 	// TODO Auto-generated constructor stub
-	mHash &= CLASS_HASH;
 }
 
 Number::~Number() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Number::instanceof(hash_t type) const{
-	return (CLASS_HASH == type) || Comparable::instanceof(type);
+bool Number::instanceof(type_t type){
+	return (CLASS_SERIAL == type) || Comparable::instanceof(type);
 }
 
-hash_t Number::getType(){
-	return CLASS_HASH;
+type_t Number::type(){
+	return CLASS_SERIAL;
 }
 
 } /* namespace lang */

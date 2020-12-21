@@ -93,6 +93,8 @@ public:
 	void clear();
 	Array* toArray() const;
 	Reference get(size_t);
+	Reference getFirst();
+	Reference getLast();
 	Iterator* iterator();
 	Iterator* reversedIterator();
 	bool replace(const Reference&, size_t);
