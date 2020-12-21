@@ -12,7 +12,6 @@ namespace utils {
 
 Iterator::Iterator() {
 	// TODO Auto-generated constructor stub
-	mHash &= CLASS_HASH;
 	mValid = true;
 }
 
@@ -20,16 +19,16 @@ Iterator::~Iterator() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Iterator::isValid() const{
+bool Iterator::isValid() {
 	return mValid;
 }
 
-hash_t Iterator::getType(){
-	return CLASS_HASH;
+type_t Iterator::type() {
+	return CLASS_SERIAL;
 }
 
-bool Iterator::instanceof(hash_t type) const{
-	return (CLASS_HASH == type) || Object::instanceof(type);
+bool Iterator::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Object::instanceof(type);
 }
 
 } /* namespace utils */

@@ -18,27 +18,27 @@ using lang::Reference;
 
 class Collection: public virtual Iterable {
 private:
-	const static hash_t CLASS_HASH = 10L << 32;
+	const static type_t CLASS_SERIAL = 10;
 protected:
-	const hash_t mElementType;
+	const type_t mElementType;
 	size_t mSize;
 public:
-	explicit Collection(hash_t);
+	explicit Collection(type_t);
 	virtual ~Collection();
 	Collection(const Collection &other) = delete;
 	Collection& operator=(const Collection &other) = delete;
-	virtual bool add(const Reference&) = 0;
-	virtual bool addAll(const Reference&) = 0;
-	virtual bool contains(const Reference&) const = 0;
-	virtual bool containsAll(const Reference&) const = 0;
+	virtual bool add(Reference) = 0;
+	virtual bool addAll(Reference) = 0;
+	virtual bool contains(Reference) = 0;
+	virtual bool containsAll(Reference) = 0;
 	virtual Iterator* iterator() = 0;
-	virtual bool remove(const Reference&) = 0;
-	virtual bool removeAll(const Reference&) = 0;
-	size_t size() const;
-	virtual bool instanceof(hash_t) const;
-	virtual hash_t getElementType() const;
-	static hash_t getType();
-	bool empty() const;
+	virtual bool remove(Reference) = 0;
+	virtual bool removeAll(Reference) = 0;
+	size_t size();
+	virtual bool instanceof(type_t);
+	virtual hash_t getElementType();
+	static type_t type();
+	bool empty();
 };
 
 } /* namespace utils */

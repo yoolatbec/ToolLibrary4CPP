@@ -14,14 +14,16 @@ namespace utils {
 
 ArrayList::ArrayList(hash_t type)
 		: Collection(type), List(type) {
-	mHash &= CLASS_HASH;
 	mElements = new Reference[mCapacity];
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-ArrayList::ArrayList(hash_t type, size_t reserved)
+ArrayList::ArrayList(type_t type, size_t reserved)
 		: Collection(type), List(type, reserved) {
-	mHash &= CLASS_HASH;
 	mElements = new Reference[mCapacity];
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 ArrayList::~ArrayList() {
@@ -29,7 +31,7 @@ ArrayList::~ArrayList() {
 	delete[] mElements;
 }
 
-bool ArrayList::add(const Reference &value) {
+bool ArrayList::add(Reference value) {
 	if (value.isNull()) {
 		return false;
 	}
@@ -48,12 +50,12 @@ bool ArrayList::add(const Reference &value) {
 	return true;
 }
 
-bool ArrayList::addAll(const Reference &ref) {
+bool ArrayList::addAll(Reference ref) {
 	if (ref.isNull()) {
 		return false;
 	}
 
-	if (!ref.instanceof(Collection::getType())) {
+	if (!ref.getEntity()->instanceof(Collection::type())) {
 		return false;
 	}
 
@@ -70,12 +72,12 @@ bool ArrayList::addAll(const Reference &ref) {
 	return true;
 }
 
-bool ArrayList::contains(const Reference &ref) const {
+bool ArrayList::contains(Reference ref) {
 	if (ref.isNull()) {
 		return false;
 	}
 
-	if (!ref.instanceof(mElementType)) {
+	if (!ref.getEntity()->instanceof(mElementType)) {
 		return false;
 	}
 
@@ -91,12 +93,45 @@ bool ArrayList::contains(const Reference &ref) const {
 	return false;
 }
 
-bool ArrayList::insert(const Reference &ref, size_t position) {
+bool ArrayList::containsAll(Reference ref){
+	if(ref.isNull()){
+		return false;
+	}
+
+	if(!ref.getEntity()->instanceof(Collection::type())){
+		//should cast an exception
+		return false;
+	}
+
+	if(mSize == 0){
+		return false;
+	}
+
+	Collection* collection = dynamic_cast<Collection*>(ref.getEntity());
+	if(collection->mElementType != mElementType){
+		//should cast an exception
+		return false;
+	}
+
+	bool result = true;
+	Iterator* iterator = collection->iterator();
+	while(iterator->hasNext()){
+		Reference obj = iterator->next();
+		result = result && contains(obj);
+		if(!result){
+			return result;
+		}
+	}
+
+	return result;
+}
+
+bool ArrayList::insert(Reference ref, size_t position) {
 	if (ref.isNull()) {
 		return false;
 	}
 
-	if (!ref.instanceof(mElementType)) {
+	if (!ref.getEntity()->instanceof(mElementType)) {
 		return false;
 	}
 
@@ -121,12 +156,12 @@ bool ArrayList::insert(const Reference &ref, size_t position) {
 	return true;
 }
 
-bool ArrayList::insertAll(const Reference &ref, size_t position) {
+bool ArrayList::insertAll(Reference ref, size_t position) {
 	if (ref.isNull()) {
 		return false;
 	}
 
-	if (!ref.instanceof(Collection::getType())) {
+	if (!ref.getEntity()->instanceof(Collection::type())) {
 		return false;
 	}
 
@@ -165,7 +200,7 @@ bool ArrayList::insertAll(const Reference &ref, size_t position) {
 	return true;
 }
 
-bool ArrayList::remove(const Reference &ref) {
+bool ArrayList::remove(Reference ref) {
 	if(empty()){
 		return false;
 	}
@@ -174,7 +209,7 @@ bool ArrayList::remove(const Reference &ref) {
 		return false;
 	}
 
-	if (!ref.instanceof(mElementType)) {
+	if (!ref.getEntity()->instanceof(mElementType)) {
 		return false;
 	}
 
@@ -211,7 +246,7 @@ bool ArrayList::remove(size_t position) {
 	return true;
 }
 
-bool ArrayList::removeAll(const Reference &ref) {
+bool ArrayList::removeAll(Reference ref) {
 	if(empty()){
 		return false;
 	}
@@ -220,7 +255,7 @@ bool ArrayList::removeAll(const Reference &ref) {
 		return false;
 	}
 
-	if (!ref.instanceof(Collection::getType())) {
+	if (!ref.getEntity()->instanceof(Collection::type())) {
 		return false;
 	}
 
@@ -245,16 +280,17 @@ Reference ArrayList::get(size_t position) {
 	return mElements[position];
 }
 
-bool ArrayList::replace(const Reference &ref, size_t position) {
-	if (ref.isNull()) {
-		return remove(position);
-	}
-
-	if (!ref.instanceof(mElementType)) {
+bool ArrayList::set(size_t position, Reference ref) {
+	if (position < 0 || position >= mSize) {
 		return false;
 	}
 
-	if (position < 0 || position >= mSize) {
+	if (ref.isNull()) {
+		mElements[position] = Reference();
+		return true;
+	}
+
+	if (!ref.getEntity()->instanceof(mElementType)) {
 		return false;
 	}
 
@@ -263,16 +299,20 @@ bool ArrayList::replace(const Reference &ref, size_t position) {
 	return true;
 }
 
-lang::Array* ArrayList::toArray() const {
-	Array *arr = new Array(mSize, mElementType);
+lang::Array* ArrayList::toArray() {
+	Array *arr = new Array(mElementType, mSize);
 	for (size_t index = 0; index < mSize; index++) {
 		arr->set(mElements[index], index);
 	}
 	return arr;
 }
 
-bool ArrayList::instanceof(hash_t type) const {
-	return (CLASS_HASH == type) || List::instanceof(type);
+List* ArrayList::sublist(size_t begin, size_t end){
+	ArrayList* list = new ArrayList(mElementType);
+}
+
+bool ArrayList::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || List::instanceof(type);
 }
 
 void ArrayList::clear() {
@@ -299,8 +339,8 @@ Iterator* ArrayList::iterator() {
 	return new ArrayListIterator(this);
 }
 
-hash_t ArrayList::getType() {
-	return CLASS_HASH;
+type_t ArrayList::type(){
+	return CLASS_SERIAL;
 }
 
 ArrayList::ArrayListIterator::ArrayListIterator(ArrayList *list)
@@ -309,15 +349,15 @@ ArrayList::ArrayListIterator::ArrayListIterator(ArrayList *list)
 	mList->mModified = false;
 }
 
-hash_t ArrayList::ArrayListIterator::getType() {
-	return CLASS_HASH;
+type_t ArrayList::ArrayListIterator::type() {
+	return CLASS_SERIAL;
 }
 
-bool ArrayList::ArrayListIterator::instanceof(hash_t type) const {
-	return (CLASS_HASH == type) || Iterator::instanceof(type);
+bool ArrayList::ArrayListIterator::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Iterator::instanceof(type);
 }
 
-bool ArrayList::ArrayListIterator::hasNext() const {
+bool ArrayList::ArrayListIterator::hasNext() {
 	if (mList->mModified) {
 
 	}
@@ -333,7 +373,7 @@ Reference ArrayList::ArrayListIterator::next() {
 	return mList->mElements[++mCurrent];
 }
 
-bool ArrayList::ArrayListIterator::hasPrevious() const{
+bool ArrayList::ArrayListIterator::hasPrevious(){
 	if(mList->mModified){
 
 	}
@@ -371,16 +411,16 @@ bool ArrayList::ArrayListIterator::remove() {
 	return true;
 }
 
-bool ArrayList::ArrayListIterator::insert(const Reference &ref) {
+bool ArrayList::ArrayListIterator::insert(Reference ref) {
 	if (mList->mModified) {
-
+		//cast an exception
 	}
 
 	if (ref.isNull()) {
 		return false;
 	}
 
-	if (!ref.instanceof(mList->mElementType)) {
+	if (!ref.getEntity()->instanceof(mList->mElementType)) {
 		return false;
 	}
 

@@ -16,14 +16,15 @@ namespace utils {
 
 class Iterable: public virtual lang::Object {
 private:
-	const static hash_t CLASS_HASH = 9L << 32;
+	const static type_t CLASS_SERIAL = 9;
 public:
 	Iterable();
 	virtual ~Iterable();
 	Iterable(const Iterable &other) = delete;
 	Iterable& operator=(const Iterator&) = delete;
 	virtual Iterator* iterator() = 0;
-	virtual bool instanceof(hash_t) const;
+	virtual bool instanceof(type_t);
+	static type_t type();
 };
 
 } /* namespace utils */

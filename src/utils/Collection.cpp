@@ -10,9 +10,8 @@
 namespace tl {
 namespace utils {
 
-Collection::Collection(hash_t type)
+Collection::Collection(type_t type)
 		: mElementType(type) {
-	mHash &= CLASS_HASH;
 	// TODO Auto-generated constructor stub
 	mSize = 0;
 }
@@ -21,23 +20,23 @@ Collection::~Collection() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Collection::instanceof(hash_t type) const {
-	return (CLASS_HASH == type) || Iterable::instanceof(type);
+bool Collection::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Iterable::instanceof(type);
 }
 
-hash_t Collection::getType() {
-	return CLASS_HASH;
+type_t Collection::type() {
+	return CLASS_SERIAL;
 }
 
-hash_t Collection::getElementType() const{
+hash_t Collection::getElementType() {
 	return mElementType;
 }
 
-size_t Collection::size() const{
+size_t Collection::size() {
 	return mSize;
 }
 
-bool Collection::empty() const{
+bool Collection::empty() {
 	return mSize == 0;
 }
 

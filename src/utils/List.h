@@ -24,6 +24,23 @@ class List: public virtual Collection {
 private:
 	const static type_t CLASS_SERIAL = 512;
 protected:
+	class ListIterator: public virtual Iterator {
+	private:
+		const static type_t CLASS_SERIAL = 157;
+	public:
+		ListIterator();
+		ListIterator& operator=(const ListIterator&) = delete;
+		ListIterator(const ListIterator&) = delete;
+		bool hasNext() = 0;
+		bool hasPrevious() = 0;
+		Reference next() = 0;
+		Reference previous() = 0;
+		bool insert() = 0;
+		bool remove() = 0;
+		virtual bool instanceof(type_t);
+		static type_t type();
+	};
+
 	static const size_t DEFAULT_CAPACITY = 10;
 	size_t mCapacity;
 	bool mModified;
@@ -44,28 +61,12 @@ public:
 	virtual bool remove(Reference) = 0;
 	virtual bool removeAll(Reference) = 0;
 	virtual void clear() = 0;
-	virtual bool replace(Reference, size_t) = 0;
+	virtual bool set(size_t, Reference) = 0;
+	virtual size_t indexOf(Reference) = 0;
 	virtual Array* toArray() = 0;
+	virtual List* sublist(size_t, size_t) = 0;
 	size_t getCapacity();
-	size_t getSize();
 	type_t elementType();
-	virtual bool instanceof(type_t);
-	static type_t type();
-};
-
-class ListIterator: public virtual Iterator{
-private:
-	const static hash_t CLASS_HASH = 13L << 32;
-public:
-	ListIterator();
-	ListIterator& operator=(const ListIterator&) = delete;
-	ListIterator(const ListIterator&) = delete;
-	bool hasNext() = 0;
-	bool hasPrevious() = 0;
-	Reference next() = 0;
-	Reference previous() = 0;
-	bool insert() = 0;
-	bool remove() = 0;
 	virtual bool instanceof(type_t);
 	static type_t type();
 };

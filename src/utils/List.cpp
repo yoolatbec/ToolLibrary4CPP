@@ -34,10 +34,6 @@ size_t List::getCapacity() {
 	return mCapacity;
 }
 
-size_t List::getSize() {
-	return mSize;
-}
-
 type_t List::elementType() {
 	return mElementType;
 }
@@ -50,15 +46,15 @@ type_t List::type(){
 	return CLASS_SERIAL;
 }
 
-ListIterator::ListIterator(){
+List::ListIterator::ListIterator(){
 
 }
 
-bool ListIterator::instanceof(type_t type){
+bool List::ListIterator::instanceof(type_t type){
 	return CLASS_SERIAL == type || Iterator::instanceof(type);
 }
 
-type_t ListIterator::type(){
+type_t List::ListIterator::type(){
 	return CLASS_SERIAL;
 }
 

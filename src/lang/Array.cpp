@@ -10,7 +10,7 @@
 namespace tl {
 namespace lang {
 
-Array::Array(size_t size, type_t element_type)
+Array::Array(type_t element_type, size_t size)
 		: mSize(size), mElementType(element_type) {
 	// TODO Auto-generated constructor stub
 	mElements = new Reference[mSize];

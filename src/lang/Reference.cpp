@@ -72,7 +72,7 @@ type_t Reference::entityType() {
 }
 
 bool Reference::equals(Reference another) {
-	return mEntity == another.mEntity;
+	return mEntity->mHashCode == another.mEntity->mHashCode;
 }
 
 bool Reference::isNull() {

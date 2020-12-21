@@ -21,7 +21,7 @@ protected:
 	const type_t mElementType;
 	Reference* mElements;
 public:
-	Array(size_t, type_t);
+	Array(type_t, size_t);
 	virtual ~Array();
 	Array(const Array &other) = delete;
 	Array& operator=(const Array &other) = delete;

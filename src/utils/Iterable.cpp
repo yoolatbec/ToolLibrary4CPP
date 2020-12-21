@@ -12,15 +12,18 @@ namespace utils {
 
 Iterable::Iterable() {
 	// TODO Auto-generated constructor stub
-	mHash &= CLASS_HASH;
 }
 
 Iterable::~Iterable() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Iterable::instanceof(hash_t type) const{
-	return (CLASS_HASH == type) || Object::instanceof(type);
+bool Iterable::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Object::instanceof(type);
+}
+
+type_t Iterable::type() {
+	return CLASS_SERIAL;
 }
 
 } /* namespace utils */
