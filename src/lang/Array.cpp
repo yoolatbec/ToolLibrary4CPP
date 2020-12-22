@@ -13,6 +13,10 @@ namespace lang {
 Array::Array(type_t element_type, size_t size)
 		: mSize(size), mElementType(element_type) {
 	// TODO Auto-generated constructor stub
+	if(size > MAX_SIZE){
+		//case an exception
+	}
+
 	mElements = new Reference[mSize];
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -48,6 +52,18 @@ bool Array::set(Reference ref, size_t index) {
 
 size_t Array::size() {
 	return mSize;
+}
+
+String* Array::toString(){
+	String** elementStrings = new String*[mSize];
+	size_t* length = new size_t[mSize];
+	for(int index = 0; index < mSize; index++){
+		if(mElements[index].isNull()){
+			continue;
+		}
+
+		elementStrings[index] = mElements[index].getEntity()->toString();
+	}
 }
 
 type_t Array::type() {

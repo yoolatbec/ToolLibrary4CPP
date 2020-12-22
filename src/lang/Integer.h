@@ -20,8 +20,8 @@ private:
 	tlint mValue;
 	hash_t genHashCode();
 public:
-	static const tlint MAX_INTEGER = 0xFFFFFFFF - 1;
-	static const tlint MIN_INTEGER = 0xFFFFFFFF;
+	static const tlint MAX_VALUE = 0x7FFFFFFF;
+	static const tlint MIN_VALUE = 0x80000000;
 	explicit Integer(tlint);
 	explicit Integer(Reference);
 	byte byteValue();

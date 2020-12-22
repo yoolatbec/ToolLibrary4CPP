@@ -12,7 +12,7 @@ using tl::lang::Array;
 namespace tl {
 namespace utils {
 
-ArrayList::ArrayList(hash_t type)
+ArrayList::ArrayList(type_t type)
 		: Collection(type), List(type) {
 	mElements = new Reference[mCapacity];
 
@@ -21,6 +21,10 @@ ArrayList::ArrayList(hash_t type)
 
 ArrayList::ArrayList(type_t type, size_t reserved)
 		: Collection(type), List(type, reserved) {
+	if(reserved > MAX_CAPACITY){
+		//cast an exception here
+	}
+
 	mElements = new Reference[mCapacity];
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -200,6 +204,16 @@ bool ArrayList::insertAll(Reference ref, size_t position) {
 	return true;
 }
 
+tlint ArrayList::indexOf(Reference ref){
+	for(int index = 0; index < mSize; index++){
+		if(mElements[index].equals(ref)){
+			return index;
+		}
+	}
+
+	return -1;
+}
+
 bool ArrayList::remove(Reference ref) {
 	if(empty()){
 		return false;
@@ -308,7 +322,21 @@ lang::Array* ArrayList::toArray() {
 }
 
 List* ArrayList::sublist(size_t begin, size_t end){
+	if(end < begin){
+		//should cast an exception
+		return nullptr;
+	}
+
 	ArrayList* list = new ArrayList(mElementType);
+	if(begin >= mSize){
+		return list;
+	}
+
+	for(size_t index = begin; index < end && index < mSize; index++){
+		list->add(mElements[index]);
+	}
+
+	return list;
 }
 
 bool ArrayList::instanceof(type_t type) {

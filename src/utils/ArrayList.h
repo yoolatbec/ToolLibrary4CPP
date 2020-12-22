@@ -9,6 +9,7 @@
 #define SRC_UTILS_ARRAYLIST_H_
 
 #include "List.h"
+#include "Integer.h"
 
 namespace tl {
 namespace utils {
@@ -44,6 +45,7 @@ private:
 
 	void expand();
 public:
+	const static tlint MAX_CAPACITY = lang::Integer::MAX_VALUE;
 	explicit ArrayList(type_t);
 	ArrayList(type_t, size_t);
 	~ArrayList();
@@ -53,6 +55,7 @@ public:
 	bool addAll(Reference);
 	bool contains(Reference);
 	bool containsAll(Reference);
+	tlint indexOf(Reference);
 	bool insert(Reference, size_t position);
 	bool insertAll(Reference, size_t);
 	bool remove(size_t);
