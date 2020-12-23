@@ -10,9 +10,12 @@
 namespace tl {
 namespace utils {
 
-TreeMap::TreeMap() {
+TreeMap::TreeMap(type_t keyType, type_t valueType)
+		: Map(keyType, valueType) {
 	// TODO Auto-generated constructor stub
-	mHash &= CLASS_HASH;
+	mRootEntry = Reference();
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 TreeMap::~TreeMap() {

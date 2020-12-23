@@ -13,18 +13,19 @@ namespace utils {
 LinkedList::LinkedList(hash_t type)
 		: Collection(type), List(type) {
 	// TODO Auto-generated constructor stub
-	mHash &= CLASS_HASH;
 	mHead = Reference(new LinkedListNode(Reference()));
 	mTail = Reference(new LinkedListNode(Reference()));
 	((LinkedListNode*)mHead.getEntity())->mNext = mTail;
 	((LinkedListNode*)mTail.getEntity())->mPrevious = mHead;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 LinkedList::~LinkedList() {
 	// TODO Auto-generated destructor stub
 }
 
-bool LinkedList::add(const Reference &ref) {
+bool LinkedList::add(Reference ref) {
 	if (ref.isNull()) {
 		return false;
 	}
@@ -46,7 +47,7 @@ bool LinkedList::add(const Reference &ref) {
 	return true;
 }
 
-bool LinkedList::addFirst(const Reference &ref) {
+bool LinkedList::addFirst(Reference ref) {
 	if (ref.isNull()) {
 		return false;
 	}
@@ -68,16 +69,16 @@ bool LinkedList::addFirst(const Reference &ref) {
 	return true;
 }
 
-bool LinkedList::addLast(const Reference &ref) {
+bool LinkedList::addLast(Reference ref) {
 	return add(ref);
 }
 
-bool LinkedList::addAll(const Reference &ref) {
+bool LinkedList::addAll(Reference ref) {
 	if (ref.isNull()) {
 		return false;
 	}
 
-	if (!ref.instanceof(Collection::getType())) {
+	if (!ref.instanceof(Collection::type())) {
 		return false;
 	}
 
@@ -95,16 +96,16 @@ bool LinkedList::addAll(const Reference &ref) {
 	return true;
 }
 
-bool LinkedList::addAllLast(const Reference &ref) {
+bool LinkedList::addAllLast(Reference ref) {
 	return addAll(ref);
 }
 
-bool LinkedList::addAllFirst(const Reference &ref) {
+bool LinkedList::addAllFirst(Reference ref) {
 	if (ref.isNull()) {
 		return false;
 	}
 
-	if (!ref.instanceof(Collection::getType())) {
+	if (!ref.instanceof(Collection::type())) {
 		return false;
 	}
 
@@ -131,7 +132,7 @@ bool LinkedList::addAllFirst(const Reference &ref) {
 	return true;
 }
 
-bool LinkedList::contains(const Reference &ref) const {
+bool LinkedList::contains(Reference ref) {
 	if (ref.isNull()) {
 		return false;
 	}
@@ -149,7 +150,7 @@ bool LinkedList::contains(const Reference &ref) const {
 	return false;
 }
 
-bool LinkedList::insert(const Reference &ref, size_t position) {
+bool LinkedList::insert(Reference ref, size_t position) {
 	if (position < 0 || position > mSize) {
 		return false;
 	}
@@ -190,12 +191,12 @@ bool LinkedList::insert(const Reference &ref, size_t position) {
 	return true;
 }
 
-bool LinkedList::insertAll(const Reference &ref, size_t position) {
+bool LinkedList::insertAll(Reference ref, size_t position) {
 	if (ref.isNull()) {
 		return false;
 	}
 
-	if (!ref.instanceof(Collection::getType())) {
+	if (!ref.instanceof(Collection::type())) {
 		return false;
 	}
 
@@ -240,7 +241,7 @@ bool LinkedList::insertAll(const Reference &ref, size_t position) {
 	return true;
 }
 
-bool LinkedList::remove(const Reference &ref) {
+bool LinkedList::remove(Reference ref) {
 	if (empty()) {
 		return false;
 	}
@@ -317,7 +318,7 @@ bool LinkedList::removeLast() {
 	return true;
 }
 
-bool LinkedList::removeAll(const Reference &ref) {
+bool LinkedList::removeAll(Reference ref) {
 	if (empty()) {
 		return false;
 	}
@@ -326,7 +327,7 @@ bool LinkedList::removeAll(const Reference &ref) {
 		return false;
 	}
 
-	if (!ref.instanceof(Collection::getType())) {
+	if (!ref.instanceof(Collection::type())) {
 		return false;
 	}
 
@@ -370,7 +371,7 @@ Reference LinkedList::get(size_t position) {
 	return ((LinkedListNode*)current.getEntity())->mValue;
 }
 
-bool LinkedList::replace(const Reference &ref, size_t position) {
+bool LinkedList::replace(Reference ref, size_t position) {
 	if (ref.isNull()) {
 		return remove(position);
 	}
@@ -392,7 +393,7 @@ bool LinkedList::replace(const Reference &ref, size_t position) {
 	return true;
 }
 
-Array* LinkedList::toArray() const {
+Array* LinkedList::toArray() {
 	Array *arr = new Array(mSize, mElementType);
 	Reference current = ((LinkedListNode*)mHead.getEntity())->mNext;
 	for (size_t index = 0; index < mSize; index++) {
@@ -410,34 +411,38 @@ Iterator* LinkedList::reversedIterator() {
 	return new LinkedListReversedIterator(this);
 }
 
-bool LinkedList::instanceof(hash_t type) const {
-	return (CLASS_HASH == type) || List::instanceof(type);
+bool LinkedList::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || List::instanceof(type);
 }
 
-hash_t LinkedList::getType() {
-	return CLASS_HASH;
+type_t LinkedList::type(){
+	return CLASS_SERIAL;
 }
 
-LinkedList::LinkedListNode::LinkedListNode(const Reference &ref) {
+LinkedList::LinkedListNode::LinkedListNode(Reference ref) {
 	mValue = ref;
 	mNext = Reference();
 	mPrevious = Reference();
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-hash_t LinkedList::LinkedListNode::getType() {
-	return CLASS_HASH;
+type_t LinkedList::LinkedListNode::type(){
+	return CLASS_SERIAL;
 }
 
-bool LinkedList::LinkedListNode::instanceof(hash_t type) const {
-	return (CLASS_HASH == type) || Object::instanceof(type);
+bool LinkedList::LinkedListNode::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Object::instanceof(type);
 }
 
 LinkedList::LinkedListIterator::LinkedListIterator(LinkedList *list)
 		: mList(list) {
 	mCurrent = mList->mHead;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-bool LinkedList::LinkedListIterator::hasNext() const {
+bool LinkedList::LinkedListIterator::hasNext() {
 	if (mList->mModified) {
 
 	}
@@ -454,7 +459,7 @@ Reference LinkedList::LinkedListIterator::next() {
 	return ((LinkedListNode*)mCurrent.getEntity())->mValue;
 }
 
-bool LinkedList::LinkedListIterator::hasPrevious() const{
+bool LinkedList::LinkedListIterator::hasPrevious(){
 	if(mList->mModified){
 
 	}
@@ -471,7 +476,7 @@ Reference LinkedList::LinkedListIterator::previous(){
 	return ((LinkedListNode*)mCurrent.getEntity())->mValue;
 }
 
-bool LinkedList::LinkedListIterator::insert(const Reference &ref) {
+bool LinkedList::LinkedListIterator::insert(Reference ref) {
 	if (mList->mModified) {
 
 	}
@@ -523,21 +528,23 @@ bool LinkedList::LinkedListIterator::remove() {
 	return true;
 }
 
-hash_t LinkedList::LinkedListIterator::getType() {
-	return CLASS_HASH;
+type_t LinkedList::LinkedListIterator::type(){
+	return CLASS_SERIAL;
 }
 
-bool LinkedList::LinkedListIterator::instanceof(hash_t type) const {
-	return (CLASS_HASH || Iterator::instanceof(type);
+bool LinkedList::LinkedListIterator::instanceof(type_t type) {
+	return CLASS_SERIAL == type || Iterator::instanceof(type);
 }
 
 LinkedList::LinkedListReversedIterator::LinkedListReversedIterator(
 		LinkedList *list)
 		: mList(list) {
 	mCurrent = mList->mTail;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-bool LinkedList::LinkedListReversedIterator::hasNext() const {
+bool LinkedList::LinkedListReversedIterator::hasNext() {
 	if (mList->mModified) {
 
 	}
@@ -555,7 +562,7 @@ Reference LinkedList::LinkedListReversedIterator::next() {
 	return ((LinkedListNode*)mCurrent.getEntity())->mValue;
 }
 
-bool LinkedList::LinkedListReversedIterator::hasPrevious() const{
+bool LinkedList::LinkedListReversedIterator::hasPrevious(){
 	if(mList->mModified){
 
 	}
@@ -572,7 +579,7 @@ Reference LinkedList::LinkedListReversedIterator::previous(){
 	return ((LinkedListNode*)mCurrent.getEntity())->mValue;
 }
 
-bool LinkedList::LinkedListReversedIterator::insert(const Reference &ref) {
+	bool LinkedList::LinkedListReversedIterator::insert(Reference ref) {
 	if (mList->mModified) {
 
 	}
@@ -616,12 +623,12 @@ bool LinkedList::LinkedListReversedIterator::remove() {
 	return true;
 }
 
-hash_t LinkedList::LinkedListReversedIterator::getType(){
-	return CLASS_HASH;
+type_t LinkedList::LinkedListReversedIterator::type(){
+	return CLASS_SERIAL;
 }
 
-bool LinkedList::LinkedListReversedIterator::instanceof(hash_t type) const{
-	return (CLASS_HASH == type) || Object::instanceof(type);
+bool LinkedList::LinkedListReversedIterator::instanceof(type_t type){
+	return (CLASS_SERIAL == type) || Object::instanceof(type);
 }
 
 } /* namespace utils */
