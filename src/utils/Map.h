@@ -26,7 +26,7 @@ protected:
 		private:
 			const static type_t CLASS_SERIAL = 74;
 		public:
-			Entry(Reference);
+			Entry(Reference key, Reference value = Reference());
 			const hash_t mWeight;
 			const Reference mKey;
 			Reference mValue;

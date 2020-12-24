@@ -24,9 +24,9 @@ public:
 	Reference(Reference other);
 	Reference& operator=(Reference other);
 	Object* getEntity();
-	type_t entityType();
-	bool equals(Reference);
-	bool isNull();
+	type_t entityType() const;
+	bool equals(Reference) const;
+	bool isNull() const;
 	static type_t type();
 	virtual bool instanceof(type_t);
 };

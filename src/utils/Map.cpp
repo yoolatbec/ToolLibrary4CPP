@@ -38,8 +38,8 @@ type_t Map::type(){
 	return CLASS_SERIAL;
 }
 
-Map::Entry::Entry(Reference ref)
-		: mKey(ref), mWeight(ref.getEntity()->mHashCode) {
+Map::Entry::Entry(Reference key, Reference value)
+		: mKey(key), mValue(value), mWeight(key.getEntity()->mHashCode) {
 	mValue = Reference();
 
 	mHashCode = genHashCode(CLASS_SERIAL);

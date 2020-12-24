@@ -13,23 +13,32 @@
 namespace tl {
 namespace utils {
 
+using lang::Reference;
 class TreeMap: public virtual Map {
 private:
 	const static type_t CLASS_SERIAL = 54;
 	class TreeEntry: public Entry{
 	private:
 		const static type_t CLASS_SERIAL = 55;
+		const static tlint ALLOWED_IMBALANCE = 1;
 	public:
 		Reference mLeft, mRight;
 		size_t mHeight;
 		TreeEntry(Reference, Reference);
 		static type_t type();
 		bool instanceof(type_t);
-		static TreeEntry add(Reference, Reference);
-		static TreeEntry remove(Reference);
-		static TreeEntry replace(Reference, Reference);
-		static bool containsKey(Reference);
-		static bool containsValue(Reference);
+		static Reference add(Reference, Reference, Reference);
+		static Reference remove(Reference, Reference);
+		static Reference replace(Reference, Reference, Reference);
+		static bool containsKey(Reference, Reference);
+		static bool containsValue(Reference, Reference);
+		static Reference balance(Reference);
+		static tlint height(Reference);
+		static void clear(Reference);
+		static Reference rightRotate(Reference);
+		static Reference leftRotate(Reference);
+		static Reference rightLeftRotate(Reference);
+		static Reference leftRightRotate(Reference);
 	};
 	Reference mRootEntry;
 
@@ -38,6 +47,10 @@ public:
 	virtual ~TreeMap();
 	TreeMap(const TreeMap &other) = delete;
 	TreeMap& operator=(const TreeMap &other) = delete;
+	Reference get(Reference);
+	Reference put(Reference, Reference);
+	Reference remove(Reference);
+	Reference putIfAbsence(Reference, Reference);
 };
 
 } /* namespace utils */

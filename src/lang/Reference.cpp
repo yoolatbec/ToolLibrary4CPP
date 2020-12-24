@@ -67,15 +67,15 @@ Object* Reference::getEntity() {
 	return mEntity;
 }
 
-type_t Reference::entityType() {
+type_t Reference::entityType() const {
 	return mEntity->type();
 }
 
-bool Reference::equals(Reference another) {
+bool Reference::equals(Reference another) const {
 	return mEntity->mHashCode == another.mEntity->mHashCode;
 }
 
-bool Reference::isNull() {
+bool Reference::isNull() const {
 	return mEntity == nullptr;
 }
 
@@ -83,7 +83,7 @@ type_t Reference::type() {
 	return CLASS_SERIAL;
 }
 
-bool Reference::instanceof(type_t type){
+bool Reference::instanceof(type_t type) {
 	return CLASS_SERIAL == type || Object::instanceof(type);
 }
 
