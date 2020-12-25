@@ -36,7 +36,7 @@ public:
 	virtual bool removeAll(Reference) = 0;
 	size_t size();
 	virtual bool instanceof(type_t);
-	virtual hash_t getElementType();
+	virtual hash_t elementType();
 	static type_t type();
 	bool empty();
 };

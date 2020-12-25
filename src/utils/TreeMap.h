@@ -39,6 +39,8 @@ private:
 		static Reference leftRotate(Reference);
 		static Reference rightLeftRotate(Reference);
 		static Reference leftRightRotate(Reference);
+		static Reference findMin(Reference);
+		static Reference get(Reference, Reference);
 	};
 	Reference mRootEntry;
 
@@ -51,6 +53,12 @@ public:
 	Reference put(Reference, Reference);
 	Reference remove(Reference);
 	Reference putIfAbsence(Reference, Reference);
+	Reference replace(Reference, Reference);
+	void clear();
+	Set keySet();
+	Set values();
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace utils */

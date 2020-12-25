@@ -11,8 +11,8 @@
 namespace tl {
 namespace utils {
 
-TreeMap::TreeMap(type_t keyType, type_t valueType) :
-		Map(keyType, valueType) {
+TreeMap::TreeMap(type_t keyType, type_t valueType)
+		: Map(keyType, valueType) {
 	// TODO Auto-generated constructor stub
 	mRootEntry = Reference();
 
@@ -24,8 +24,8 @@ TreeMap::~TreeMap() {
 	TreeEntry::clear(mRootEntry);
 }
 
-TreeMap::TreeEntry::TreeEntry(Reference key, Reference value) :
-		Entry(key, value) {
+TreeMap::TreeEntry::TreeEntry(Reference key, Reference value)
+		: Entry(key, value) {
 	mHeight = 0;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -174,11 +174,146 @@ Reference TreeMap::TreeEntry::add(Reference ref, Reference keyRef,
 }
 
 Reference TreeMap::TreeEntry::remove(Reference ref, Reference keyRef) {
-	if(ref.isNull()){
+	if (ref.isNull()) {
 		return ref;
 	}
 
+	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
 
+	if (entry->mKey.equals(keyRef)) {
+		if (!entry->mLeft.isNull() && !entry->mRight.isNull()) {
+			TreeEntry *minEntry =
+					dynamic_cast<TreeEntry*>(TreeMap::TreeEntry::findMin(
+							entry->mRight).getEntity());
+			entry->mKey = minEntry->mKey;
+			entry->mValue = minEntry->mValue;
+			entry->mWeight = minEntry->mWeight;
+			entry->mRight = TreeMap::TreeEntry::remove(entry->mRight,
+					entry->mKey);
+		} else {
+			ref = entry->mLeft.isNull() ? entry->mRight : entry->mLeft;
+		}
+	} else if (entry->mWeight < keyRef.getEntity()->mHashCode) {
+		entry->mRight = TreeMap::TreeEntry::remove(entry->mRight, keyRef);
+	} else {
+		entry->mLeft = TreeMap::TreeEntry::remove(entry->mLeft, keyRef);
+	}
+
+	return TreeMap::TreeEntry::balance(ref);
+}
+
+Reference TreeMap::TreeEntry::findMin(Reference ref) {
+	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
+	if (entry->mLeft.isNull()) {
+		return ref;
+	} else {
+		return TreeMap::TreeEntry::findMin(entry->mLeft);
+	}
+}
+
+Reference TreeMap::TreeEntry::replace(Reference ref, Reference keyRef,
+		Reference valueRef) {
+	if (ref.isNull()) {
+		return Reference();
+	}
+
+	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
+	if (entry->mKey.equals(keyRef)) {
+		entry->mValue = valueRef;
+		return valueRef;
+	} else if (keyRef.getEntity()->mHashCode < entry->mWeight) {
+		return TreeMap::TreeEntry::replace(entry->mLeft, keyRef, valueRef);
+	} else {
+		return TreeMap::TreeEntry::replace(entry->mRight, keyRef, valueRef);
+	}
+}
+
+Reference TreeMap::TreeEntry::get(Reference ref, Reference keyRef) {
+	if (ref.isNull()) {
+		return Reference();
+	}
+
+	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
+	if (entry->mKey.equals(keyRef)) {
+		return entry->mValue;
+	} else if (keyRef.getEntity()->mHashCode < entry->mWeight) {
+		return TreeMap::TreeEntry::get(entry->mLeft, keyRef);
+	} else {
+		return TreeMap::TreeEntry::get(entry->mRight, keyRef);
+	}
+}
+
+void TreeMap::TreeEntry::clear(Reference ref) {
+	if (ref.isNull()) {
+		return;
+	}
+
+	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
+	TreeMap::TreeEntry::clear(entry->mLeft);
+	TreeMap::TreeEntry::clear(entry->mRight);
+
+	entry->mLeft = Reference();
+	entry->mRight = Reference();
+}
+
+TreeMap::TreeMap(type_t keyType, type_t valueType)
+		: Map(keyType, valueType) {
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+Reference TreeMap::get(Reference key) {
+	return TreeMap::TreeEntry::get(mRootEntry, key);
+}
+
+Reference TreeMap::put(Reference key, Reference value) {
+	Reference oldValue = TreeMap::TreeEntry::get(mRootEntry, key);
+	mRootEntry = TreeMap::TreeEntry::add(oldValue, key, value);
+	if (!oldValue.isNull()) {
+		return oldValue;
+	} else {
+		return value;
+	}
+}
+
+Reference TreeMap::remove(Reference key) {
+	Reference oldValue = TreeMap::TreeEntry::get(mRootEntry, key);
+	mRootEntry = TreeMap::TreeEntry::remove(mRootEntry, key);
+	return oldValue;
+}
+
+Reference TreeMap::putIfAbsence(Reference key, Reference value) {
+	Reference oldValue = TreeMap::TreeEntry::get(mRootEntry, key);
+	if (oldValue.isNull()) {
+		mRootEntry = TreeMap::TreeEntry::add(oldValue, key, value);
+		return value;
+	} else {
+		return oldValue;
+	}
+}
+
+Reference TreeMap::replace(Reference key, Reference value) {
+	return TreeMap::TreeEntry::replace(mRootEntry, key, value);
+}
+
+void TreeMap::clear() {
+	TreeMap::TreeEntry::clear(mRootEntry);
+	mRootEntry = Reference();
+}
+
+Set TreeMap::keySet() {
+
+}
+
+Set TreeMap::values() {
+
+}
+
+type_t TreeMap::type() {
+	return CLASS_SERIAL;
+}
+
+bool TreeMap::instanceof(type_t type) {
+	return CLASS_SERIAL == type || Map::instanceof(type);
 }
 
 } /* namespace utils */

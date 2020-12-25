@@ -15,14 +15,21 @@ namespace utils {
 
 class Set: public Collection {
 private:
-	const static hash_t CLASS_HASH = 500L << 32;
+	const static type_t CLASS_SERIAL = 500;
+protected:
+	class Entry: public Object{
+	private:
+		const static type_t CLASS_SERIAL = 81;
+	public:
+		Reference mValue;
+	};
 public:
 	Set(hash_t type);
 	virtual ~Set();
 	Set(const Set &other) = delete;
 	Set& operator=(const Set &other) = delete;
-	virtual bool instanceof(hash_t) const;
-	static hash_t getType();
+	virtual bool instanceof(type_t);
+	static type_t type();
 };
 
 
