@@ -36,7 +36,7 @@ public:
 	virtual String* toString();
 	virtual bool instanceof(type_t);
 	static type_t type();
-	virtual hash_t hashCode();
+	virtual hash_t hashCode(type_t);
 };
 
 } /* namespace lang */

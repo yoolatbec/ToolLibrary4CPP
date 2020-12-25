@@ -11,8 +11,8 @@
 namespace tl {
 namespace utils {
 
-TreeMap::TreeMap(type_t keyType, type_t valueType)
-		: Map(keyType, valueType) {
+TreeMap::TreeMap(type_t keyType, type_t valueType) :
+		Map(keyType, valueType) {
 	// TODO Auto-generated constructor stub
 	mRootEntry = Reference();
 
@@ -24,8 +24,8 @@ TreeMap::~TreeMap() {
 	TreeEntry::clear(mRootEntry);
 }
 
-TreeMap::TreeEntry::TreeEntry(Reference key, Reference value)
-		: Entry(key, value) {
+TreeMap::TreeEntry::TreeEntry(Reference key, Reference value) :
+		Entry(key, value) {
 	mHeight = 0;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -131,8 +131,7 @@ Reference TreeMap::TreeEntry::balance(Reference ref) {
 	if (TreeMap::TreeEntry::height(left) - TreeMap::TreeEntry::height(right)
 			> ALLOWED_IMBALANCE) {
 		if (TreeMap::TreeEntry::height(leftEntry->mLeft)
-				- TreeMap::TreeEntry::height(leftEntry->mRight)
-				> ALLOWED_IMBALANCE) {
+				>= TreeMap::TreeEntry::height(leftEntry->mRight)) {
 			ref = TreeMap::TreeEntry::rightRotate(ref);
 		} else {
 			ref = TreeMap::TreeEntry::leftRightRotate(ref);
@@ -140,8 +139,7 @@ Reference TreeMap::TreeEntry::balance(Reference ref) {
 	} else if (TreeMap::TreeEntry::height(right)
 			- TreeMap::TreeEntry::height(left) > ALLOWED_IMBALANCE) {
 		if (TreeMap::TreeEntry::height(rightEntry->mRight)
-				- TreeMap::TreeEntry::height(rightEntry->mLeft)
-				> ALLOWED_IMBALANCE) {
+				>= TreeMap::TreeEntry::height(rightEntry->mLeft)) {
 			ref = TreeMap::TreeEntry::leftRotate(ref);
 		} else {
 			ref = TreeMap::TreeEntry::rightLeftRotate(ref);
@@ -157,9 +155,27 @@ Reference TreeMap::TreeEntry::balance(Reference ref) {
 	return ref;
 }
 
-Reference TreeMap::TreeEntry::add(Reference ref, Reference keyRef, Reference valueRef){
-	if(ref.isNull()){
+Reference TreeMap::TreeEntry::add(Reference ref, Reference keyRef,
+		Reference valueRef) {
+	if (ref.isNull()) {
 		return Reference(new TreeEntry(keyRef, valueRef));
+	}
+
+	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
+	if (ref.equals(keyRef)) {
+		entry->mValue = valueRef;
+	} else if (keyRef.getEntity()->mHashCode > ref.getEntity()->mHashCode) {
+		TreeMap::TreeEntry::add(entry->mRight, keyRef, valueRef);
+	} else {
+		TreeMap::TreeEntry::add(entry->mLeft, keyRef, valueRef);
+	}
+
+	return TreeMap::TreeEntry::balance(ref);
+}
+
+Reference TreeMap::TreeEntry::remove(Reference ref, Reference keyRef) {
+	if(ref.isNull()){
+		return ref;
 	}
 
 
