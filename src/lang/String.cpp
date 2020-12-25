@@ -6,8 +6,8 @@
  */
 
 #include "String.h"
-#include "cstdio"
-#include "cstring"
+#include <cstdio>
+#include <cstring>
 
 namespace tl {
 namespace lang {
