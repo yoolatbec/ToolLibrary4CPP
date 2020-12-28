@@ -31,7 +31,7 @@ protected:
 		virtual Reference next() = 0;
 		virtual Reference previous() = 0;
 		virtual bool insert(Reference) = 0;
-		bool remove() = 0;
+		void remove() = 0;
 		virtual bool instanceof(type_t);
 		static type_t type();
 	};

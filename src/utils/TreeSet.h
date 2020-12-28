@@ -16,10 +16,19 @@ namespace utils {
 
 class TreeSet: public Set {
 private:
-	const static type_t CLASS_SERIAL = 501;
+	const static type_t CLASS_SERIAL = 510;
 
-	class TreeSetIterator : public Iterator{
-
+	class TreeSetIterator : public SetIterator{
+	private:
+		const static type_t CLASS_SERIAL = 511;
+		Reference mSetElements;
+	public:
+		TreeSetIterator(Reference);
+		Reference next();
+		bool hasNext();
+		void remove();
+		static type_t type();
+		bool instanceof(type_t);
 	};
 
 	Reference mMap;

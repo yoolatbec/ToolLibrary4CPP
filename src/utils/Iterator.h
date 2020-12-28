@@ -25,9 +25,8 @@ public:
 	Iterator(const Iterator &other) = delete;
 	Iterator& operator=(const Iterator&) = delete;
 	virtual Reference next() = 0;
-	virtual bool insert(Reference);
 	virtual bool hasNext() = 0;
-	virtual bool remove() = 0;
+	virtual void remove() = 0;
 	bool isValid();
 	static type_t type();
 	bool instanceof(type_t);

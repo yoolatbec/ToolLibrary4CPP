@@ -17,6 +17,18 @@ class Set: public Collection {
 private:
 	const static type_t CLASS_SERIAL = 500;
 protected:
+	class SetIterator: public Iterator{
+	private:
+		const static type_t CLASS_SERIAL = 501;
+		Reference mSet;
+	public:
+		SetIterator(Reference);
+		bool hasNext();
+		bool hasPrevious();
+		Reference next();
+		Reference previous();
+		void remove();
+	};
 	class Entry: public Object{
 	private:
 		const static type_t CLASS_SERIAL = 81;

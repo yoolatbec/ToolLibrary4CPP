@@ -34,7 +34,7 @@ private:
 		Reference next();
 		bool hasPrevious();
 		Reference previous();
-		bool remove();
+		void remove();
 		bool insert(Reference);
 		static type_t type();
 	};

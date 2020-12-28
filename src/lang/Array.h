@@ -10,7 +10,6 @@
 
 #include "Reference.h"
 #include "Integer.h"
-#include "String.h"
 
 namespace tl {
 namespace lang {

@@ -419,17 +419,17 @@ Reference ArrayList::ArrayListIterator::previous(){
 	return mList->mElements[--mCurrent];
 }
 
-bool ArrayList::ArrayListIterator::remove() {
+void ArrayList::ArrayListIterator::remove() {
 	if (mList->mModified) {
 
 	}
 
 	if (mList->mSize == 0) {
-		return false;
+		return;
 	}
 
 	if(mCurrent < 0){
-		return false;
+		return;
 	}
 
 	for (tlint index = mCurrent; index < mList->mSize - 1; index++) {
@@ -437,8 +437,6 @@ bool ArrayList::ArrayListIterator::remove() {
 	}
 	(mList->mSize)--;
 	mList->mElements[mList->mSize] = Reference();
-
-	return true;
 }
 
 bool ArrayList::ArrayListIterator::insert(Reference ref) {

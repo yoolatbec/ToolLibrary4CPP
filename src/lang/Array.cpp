@@ -6,6 +6,7 @@
  */
 
 #include "Array.h"
+#include "String.h"
 
 namespace tl {
 namespace lang {

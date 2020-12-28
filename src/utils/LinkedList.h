@@ -48,7 +48,7 @@ private:
 		bool hasPrevious();
 		Reference previous();
 		bool insert(Reference);
-		bool remove();
+		void remove();
 		static type_t type();
 		bool instanceof(type_t);
 	};
@@ -65,7 +65,7 @@ private:
 		bool hasPrevious();
 		Reference previous();
 		bool insert(Reference);
-		bool remove();
+		void remove();
 		bool instanceof(type_t);
 		static type_t type();
 	};

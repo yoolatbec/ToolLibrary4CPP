@@ -12,7 +12,9 @@
 
 namespace tl {
 namespace lang {
-
+/*
+ * Reference
+ */
 class Reference: public lang::Object {
 private:
 	const static type_t CLASS_SERIAL = 1;

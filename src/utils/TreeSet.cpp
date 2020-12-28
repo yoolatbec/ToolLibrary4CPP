@@ -6,6 +6,7 @@
  */
 
 #include "TreeSet.h"
+#include "../lang/Array.h"
 #include "LinkedList.h"
 
 namespace tl {
@@ -32,6 +33,16 @@ bool TreeSet::add(Reference ref){
 
 	map->put(ref, Reference());
 	return true;
+}
+
+TreeSet::TreeSetIterator::TreeSetIterator(Reference ref){
+	if(!ref.instanceof(TreeSet::type())){
+		//cast an exception here
+	}
+
+	mSet = ref;
+	TreeSet* set = dynamic_cast<TreeSet*>(mSet.getEntity());
+	mSetElements = new Array(set->elementType(), set->size());
 }
 
 } /* namespace utils */

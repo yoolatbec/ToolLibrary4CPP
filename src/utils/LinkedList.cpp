@@ -6,9 +6,12 @@
  */
 
 #include "LinkedList.h"
+#include "../lang/Array.h"
 
 namespace tl {
 namespace utils {
+
+using lang::Array;
 
 LinkedList::LinkedList(hash_t type)
 		: Collection(type), List(type) {
@@ -394,7 +397,7 @@ bool LinkedList::replace(Reference ref, size_t position) {
 }
 
 Reference LinkedList::toArray() {
-	Array *arr = new Array(mSize, mElementType);
+	Array *arr = new Array(mElementType, mSize);
 	Reference current = ((LinkedListNode*)mHead.getEntity())->mNext;
 	for (size_t index = 0; index < mSize; index++) {
 		arr->set(((LinkedListNode*)current.getEntity())->mValue, index);
@@ -501,13 +504,13 @@ bool LinkedList::LinkedListIterator::insert(Reference ref) {
 	return true;
 }
 
-bool LinkedList::LinkedListIterator::remove() {
+void LinkedList::LinkedListIterator::remove() {
 	if (mList->mModified) {
 
 	}
 
 	if (mCurrent.equals(mList->mHead)) {
-		return false;
+		return;
 	}
 
 	if (((LinkedListNode*)mCurrent.getEntity())->mNext.equals(mList->mTail)) {
@@ -524,8 +527,6 @@ bool LinkedList::LinkedListIterator::remove() {
 	}
 
 	(mList->mSize)--;
-
-	return true;
 }
 
 type_t LinkedList::LinkedListIterator::type(){
@@ -603,9 +604,9 @@ Reference LinkedList::LinkedListReversedIterator::previous(){
 	return true;
 }
 
-bool LinkedList::LinkedListReversedIterator::remove() {
+void LinkedList::LinkedListReversedIterator::remove() {
 	if (mList->mSize == 0) {
-		return false;
+		return;
 	}
 
 	if (((LinkedListNode*)mCurrent.getEntity())->mPrevious.equals(
@@ -619,8 +620,6 @@ bool LinkedList::LinkedListReversedIterator::remove() {
 		((LinkedListNode*)mCurrent.getEntity())->mNext = ((LinkedListNode*)target.getEntity())->mNext;
 		((LinkedListNode*)(((LinkedListNode*)target.getEntity())->mNext.getEntity()))->mPrevious = mCurrent;
 	}
-
-	return true;
 }
 
 type_t LinkedList::LinkedListReversedIterator::type(){
