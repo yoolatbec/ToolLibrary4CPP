@@ -22,16 +22,19 @@ protected:
 	const type_t mKeyType;
 	const type_t mValueType;
 	size_t mSize;
+public:
 	class Entry: public Object{
 		private:
 			const static type_t CLASS_SERIAL = 74;
-		public:
-			Entry(Reference key, Reference value = Reference());
-			const hash_t mWeight;
+		protected:
+			const size_t mWeight;
 			const Reference mKey;
 			Reference mValue;
+		public:
+			Entry(Reference key, Reference value = Reference());
+			Reference getKey();
+			Reference getValue();
 		};
-public:
 	Map(type_t, type_t);
 	virtual ~Map();
 	Map(const Map &other) = delete;

@@ -30,7 +30,7 @@ public:
 	Array& operator=(const Array &other) = delete;
 	Reference get(size_t);
 	bool set(Reference, size_t);
-	String* toString();
+	Reference toString();
 	size_t size();
 	static type_t type();
 	bool instanceof(type_t);

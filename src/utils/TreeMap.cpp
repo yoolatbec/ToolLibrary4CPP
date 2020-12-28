@@ -22,6 +22,7 @@ TreeMap::TreeMap(type_t keyType, type_t valueType)
 TreeMap::~TreeMap() {
 	// TODO Auto-generated destructor stub
 	TreeEntry::clear(mRootEntry);
+	mRootEntry = Reference();
 }
 
 TreeMap::TreeEntry::TreeEntry(Reference key, Reference value)
@@ -256,16 +257,37 @@ void TreeMap::TreeEntry::clear(Reference ref) {
 	entry->mRight = Reference();
 }
 
+Reference TreeMap::TreeEntry::getLeft() {
+	return mLeft;
+}
+
+Reference TreeMap::TreeEntry::getRight() {
+	return mRight;
+}
+
+size_t TreeMap::TreeEntry::getHeight() {
+	return mHeight;
+}
+
 TreeMap::TreeMap(type_t keyType, type_t valueType)
 		: Map(keyType, valueType) {
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Reference TreeMap::get(Reference key) {
+	if (!key.getEntity()->instanceof(mKeyType)) {
+		//cast an excetion here
+	}
+
 	return TreeMap::TreeEntry::get(mRootEntry, key);
 }
 
 Reference TreeMap::put(Reference key, Reference value) {
+	if (!key.getEntity()->instanceof(mKeyType)
+			|| !value.getEntity()->instanceof(mValueType)) {
+		//cast an exception here
+	}
+
 	Reference oldValue = TreeMap::TreeEntry::get(mRootEntry, key);
 	mRootEntry = TreeMap::TreeEntry::add(oldValue, key, value);
 	if (!oldValue.isNull()) {
@@ -276,12 +298,21 @@ Reference TreeMap::put(Reference key, Reference value) {
 }
 
 Reference TreeMap::remove(Reference key) {
+	if (!key.getEntity()->instanceof(mKeyType)) {
+		//cast an exception here
+	}
+
 	Reference oldValue = TreeMap::TreeEntry::get(mRootEntry, key);
 	mRootEntry = TreeMap::TreeEntry::remove(mRootEntry, key);
 	return oldValue;
 }
 
-Reference TreeMap::putIfAbsence(Reference key, Reference value) {
+Reference TreeMap::putIfAbsent(Reference key, Reference value) {
+	if (!key.getEntity()->instanceof(mKeyType)
+			|| !value.getEntity()->instanceof(mValueType)) {
+		//cast an exception here
+	}
+
 	Reference oldValue = TreeMap::TreeEntry::get(mRootEntry, key);
 	if (oldValue.isNull()) {
 		mRootEntry = TreeMap::TreeEntry::add(oldValue, key, value);
@@ -292,7 +323,20 @@ Reference TreeMap::putIfAbsence(Reference key, Reference value) {
 }
 
 Reference TreeMap::replace(Reference key, Reference value) {
+	if (!key.getEntity()->instanceof(mKeyType)
+			|| !value.getEntity()->instanceof(mValueType)) {
+		//cast an exception here
+	}
+
 	return TreeMap::TreeEntry::replace(mRootEntry, key, value);
+}
+
+bool TreeMap::containsKey(Reference key) {
+	return TreeMap::TreeEntry::containsKey(mRootEntry, key);
+}
+
+bool TreeMap::containsValue(Reference value) {
+	return TreeMap::TreeEntry::containsValue(mRootEntry, value);
 }
 
 void TreeMap::clear() {

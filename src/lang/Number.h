@@ -9,7 +9,6 @@
 #define SRC_LANG_NUMBER_H_
 
 #include "Comparable.h"
-#include "String.h"
 
 namespace tl {
 namespace lang {
@@ -26,7 +25,7 @@ public:
 	virtual tlint64 longValue() = 0;
 	virtual double doubleValue() = 0;
 	virtual float floatValue() = 0;
-	virtual String toString() = 0;
+	virtual Reference toString() = 0;
 	virtual bool instanceof(type_t type);
 	static type_t type();
 };

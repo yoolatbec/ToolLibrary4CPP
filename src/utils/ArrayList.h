@@ -9,16 +9,14 @@
 #define SRC_UTILS_ARRAYLIST_H_
 
 #include "List.h"
-#include "Integer.h"
+#include "../lang/Integer.h"
 
 namespace tl {
 namespace utils {
 
 using lang::Reference;
-using lang::Comparable;
-using lang::Array;
 
-class ArrayList: virtual public List {
+class ArrayList: virtual public List{
 private:
 	const static type_t CLASS_SERIAL = 13;
 	Reference *mElements;
@@ -27,7 +25,7 @@ private:
 	private:
 		const static type_t CLASS_SERIAL = 14;
 		ArrayList *const mList;
-		size_t mCurrent;
+		tlint mCurrent;
 	public:
 		ArrayListIterator(ArrayList*);
 		static hash_t getType();
@@ -47,7 +45,7 @@ private:
 public:
 	const static tlint MAX_CAPACITY = lang::Integer::MAX_VALUE;
 	explicit ArrayList(type_t);
-	ArrayList(type_t, size_t);
+	ArrayList(type_t, tlint);
 	~ArrayList();
 	ArrayList(const ArrayList &other) = delete;
 	ArrayList& operator=(const ArrayList&) = delete;
@@ -56,17 +54,17 @@ public:
 	bool contains(Reference);
 	bool containsAll(Reference);
 	tlint indexOf(Reference);
-	bool insert(Reference, size_t position);
-	bool insertAll(Reference, size_t);
-	bool remove(size_t);
+	bool insert(Reference, tlint position);
+	bool insertAll(Reference, tlint);
+	bool remove(tlint);
 	bool remove(Reference);
 	bool removeAll(Reference);
-	Array* toArray();
-	List* sublist(size_t, size_t);
+	Reference toArray();
+	Reference sublist(tlint, tlint);
 	void clear();
-	Reference get(size_t);
-	bool set(size_t, Reference);
-	Iterator* iterator();
+	Reference get(tlint);
+	bool set(tlint, Reference);
+	Reference iterator();
 	virtual bool instanceof(type_t);
 	static type_t type();
 };

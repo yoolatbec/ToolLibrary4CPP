@@ -22,7 +22,7 @@ public:
 	virtual ~Iterable();
 	Iterable(const Iterable &other) = delete;
 	Iterable& operator=(const Iterator&) = delete;
-	virtual Iterator* iterator() = 0;
+	virtual Reference iterator() = 0;
 	virtual bool instanceof(type_t);
 	static type_t type();
 };

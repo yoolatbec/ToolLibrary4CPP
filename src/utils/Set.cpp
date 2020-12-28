@@ -10,22 +10,27 @@
 namespace tl {
 namespace utils {
 
-Set::Set(hash_t type)
+Set::Set(type_t type)
 		: Collection(type) {
 	// TODO Auto-generated constructor stub
-	mHash &= CLASS_HASH;
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Set::~Set() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Set::instanceof(hash_t type) const{
-	return (type == CLASS_HASH) || Collection::instanceof(type);
+bool Set::instanceof(type_t type){
+	return CLASS_SERIAL == type || Collection::instanceof(type);
 }
 
-hash_t Set::getType(){
-	return CLASS_HASH;
+type_t Set::type(){
+	return CLASS_SERIAL;
+}
+
+Set::Entry::Entry(){
+	mValue = Reference::null;
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 } /* namespace utils */

@@ -45,5 +45,13 @@ Map::Entry::Entry(Reference key, Reference value)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
+Reference Map::Entry::getKey(){
+	return mKey;
+}
+
+Reference Map::Entry::getValue(){
+	return mValue;
+}
+
 } /* namespace utils */
 } /* namespace tl */

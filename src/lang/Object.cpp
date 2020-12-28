@@ -28,14 +28,14 @@ bool Object::operator ==(Reference other) {
 	return this->mHashCode == other.getEntity()->mHashCode;
 }
 
-Object* Object::clone() {
-	return new Object;
+Reference Object::clone() {
+	return Reference(new Object);
 }
 
-String* Object::toString() {
+Reference Object::toString() {
 	char hash[20];
 	sprintf(hash, "%llX", mHashCode);
-	return new String(hash);
+	return Reference(new String(hash));
 }
 
 bool Object::instanceof(type_t otherType) {

@@ -32,11 +32,11 @@ public:
 	virtual ~Object();
 	virtual bool equals(Reference);
 	virtual bool operator==(Reference);
-	virtual Object* clone();
-	virtual String* toString();
-	virtual bool instanceof(type_t);
+	virtual Reference clone();
+	virtual Reference toString();
+	virtual bool instanceof(type_t) const;
 	static type_t type();
-	virtual hash_t hashCode(type_t);
+	hash_t hashCode();
 };
 
 } /* namespace lang */

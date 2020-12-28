@@ -22,9 +22,10 @@ protected:
 		const static type_t CLASS_SERIAL = 81;
 	public:
 		Reference mValue;
+		Entry();
 	};
 public:
-	Set(hash_t type);
+	Set(type_t);
 	virtual ~Set();
 	Set(const Set &other) = delete;
 	Set& operator=(const Set &other) = delete;

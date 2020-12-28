@@ -9,25 +9,50 @@
 #define SRC_UTILS_HASHSET_H_
 
 #include "Set.h"
-#include "../lang/Array.h"
 
 namespace tl {
 namespace utils {
 
 using lang::Array;
+using lang::Reference;
 
 class HashSet: public Set {
 private:
 	const static type_t CLASS_SERIAL = 84;
-protected:
-	class HashEntry: public Entry{
-
+	const static size_t TABLE_NUM = 5;
+	const static size_t MAX_TRANSFER = 9;
+	const static size_t INITIAL_CAPACITY[] = {
+			8, 13, 21, 34, 55
 	};
+
+	class HashEntry: public Entry{
+	private:
+		const static type_t CLASS_SERIAL = 85;
+	public:
+		bool mValid;
+		HashEntry();
+	};
+
+	Reference mTableArray;
+	size_t mHashFactor[TABLE_NUM];
+
+	void reHash();
 public:
-	HashSet(hash_t);
+	HashSet(type_t);
 	virtual ~HashSet();
 	HashSet(const HashSet &other) = delete;
 	HashSet& operator=(const HashSet &other) = delete;
+	bool add(Reference);
+	bool addAll(Reference);
+	bool remove(Reference);
+	bool removeAll(Reference);
+	bool contains(Reference);
+	bool containsAll(Reference);
+	void clear();
+	Reference iterator();
+	Reference toArray();
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace utils */

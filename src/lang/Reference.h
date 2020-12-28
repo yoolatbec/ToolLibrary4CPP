@@ -19,16 +19,16 @@ private:
 	size_t *mRef;
 	Object *mEntity;
 public:
-	Reference(Object* entity = nullptr);
+	explicit Reference(Object* entity = nullptr);
+	Reference(const Reference& other);
 	~Reference();
-	Reference(Reference other);
 	Reference& operator=(Reference other);
-	Object* getEntity();
+	Object* getEntity() const;
 	type_t entityType() const;
 	bool equals(Reference) const;
 	bool isNull() const;
 	static type_t type();
-	virtual bool instanceof(type_t);
+	virtual bool instanceof(type_t) const;
 };
 
 } /* namespace lang */

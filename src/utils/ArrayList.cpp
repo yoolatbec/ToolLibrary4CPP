@@ -6,11 +6,12 @@
  */
 
 #include "ArrayList.h"
-using tl::lang::Reference;
-using tl::lang::Array;
+#include "../lang/Array.h"
 
 namespace tl {
 namespace utils {
+using lang::Reference;
+using lang::Array;
 
 ArrayList::ArrayList(type_t type)
 		: Collection(type), List(type) {
@@ -19,7 +20,7 @@ ArrayList::ArrayList(type_t type)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-ArrayList::ArrayList(type_t type, size_t reserved)
+ArrayList::ArrayList(type_t type, tlint reserved)
 		: Collection(type), List(type, reserved) {
 	if(reserved > MAX_CAPACITY){
 		//cast an exception here
@@ -64,11 +65,11 @@ bool ArrayList::addAll(Reference ref) {
 	}
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->getElementType() != mElementType) {
+	if (collection->elementType() != mElementType) {
 		return false;
 	}
 
-	Iterator *iterator = collection->iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(collection->iterator().getEntity());
 	while (iterator->hasNext()) {
 		Reference ref = iterator->next();
 		add(ref);
@@ -89,7 +90,7 @@ bool ArrayList::contains(Reference ref) {
 		return false;
 	}
 
-	for (size_t index = 0; index < mSize; index++) {
+	for (tlint index = 0; index < mSize; index++) {
 		if (mElements[index].equals(ref)) {
 			return true;
 		}
@@ -112,13 +113,13 @@ bool ArrayList::containsAll(Reference ref){
 	}
 
 	Collection* collection = dynamic_cast<Collection*>(ref.getEntity());
-	if(collection->mElementType != mElementType){
+	if(collection->elementType() != mElementType){
 		//should cast an exception
 		return false;
 	}
 
 	bool result = true;
-	Iterator* iterator = collection->iterator();
+	Iterator* iterator = dynamic_cast<Iterator*>(collection->iterator().getEntity());
 	while(iterator->hasNext()){
 		Reference obj = iterator->next();
 		result = result && contains(obj);
@@ -130,7 +131,7 @@ bool ArrayList::containsAll(Reference ref){
 	return result;
 }
 
-bool ArrayList::insert(Reference ref, size_t position) {
+bool ArrayList::insert(Reference ref, tlint position) {
 	if (ref.isNull()) {
 		return false;
 	}
@@ -151,7 +152,7 @@ bool ArrayList::insert(Reference ref, size_t position) {
 		expand();
 	}
 
-	for (size_t index = mSize; index > position; index--) {
+	for (tlint index = mSize; index > position; index--) {
 		mElements[index] = mElements[index - 1];
 	}
 	mElements[position] = ref;
@@ -160,7 +161,7 @@ bool ArrayList::insert(Reference ref, size_t position) {
 	return true;
 }
 
-bool ArrayList::insertAll(Reference ref, size_t position) {
+bool ArrayList::insertAll(Reference ref, tlint position) {
 	if (ref.isNull()) {
 		return false;
 	}
@@ -170,7 +171,7 @@ bool ArrayList::insertAll(Reference ref, size_t position) {
 	}
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->getElementType() != mElementType) {
+	if (collection->elementType() != mElementType) {
 		return false;
 	}
 
@@ -182,18 +183,18 @@ bool ArrayList::insertAll(Reference ref, size_t position) {
 		return addAll(ref);
 	}
 
-	size_t size = collection->size();
+	tlint size = collection->size();
 	while (mCapacity <= size + mSize) {
 		expand();
 	}
 
-	size_t index;
+	tlint index;
 	for (index = position; index < mSize; index++) {
 		mElements[index + size] = mElements[index];
 	}
 
 	index = position;
-	Iterator *iterator = collection->iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(collection->iterator().getEntity());
 	while (iterator->hasNext()) {
 		mElements[index] = iterator->next();
 		index++;
@@ -205,7 +206,7 @@ bool ArrayList::insertAll(Reference ref, size_t position) {
 }
 
 tlint ArrayList::indexOf(Reference ref){
-	for(int index = 0; index < mSize; index++){
+	for(tlint index = 0; index < mSize; index++){
 		if(mElements[index].equals(ref)){
 			return index;
 		}
@@ -228,7 +229,7 @@ bool ArrayList::remove(Reference ref) {
 	}
 
 	bool found = false;
-	size_t index = 0;
+	tlint index = 0;
 	while(index < mSize){
 		if(mElements[index].equals(ref)){
 			remove(index);
@@ -241,7 +242,7 @@ bool ArrayList::remove(Reference ref) {
 	return found;
 }
 
-bool ArrayList::remove(size_t position) {
+bool ArrayList::remove(tlint position) {
 	if(empty()){
 		return false;
 	}
@@ -250,7 +251,7 @@ bool ArrayList::remove(size_t position) {
 		return false;
 	}
 
-	for (size_t index = position; index < mSize - 1; index++) {
+	for (tlint index = position; index < mSize - 1; index++) {
 		mElements[index] = mElements[index + 1];
 	}
 	mSize--;
@@ -274,11 +275,12 @@ bool ArrayList::removeAll(Reference ref) {
 	}
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->getElementType() != mElementType) {
+	if (collection->elementType() != mElementType) {
 		return false;
 	}
 
-	Iterator *iterator = collection->iterator();
+
+	Iterator *iterator = dynamic_cast<Iterator*>(collection->iterator().getEntity());
 	bool removed = false;
 	while (iterator->hasNext()) {
 		removed = remove(iterator->next()) || removed;
@@ -286,7 +288,7 @@ bool ArrayList::removeAll(Reference ref) {
 	return removed;
 }
 
-Reference ArrayList::get(size_t position) {
+Reference ArrayList::get(tlint position) {
 	if (position < 0 || position >= mSize) {
 		return Reference();
 	}
@@ -294,7 +296,7 @@ Reference ArrayList::get(size_t position) {
 	return mElements[position];
 }
 
-bool ArrayList::set(size_t position, Reference ref) {
+bool ArrayList::set(tlint position, Reference ref) {
 	if (position < 0 || position >= mSize) {
 		return false;
 	}
@@ -313,30 +315,30 @@ bool ArrayList::set(size_t position, Reference ref) {
 	return true;
 }
 
-lang::Array* ArrayList::toArray() {
+Reference ArrayList::toArray() {
 	Array *arr = new Array(mElementType, mSize);
-	for (size_t index = 0; index < mSize; index++) {
+	for (tlint index = 0; index < mSize; index++) {
 		arr->set(mElements[index], index);
 	}
-	return arr;
+	return Reference(arr);
 }
 
-List* ArrayList::sublist(size_t begin, size_t end){
+Reference ArrayList::sublist(tlint begin, tlint end){
 	if(end < begin){
 		//should cast an exception
-		return nullptr;
+		return Reference();
 	}
 
 	ArrayList* list = new ArrayList(mElementType);
 	if(begin >= mSize){
-		return list;
+		return Reference(list);
 	}
 
-	for(size_t index = begin; index < end && index < mSize; index++){
+	for(tlint index = begin; index < end && index < mSize; index++){
 		list->add(mElements[index]);
 	}
 
-	return list;
+	return Reference(list);
 }
 
 bool ArrayList::instanceof(type_t type) {
@@ -352,9 +354,9 @@ void ArrayList::clear() {
 }
 
 void ArrayList::expand(){
-	size_t newCapacity = mCapacity * 2;
+	tlint newCapacity = mCapacity * 2;
 	Reference* newElements = new Reference[newCapacity];
-	for(size_t index = 0; index < mSize; index++){
+	for(tlint index = 0; index < mSize; index++){
 		newElements[index] = mElements[index];
 	}
 
@@ -363,8 +365,8 @@ void ArrayList::expand(){
 	mCapacity = newCapacity;
 }
 
-Iterator* ArrayList::iterator() {
-	return new ArrayListIterator(this);
+Reference ArrayList::iterator() {
+	return Reference(new ArrayListIterator(this));
 }
 
 type_t ArrayList::type(){
@@ -410,7 +412,7 @@ bool ArrayList::ArrayListIterator::hasPrevious(){
 }
 
 Reference ArrayList::ArrayListIterator::previous(){
-	if(mList-mModified){
+	if(mList->mModified){
 
 	}
 
@@ -430,7 +432,7 @@ bool ArrayList::ArrayListIterator::remove() {
 		return false;
 	}
 
-	for (size_t index = mCurrent; index < mList->mSize - 1; index++) {
+	for (tlint index = mCurrent; index < mList->mSize - 1; index++) {
 		mList->mElements[index] = mList->mElements[index + 1];
 	}
 	(mList->mSize)--;
@@ -456,7 +458,7 @@ bool ArrayList::ArrayListIterator::insert(Reference ref) {
 		mList->expand();
 	}
 
-	for (size_t index = mList->mSize; index > mCurrent + 1; index--) {
+	for (tlint index = mList->mSize; index > mCurrent + 1; index--) {
 		mList->mElements[index] = mList->mElements[index - 1];
 	}
 	mList->mElements[mCurrent + 1] = ref;

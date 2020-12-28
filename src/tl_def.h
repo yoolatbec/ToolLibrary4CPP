@@ -20,7 +20,7 @@ typedef unsigned int size_t
 
 #endif
 
-typedef signed char byte;
+typedef char byte;
 typedef short word;
 typedef int tlint;
 typedef long long tlint64;

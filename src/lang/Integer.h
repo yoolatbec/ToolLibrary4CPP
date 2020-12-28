@@ -9,7 +9,6 @@
 #define SRC_LANG_INTEGER_H_
 
 #include "Number.h"
-#include "String.h"
 
 namespace tl {
 namespace lang {
@@ -32,7 +31,7 @@ public:
 	float floatValue();
 	tlint compareTo(Reference);
 	tlint getBitAt(tlint);
-	String* toString();
+	Reference toString();
 	static tlint larger(tlint, tlint);
 	static tlint smaller(tlint, tlint);
 	static type_t type();

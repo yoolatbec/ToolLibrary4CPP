@@ -14,8 +14,6 @@
 namespace tl {
 namespace lang {
 
-using tl::utils::List;
-using tl::utils::ArrayList;
 class String : public Comparable{
 private:
 	const static type_t CLASS_SERIAL = 9;
@@ -30,18 +28,18 @@ public:
 	String(const String&) = delete;
 	String& operator=(String) = delete;
 	~String();
-	String* append(Reference);
-	String* append(byte);
-	String* append(tlint);
-	String* append(tlint64);
-	String* append(double);
+	Reference append(Reference);
+	Reference append(byte);
+	Reference append(tlint);
+	Reference append(tlint64);
+	Reference append(double);
 	tlint charAt(size_t);
 	tlint compareTo(Reference);
-	String* substring(size_t length);
-	String* substring(size_t start, size_t length);
-	List* split(byte);
-	List* split(Reference);
-	String* toString();
+	Reference substring(size_t length);
+	Reference substring(size_t start, size_t length);
+	Reference split(byte);
+	Reference split(Reference);
+	Reference toString();
 	const byte* bytes();
 	bool instanceof(type_t);
 	static type_t type();

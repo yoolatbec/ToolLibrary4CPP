@@ -6,6 +6,7 @@
  */
 
 #include "Integer.h"
+#include "String.h"
 #include <cstdio>
 
 namespace tl {
@@ -87,10 +88,10 @@ tlint Integer::smaller(tlint a, tlint b) {
 	return a > b ? b : a;
 }
 
-String* Integer::toString() {
+Reference Integer::toString() {
 	char str[20];
 	sprintf(str, "%d", mValue);
-	return new String(str);
+	return Reference(new String(str));
 }
 
 bool Integer::instanceof(type_t type) {
@@ -105,11 +106,6 @@ hash_t Integer::genHashCode() {
 	return CLASS_SERIAL << 32 + mValue;
 }
 
-String* Integer::toString() {
-	char str[20];
-	sprintf(str, "%d", mValue);
-	return new String(str);
-}
 
 } /* namespace lang */
 } /* namespace tl */

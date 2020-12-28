@@ -9,8 +9,13 @@
 #include <cstdio>
 #include <cstring>
 
+#include "../utils/ArrayList.h"
+
+using tl::utils::ArrayList;
+
 namespace tl {
 namespace lang {
+
 
 String::String() {
 	// TODO Auto-generated ructor stub
@@ -67,19 +72,19 @@ String::~String() {
 	delete[] mStr;
 }
 
-String* String::append(byte c) {
+Reference String::append(byte c) {
 	byte *str = new byte[mLength + 2];
 	strncpy(str, mStr, mLength);
 	str[mLength + 1] = c;
 	str[mLength + 2] = '\0';
 	String *r_value = new String(str);
 	delete[] str;
-	return r_value;
+	return Reference(r_value);
 }
 
-String* String::append(Reference ref) {
+Reference String::append(Reference ref) {
 	if (ref.isNull()) {
-		return new String(mStr);
+		return Reference(new String(mStr));
 	}
 
 	String *r_value;
@@ -106,10 +111,10 @@ String* String::append(Reference ref) {
 
 	delete[] str;
 
-	return r_value;
+	return Reference(r_value);
 }
 
-String* String::append(tlint i) {
+Reference String::append(tlint i) {
 	byte ivalue[32];
 	ivalue[31] = '\0';
 	sprintf(ivalue, "%d", i);
@@ -119,10 +124,10 @@ String* String::append(tlint i) {
 	str[mLength + strlen(ivalue)] = '\0';
 	String *r_value = new String(str);
 	delete[] str;
-	return r_value;
+	return Reference(r_value);
 }
 
-String* String::append(double d) {
+Reference String::append(double d) {
 	byte doubleValue[64];
 	doubleValue[63] = '\0';
 	sprintf(doubleValue, "%lf", d);
@@ -132,7 +137,7 @@ String* String::append(double d) {
 	str[mLength + strlen(doubleValue)] = '\0';
 	String *r_value = new String(str);
 	delete[] str;
-	return r_value;
+	return Reference(r_value);
 }
 
 tlint String::charAt(size_t position) {
@@ -143,7 +148,7 @@ tlint String::charAt(size_t position) {
 	return mStr[position];
 }
 
-String* String::substring(size_t length) {
+Reference String::substring(size_t length) {
 	if (length <= 0) {
 		return new String("");
 	}
@@ -158,10 +163,10 @@ String* String::substring(size_t length) {
 
 	String *r_value = new String(str);
 	delete[] str;
-	return r_value;
+	return Reference(r_value);
 }
 
-String* String::substring(size_t start, size_t length) {
+Reference String::substring(size_t start, size_t length) {
 	if (start < 0) {
 		start = 0;
 	}
@@ -180,7 +185,7 @@ String* String::substring(size_t start, size_t length) {
 
 	String *r_value = new String(str);
 	delete[] str;
-	return r_value;
+	return Reference(r_value);
 }
 
 const byte* String::bytes() {
@@ -196,7 +201,7 @@ tlint String::compareTo(Reference ref) {
 	return 0;
 }
 
-List* String::split(byte b) {
+Reference String::split(byte b) {
 	ArrayList *list = new ArrayList(String::type());
 
 	char token[2]
@@ -208,10 +213,10 @@ List* String::split(byte b) {
 		str = strtok(nullptr, token);
 	}
 
-	return list;
+	return list->toArray();
 }
 
-List* String::split(Reference ref) {
+Reference String::split(Reference ref) {
 	if (ref.isNull()) {
 		return new ArrayList(String::type());
 	}
@@ -229,7 +234,7 @@ List* String::split(Reference ref) {
 		str = strtok(nullptr, token);
 	}
 
-	return list;
+	return list->toArray();
 }
 
 bool String::instanceof(type_t type) {
@@ -249,8 +254,8 @@ type_t String::type() {
 	return CLASS_SERIAL;
 }
 
-String* String::toString() {
-	return this;
+Reference String::toString() {
+	return Reference(this);
 }
 
 } /* namespace lang */

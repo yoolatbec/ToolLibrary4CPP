@@ -52,7 +52,7 @@ Reference& Reference::operator=(Reference other) {
 	return *this;
 }
 
-Reference::Reference(Reference other)
+Reference::Reference(const Reference &other)
 		: mEntity(other.mEntity) {
 	// TODO Auto-generated constructor stub
 	mRef = other.mRef;
@@ -63,7 +63,7 @@ Reference::Reference(Reference other)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-Object* Reference::getEntity() {
+Object* Reference::getEntity() const {
 	return mEntity;
 }
 
@@ -83,8 +83,8 @@ type_t Reference::type() {
 	return CLASS_SERIAL;
 }
 
-bool Reference::instanceof(type_t type) {
-	return CLASS_SERIAL == type || Object::instanceof(type);
+bool Reference::instanceof(type_t type) const {
+	return CLASS_SERIAL == type || Object::type() == type;
 }
 
 } /* namespace lang */

@@ -83,7 +83,7 @@ bool LinkedList::addAll(Reference ref) {
 	}
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->getElementType() != mElementType) {
+	if (collection->elementType() != mElementType) {
 		return false;
 	}
 
@@ -110,7 +110,7 @@ bool LinkedList::addAllFirst(Reference ref) {
 	}
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->getElementType() != mElementType) {
+	if (collection->elementType() != mElementType) {
 		return false;
 	}
 
@@ -209,7 +209,7 @@ bool LinkedList::insertAll(Reference ref, size_t position) {
 	}
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->getElementType() != mElementType) {
+	if (collection->elementType() != mElementType) {
 		return false;
 	}
 
@@ -332,7 +332,7 @@ bool LinkedList::removeAll(Reference ref) {
 	}
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->getElementType() != mElementType) {
+	if (collection->elementType() != mElementType) {
 		return false;
 	}
 
@@ -393,22 +393,22 @@ bool LinkedList::replace(Reference ref, size_t position) {
 	return true;
 }
 
-Array* LinkedList::toArray() {
+Reference LinkedList::toArray() {
 	Array *arr = new Array(mSize, mElementType);
 	Reference current = ((LinkedListNode*)mHead.getEntity())->mNext;
 	for (size_t index = 0; index < mSize; index++) {
 		arr->set(((LinkedListNode*)current.getEntity())->mValue, index);
 	}
 
-	return arr;
+	return Reference(arr);
 }
 
-Iterator* LinkedList::iterator() {
-	return new LinkedListIterator(this);
+Reference LinkedList::iterator() {
+	return Reference(new LinkedListIterator(this));
 }
 
-Iterator* LinkedList::reversedIterator() {
-	return new LinkedListReversedIterator(this);
+Reference LinkedList::reversedIterator() {
+	return Reference(new LinkedListReversedIterator(this));
 }
 
 bool LinkedList::instanceof(type_t type) {

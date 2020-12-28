@@ -21,7 +21,7 @@ private:
 	const static type_t CLASS_SERIAL = 10;
 protected:
 	const type_t mElementType;
-	size_t mSize;
+	tlint mSize;
 public:
 	explicit Collection(type_t);
 	virtual ~Collection();
@@ -31,12 +31,14 @@ public:
 	virtual bool addAll(Reference) = 0;
 	virtual bool contains(Reference) = 0;
 	virtual bool containsAll(Reference) = 0;
-	virtual Iterator* iterator() = 0;
+	virtual Reference iterator() = 0;
 	virtual bool remove(Reference) = 0;
 	virtual bool removeAll(Reference) = 0;
+	virtual void clear() = 0;
+	virtual Reference toArray() = 0;
 	size_t size();
 	virtual bool instanceof(type_t);
-	virtual hash_t elementType();
+	virtual type_t elementType();
 	static type_t type();
 	bool empty();
 };

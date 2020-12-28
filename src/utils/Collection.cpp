@@ -14,6 +14,7 @@ Collection::Collection(type_t type)
 		: mElementType(type) {
 	// TODO Auto-generated constructor stub
 	mSize = 0;
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Collection::~Collection() {
@@ -28,7 +29,7 @@ type_t Collection::type() {
 	return CLASS_SERIAL;
 }
 
-hash_t Collection::getElementType() {
+type_t Collection::elementType() {
 	return mElementType;
 }
 

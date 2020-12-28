@@ -39,7 +39,7 @@ private:
 	class LinkedListIterator: public ListIterator {
 	private:
 		const static type_t CLASS_SERIAL = 18;
-		LinkedList* const mList;
+		LinkedList *const mList;
 		Reference mCurrent;
 	public:
 		LinkedListIterator(LinkedList*);
@@ -56,7 +56,7 @@ private:
 	class LinkedListReversedIterator: public ListIterator {
 	private:
 		const static type_t CLASS_SERIAL = 19;
-		LinkedList* const mList;
+		LinkedList *const mList;
 		Reference mCurrent;
 	public:
 		LinkedListReversedIterator(LinkedList*);
@@ -92,12 +92,12 @@ public:
 	bool remove(size_t);
 	bool removeAll(Reference);
 	void clear();
-	Array* toArray();
+	Reference toArray();
 	Reference get(size_t);
 	Reference getFirst();
 	Reference getLast();
-	Iterator* iterator();
-	Iterator* reversedIterator();
+	Reference iterator();
+	Reference reversedIterator();
 	bool replace(Reference, size_t);
 	virtual bool instanceof(type_t);
 	static type_t type();

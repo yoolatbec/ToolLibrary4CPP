@@ -21,9 +21,9 @@ private:
 	private:
 		const static type_t CLASS_SERIAL = 55;
 		const static tlint ALLOWED_IMBALANCE = 1;
-	public:
 		Reference mLeft, mRight;
 		size_t mHeight;
+	public:
 		TreeEntry(Reference, Reference);
 		static type_t type();
 		bool instanceof(type_t);
@@ -41,7 +41,11 @@ private:
 		static Reference leftRightRotate(Reference);
 		static Reference findMin(Reference);
 		static Reference get(Reference, Reference);
+		Reference getLeft();
+		Reference getRight();
+		size_t getHeight();
 	};
+
 	Reference mRootEntry;
 
 public:
@@ -52,8 +56,14 @@ public:
 	Reference get(Reference);
 	Reference put(Reference, Reference);
 	Reference remove(Reference);
-	Reference putIfAbsence(Reference, Reference);
+	Reference putIfAbsent(Reference, Reference);
 	Reference replace(Reference, Reference);
+	Reference firstEntry();
+	Reference firstKey();
+	Reference floorEntry();
+	Reference floorKey();
+	bool containsKey(Reference);
+	bool containsValue(Reference);
 	void clear();
 	Set keySet();
 	Set values();

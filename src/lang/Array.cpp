@@ -54,7 +54,7 @@ size_t Array::size() {
 	return mSize;
 }
 
-String* Array::toString(){
+Reference Array::toString(){
 	String** elementStrings = new String*[mSize];
 	size_t* length = new size_t[mSize];
 	for(int index = 0; index < mSize; index++){
