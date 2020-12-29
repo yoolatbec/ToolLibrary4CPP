@@ -34,6 +34,7 @@ public:
 			Entry(Reference key, Reference value = Reference());
 			Reference getKey();
 			Reference getValue();
+			void setValue(Reference);
 		};
 	Map(type_t, type_t);
 	virtual ~Map();

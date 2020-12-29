@@ -68,10 +68,22 @@ Object* Reference::getEntity() const {
 }
 
 type_t Reference::entityType() const {
+	if(isNull()){
+		//cast an exception
+	}
+
 	return mEntity->type();
 }
 
 bool Reference::equals(Reference another) const {
+	if(another.isNull()){
+		return isNull();
+	}
+
+	if(isNull()){
+		return false;
+	}
+
 	return mEntity->mHashCode == another.mEntity->mHashCode;
 }
 
