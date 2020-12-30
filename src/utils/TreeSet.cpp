@@ -35,6 +35,12 @@ bool TreeSet::add(Reference ref){
 	return true;
 }
 
+bool TreeSet::contains(Reference ref){
+	TreeMap* map = (TreeMap*)mMap.getEntity();
+
+	return map->containsKey(ref);
+}
+
 TreeSet::TreeSetIterator::TreeSetIterator(Reference ref){
 	if(!ref.instanceof(TreeSet::type())){
 		//cast an exception here
@@ -44,6 +50,8 @@ TreeSet::TreeSetIterator::TreeSetIterator(Reference ref){
 	TreeSet* set = dynamic_cast<TreeSet*>(mSet.getEntity());
 	mSetElements = new Array(set->elementType(), set->size());
 }
+
+
 
 } /* namespace utils */
 } /* namespace tl */

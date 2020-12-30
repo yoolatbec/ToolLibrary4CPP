@@ -33,7 +33,7 @@ type_t Collection::elementType() {
 	return mElementType;
 }
 
-size_t Collection::size() {
+tlint Collection::size() {
 	return mSize;
 }
 

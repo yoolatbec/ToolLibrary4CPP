@@ -46,7 +46,7 @@ HashSet::HashEntry::HashEntry() {
 
 void HashSet::reHash() {
 	Array *tableArray = (Array*)mTableArray.getEntity();
-	size_t newCapacity = ((Array*)tableArray->get(3).getEntity())->size()
+	tlint newCapacity = ((Array*)tableArray->get(3).getEntity())->size()
 			+ ((Array*)tableArray->get(4).getEntity())->size();
 
 	if(newCapacity > lang::Integer::MAX_VALUE){

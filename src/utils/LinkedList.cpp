@@ -153,7 +153,7 @@ bool LinkedList::contains(Reference ref) {
 	return false;
 }
 
-bool LinkedList::insert(Reference ref, size_t position) {
+bool LinkedList::insert(Reference ref, tlint position) {
 	if (position < 0 || position > mSize) {
 		return false;
 	}
@@ -175,7 +175,7 @@ bool LinkedList::insert(Reference ref, size_t position) {
 	}
 
 	Reference current = mHead;
-	size_t index = 0;
+	tlint index = 0;
 	while (index < position) {
 		current = ((LinkedListNode*)current.getEntity())->mNext;
 		index++;
@@ -194,7 +194,7 @@ bool LinkedList::insert(Reference ref, size_t position) {
 	return true;
 }
 
-bool LinkedList::insertAll(Reference ref, size_t position) {
+bool LinkedList::insertAll(Reference ref, tlint position) {
 	if (ref.isNull()) {
 		return false;
 	}
@@ -221,7 +221,7 @@ bool LinkedList::insertAll(Reference ref, size_t position) {
 	}
 
 	Reference current = mHead;
-	size_t index = 0;
+	tlint index = 0;
 	while (index < position) {
 		current = ((LinkedListNode*)current.getEntity())->mNext;
 	}
@@ -275,7 +275,7 @@ bool LinkedList::remove(Reference ref) {
 	return found;
 }
 
-bool LinkedList::remove(size_t position) {
+bool LinkedList::remove(tlint position) {
 	if (empty()) {
 		return false;
 	}
@@ -285,7 +285,7 @@ bool LinkedList::remove(size_t position) {
 	}
 
 	Reference current = ((LinkedListNode*)mHead.getEntity())->mNext;
-	for (size_t index = 0; index < position; index++) {
+	for (tlint index = 0; index < position; index++) {
 		current = ((LinkedListNode*)current.getEntity())->mNext;
 	}
 
@@ -361,20 +361,20 @@ void LinkedList::clear() {
 	mModified = true;
 }
 
-Reference LinkedList::get(size_t position) {
+Reference LinkedList::get(tlint position) {
 	if (position < 0 || position >= mSize) {
 		return Reference();
 	}
 
 	Reference current = ((LinkedListNode*)mHead.getEntity())->mNext;
-	for (size_t index = 0; index < position; index++) {
+	for (tlint index = 0; index < position; index++) {
 		current = ((LinkedListNode*)current.getEntity())->mNext;
 	}
 
 	return ((LinkedListNode*)current.getEntity())->mValue;
 }
 
-bool LinkedList::replace(Reference ref, size_t position) {
+bool LinkedList::replace(Reference ref, tlint position) {
 	if (ref.isNull()) {
 		return remove(position);
 	}
@@ -388,7 +388,7 @@ bool LinkedList::replace(Reference ref, size_t position) {
 	}
 
 	Reference current = ((LinkedListNode*)mHead.getEntity())->mNext;
-	for (size_t index = 0; index < position; index++) {
+	for (tlint index = 0; index < position; index++) {
 		current = ((LinkedListNode*)current.getEntity())->mNext;
 	}
 
@@ -399,7 +399,7 @@ bool LinkedList::replace(Reference ref, size_t position) {
 Reference LinkedList::toArray() {
 	Array *arr = new Array(mElementType, mSize);
 	Reference current = ((LinkedListNode*)mHead.getEntity())->mNext;
-	for (size_t index = 0; index < mSize; index++) {
+	for (tlint index = 0; index < mSize; index++) {
 		arr->set(((LinkedListNode*)current.getEntity())->mValue, index);
 	}
 

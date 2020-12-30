@@ -22,7 +22,7 @@ private:
 		const static type_t CLASS_SERIAL = 55;
 		const static tlint ALLOWED_IMBALANCE = 1;
 		Reference mLeft, mRight;
-		size_t mHeight;
+		tlint mHeight;
 	public:
 		TreeEntry(Reference, Reference);
 		static type_t type();
@@ -43,7 +43,7 @@ private:
 		static Reference get(Reference, Reference);
 		Reference getLeft();
 		Reference getRight();
-		size_t getHeight();
+		tlint getHeight();
 	};
 
 	Reference mRootEntry;

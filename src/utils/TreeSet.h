@@ -48,7 +48,7 @@ public:
 	bool remove(Reference);
 	bool removeAll(Reference);
 	bool instanceof(hash_t);
-	hash_t elementType();
+	type_t elementType();
 	static type_t type();
 	bool instanceof(type_t);
 };

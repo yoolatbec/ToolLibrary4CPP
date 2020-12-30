@@ -18,7 +18,7 @@ List::List(type_t element_type)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-List::List(type_t element_type, size_t reserved)
+List::List(type_t element_type, tlint reserved)
 		:Collection(element_type) {
 	mCapacity = reserved > 0 ? reserved : DEFAULT_CAPACITY;
 	mModified = false;
@@ -30,7 +30,7 @@ List::~List() {
 
 }
 
-size_t List::getCapacity() {
+tlint List::getCapacity() {
 	return mCapacity;
 }
 

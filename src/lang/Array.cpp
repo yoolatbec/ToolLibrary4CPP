@@ -11,7 +11,7 @@
 namespace tl {
 namespace lang {
 
-Array::Array(type_t element_type, size_t size)
+Array::Array(type_t element_type, tlint size)
 		: mSize(size), mElementType(element_type) {
 	// TODO Auto-generated constructor stub
 	if(size > MAX_SIZE){
@@ -28,7 +28,7 @@ Array::~Array() {
 	delete[] mElements;
 }
 
-Reference Array::get(size_t index) {
+Reference Array::get(tlint index) {
 	if (index < 0 || index >= mSize) {
 		//should cast an exception
 	}
@@ -36,7 +36,7 @@ Reference Array::get(size_t index) {
 	return mElements[index];
 }
 
-bool Array::set(Reference ref, size_t index) {
+bool Array::set(Reference ref, tlint index) {
 	if (!ref.getEntity()->instanceof(mElementType)) {
 		return false;
 		//or cast an exception
@@ -51,13 +51,13 @@ bool Array::set(Reference ref, size_t index) {
 	return true;
 }
 
-size_t Array::size() {
+tlint Array::size() {
 	return mSize;
 }
 
 Reference Array::toString(){
 	String** elementStrings = new String*[mSize];
-	size_t* length = new size_t[mSize];
+	tlint* length = new tlint[mSize];
 	for(int index = 0; index < mSize; index++){
 		if(mElements[index].isNull()){
 			continue;

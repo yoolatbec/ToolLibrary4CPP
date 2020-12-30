@@ -14,23 +14,26 @@
 namespace tl {
 namespace lang {
 
+/*
+ *
+ */
 class Array: public Object {
 private:
 	const static type_t CLASS_SERIAL = 8;
 protected:
-	const size_t mSize;
+	const tlint mSize;
 	const type_t mElementType;
 	Reference* mElements;
 public:
 	const static tlint MAX_SIZE = Integer::MAX_VALUE;
-	Array(type_t, size_t);
+	Array(type_t, tlint);
 	virtual ~Array();
 	Array(const Array &other) = delete;
 	Array& operator=(const Array &other) = delete;
-	Reference get(size_t);
-	bool set(Reference, size_t);
+	Reference get(tlint);
+	bool set(Reference, tlint);
 	Reference toString();
-	size_t size();
+	tlint size();
 	static type_t type();
 	bool instanceof(type_t);
 };

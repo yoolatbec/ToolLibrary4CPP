@@ -19,9 +19,9 @@ using lang::Reference;
 class HashSet: public Set {
 private:
 	const static type_t CLASS_SERIAL = 84;
-	const static size_t TABLE_NUM = 5;
-	const static size_t MAX_TRANSFER = 9;
-	const static size_t INITIAL_CAPACITY[] = {
+	const static tlint TABLE_NUM = 5;
+	const static tlint MAX_TRANSFER = 9;
+	const static tlint INITIAL_CAPACITY[] = {
 			8, 13, 21, 34, 55
 	};
 
@@ -34,7 +34,7 @@ private:
 	};
 
 	Reference mTableArray;
-	size_t mHashFactor[TABLE_NUM];
+	tlint mHashFactor[TABLE_NUM];
 
 	void reHash();
 public:

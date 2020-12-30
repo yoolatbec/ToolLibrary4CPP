@@ -21,13 +21,13 @@ private:
 protected:
 	const type_t mKeyType;
 	const type_t mValueType;
-	size_t mSize;
+	tlint mSize;
 public:
 	class Entry: public Object{
 		private:
 			const static type_t CLASS_SERIAL = 74;
 		protected:
-			const size_t mWeight;
+			const tlint mWeight;
 			const Reference mKey;
 			Reference mValue;
 		public:
@@ -50,7 +50,7 @@ public:
 	Reference putIfAbsent(Reference, Reference) = 0;
 	Reference replace(Reference, Reference) = 0;
 	Reference remove(Reference) = 0;
-	size_t size();
+	tlint size();
 	bool isEmpty();
 	bool instanceof(type_t);
 	static type_t type();

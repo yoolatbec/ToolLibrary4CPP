@@ -22,7 +22,7 @@ Map::~Map() {
 	// TODO Auto-generated destructor stub
 }
 
-size_t Map::size(){
+tlint Map::size(){
 	return mSize;
 }
 

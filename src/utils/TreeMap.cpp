@@ -265,7 +265,7 @@ Reference TreeMap::TreeEntry::getRight() {
 	return mRight;
 }
 
-size_t TreeMap::TreeEntry::getHeight() {
+tlint TreeMap::TreeEntry::getHeight() {
 	return mHeight;
 }
 

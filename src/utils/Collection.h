@@ -36,7 +36,7 @@ public:
 	virtual bool removeAll(Reference) = 0;
 	virtual void clear() = 0;
 	virtual Reference toArray() = 0;
-	size_t size();
+	tlint size();
 	virtual bool instanceof(type_t);
 	virtual type_t elementType();
 	static type_t type();

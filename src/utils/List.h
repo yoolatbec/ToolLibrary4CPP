@@ -36,7 +36,7 @@ protected:
 		static type_t type();
 	};
 
-	static const size_t DEFAULT_CAPACITY = 10;
+	static const tlint DEFAULT_CAPACITY = 10;
 	tlint mCapacity;
 	bool mModified;
 public:
@@ -60,7 +60,7 @@ public:
 	virtual tlint indexOf(Reference) = 0;
 	virtual Reference toArray() = 0;
 	virtual Reference sublist(tlint, tlint) = 0;
-	size_t getCapacity();
+	tlint getCapacity();
 	type_t elementType();
 	virtual bool instanceof(type_t);
 	static type_t type();
