@@ -33,6 +33,12 @@ private:
 
 	Reference mMap;
 
+private:
+	bool contains0(Reference);
+	void add0(Reference);
+	void remove0(Reference);
+	byte typeCheck(Reference, type_t);
+
 
 public:
 	TreeSet(type_t);
@@ -43,7 +49,6 @@ public:
 	bool addAll(Reference);
 	bool contains(Reference);
 	bool containsAll(Reference);
-	bool empty();
 	Reference iterator();
 	bool remove(Reference);
 	bool removeAll(Reference);
