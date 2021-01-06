@@ -20,6 +20,8 @@ LinkedList::LinkedList(hash_t type)
 	mTail = Reference(new LinkedListNode(Reference()));
 	((LinkedListNode*)mHead.getEntity())->mNext = mTail;
 	((LinkedListNode*)mTail.getEntity())->mPrevious = mHead;
+	mSize = 0;
+	mCapacity = mSize;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -153,7 +155,7 @@ bool LinkedList::contains(Reference ref) {
 	return false;
 }
 
-bool LinkedList::insert(Reference ref, tlint position) {
+bool LinkedList::insert(tlint position, Reference ref) {
 	if (position < 0 || position > mSize) {
 		return false;
 	}
@@ -194,7 +196,7 @@ bool LinkedList::insert(Reference ref, tlint position) {
 	return true;
 }
 
-bool LinkedList::insertAll(Reference ref, tlint position) {
+bool LinkedList::insertAll(tlint position, Reference ref) {
 	if (ref.isNull()) {
 		return false;
 	}

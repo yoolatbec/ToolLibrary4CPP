@@ -30,10 +30,6 @@ List::~List() {
 
 }
 
-tlint List::getCapacity() {
-	return mCapacity;
-}
-
 type_t List::elementType() {
 	return mElementType;
 }

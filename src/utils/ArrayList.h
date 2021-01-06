@@ -48,6 +48,10 @@ private:
 		Reference next();
 		bool hasPrevious();
 		Reference previous();
+
+		/*
+		 * Remove the element currently pointing to.
+		 */
 		void remove();
 		bool insert(Reference);
 		static type_t type();
@@ -168,7 +172,13 @@ public:
 	 * remove all elements in the list and make the capacity to the default capacity
 	 */
 	void clear();
+	/*
+	 * bound check
+	 */
 	Reference get(tlint);
+	/*
+	 * bound check and type check
+	 */
 	Reference set(tlint, Reference);
 
 	/*

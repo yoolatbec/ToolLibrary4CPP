@@ -61,7 +61,6 @@ public:
 	virtual Reference toArray() = 0;
 	virtual Reference sublist(tlint, tlint) = 0;
 	virtual void trim() = 0;
-	tlint getCapacity();
 	type_t elementType();
 	virtual bool instanceof(type_t);
 	static type_t type();

@@ -35,6 +35,8 @@ private:
 	};
 
 	Reference mHead, mTail;
+	Reference mCurrentNode;
+	tlint mCurrentIndex;
 
 	class LinkedListIterator: public ListIterator {
 	private:
@@ -72,6 +74,20 @@ private:
 
 	friend class LinkedListIterator;
 	friend class LinkedListReversedIterator;
+
+private:
+	tlint typeCheck(Reference, type_t);
+	void boundCheck(tlint);
+	void insert0(tlint, Reference);
+	void remove0(tlint);
+	tlint indexOf0(Reference);
+	tlint lastIndexOf0(Reference);
+	void add0(Reference);
+	void addFirst0(Reference);
+	void moveForward();
+	void moveBackward();
+	Reference get0();
+
 public:
 	LinkedList(hash_t);
 	virtual ~LinkedList();
@@ -84,8 +100,8 @@ public:
 	bool addAllFirst(Reference);
 	bool addAllLast(Reference);
 	bool contains(Reference);
-	bool insert(Reference, tlint);
-	bool insertAll(Reference, tlint);
+	bool insert(tlint, Reference);
+	bool insertAll(tlint, Reference);
 	bool remove(Reference);
 	bool removeFirst();
 	bool removeLast();
@@ -98,7 +114,7 @@ public:
 	Reference getLast();
 	Reference iterator();
 	Reference reversedIterator();
-	bool replace(Reference, tlint);
+	Reference set(tlint, Reference);
 	virtual bool instanceof(type_t);
 	static type_t type();
 };
