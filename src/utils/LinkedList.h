@@ -30,12 +30,28 @@ private:
 		LinkedListNode(Reference);
 		LinkedListNode(const LinkedListNode&) = delete;
 		LinkedListNode& operator=(const LinkedListNode&) = delete;
+		void setNext(Reference);
+		void setPrevious(Reference);
+		void setValue(Reference);
+		Reference previous();
+		Reference next();
+		Reference value();
 		static type_t type();
 		bool instanceof(type_t);
 	};
 
+	/*
+	 * Record the head node and the tail node for gaining higher performance
+	 */
 	Reference mHead, mTail;
+
+	/*
+	 * Record the last accessed node to optimize the next access or seek.
+	 */
 	Reference mCurrentNode;
+	/*
+	 * The index of the last accessed node.
+	 */
 	tlint mCurrentIndex;
 
 	class LinkedListIterator: public ListIterator {
@@ -78,8 +94,8 @@ private:
 private:
 	tlint typeCheck(Reference, type_t);
 	void boundCheck(tlint);
-	void insert0(tlint, Reference);
-	void remove0(tlint);
+	void insert0(Reference);
+	void remove0();
 	tlint indexOf0(Reference);
 	tlint lastIndexOf0(Reference);
 	void add0(Reference);
@@ -87,6 +103,13 @@ private:
 	void moveForward();
 	void moveBackward();
 	Reference get0();
+	Reference set0(Reference);
+
+	/*
+	 * Jump to the specified position
+	 * No bound check
+	 */
+	void seek0(tlint);
 
 public:
 	LinkedList(hash_t);

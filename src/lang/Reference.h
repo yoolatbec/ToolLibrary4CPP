@@ -13,10 +13,10 @@
 namespace tl {
 namespace lang {
 /*
- * Reference capsulates pointers to instances of other classes so that programmer
- * need not to manually manage memory. To free a piece of allocated memory capsulated by
+ * Reference encapsulates pointers to instances of other classes so that programmer
+ * need not to manually manage memory. To free a piece of allocated memory encapsulated by
  * Reference instance, assign a new Reference instance created without argument passed to it.
- * Copies between Reference instances won't duplicate capsulated instance. Instead, they share
+ * Copies between Reference instances won't duplicate encapsulated instance. Instead, they share
  * the pointer to the instance and increase the reference count. While one Reference instance fades,
  * it will decrease the reference count while the reference count is greater than one. Otherwise, it frees
  * the allocated memory.
@@ -25,6 +25,8 @@ namespace lang {
  * Use method isNull() to judge whether an instance hold a pointer to nullptr.
  * Remember that once an instance pointer is managed by a Reference instance, it should ever be managed by the
  * Reference instance.
+ * Never use a single pointer to newly allocated memory region to initialize multiple Reference instances, because they may differ in reference counts
+ * to the memory region and then cause memory fault.
  */
 class Reference: public lang::Object {
 private:
