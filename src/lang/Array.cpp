@@ -36,7 +36,7 @@ Reference Array::get(tlint index) {
 	return mElements[index];
 }
 
-bool Array::set(Reference ref, tlint index) {
+bool Array::set(tlint index, Reference ref) {
 	if (!ref.getEntity()->instanceof(mElementType)) {
 		return false;
 		//or cast an exception

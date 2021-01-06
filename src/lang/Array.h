@@ -31,7 +31,7 @@ public:
 	Array(const Array &other) = delete;
 	Array& operator=(const Array &other) = delete;
 	Reference get(tlint);
-	bool set(Reference, tlint);
+	bool set(tlint, Reference);
 	Reference toString();
 	tlint size();
 	static type_t type();
