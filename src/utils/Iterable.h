@@ -17,6 +17,8 @@ namespace utils {
 class Iterable: public virtual lang::Object {
 private:
 	const static type_t CLASS_SERIAL = 9;
+protected:
+	bool mModified;
 public:
 	Iterable();
 	virtual ~Iterable();

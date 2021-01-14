@@ -38,7 +38,6 @@ protected:
 
 	static const tlint DEFAULT_CAPACITY = 10;
 	tlint mCapacity;
-	bool mModified;
 public:
 	explicit List(type_t);
 	List(type_t, tlint reserved);

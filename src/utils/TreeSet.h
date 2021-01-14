@@ -49,13 +49,13 @@ public:
 	bool addAll(Reference);
 	bool contains(Reference);
 	bool containsAll(Reference);
+	void clear();
 	Reference iterator();
 	bool remove(Reference);
 	bool removeAll(Reference);
-	bool instanceof(hash_t);
+	bool instanceof(type_t);
 	type_t elementType();
 	static type_t type();
-	bool instanceof(type_t);
 };
 
 } /* namespace utils */

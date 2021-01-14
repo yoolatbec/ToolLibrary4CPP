@@ -393,7 +393,7 @@ Reference ArrayList::set(tlint position, Reference ref) {
 Reference ArrayList::toArray() {
 	Array *arr = new Array(mElementType, mSize);
 	for (tlint index = 0; index < mSize; index++) {
-		arr->set(mElements[index], index);
+		arr->set(index, mElements[index]);
 	}
 	return Reference(arr);
 }
