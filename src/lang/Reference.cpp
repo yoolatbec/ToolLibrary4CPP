@@ -10,8 +10,8 @@
 namespace tl {
 namespace lang {
 
-Reference::Reference(Object *entity)
-		: mEntity(entity) {
+Reference::Reference(Object *entity, bool autoFree)
+		: mEntity(entity), mAutoFree(autoFree) {
 	if (mEntity != nullptr) {
 		mRef = new size_t;
 		(*mRef) = 1;
@@ -24,7 +24,7 @@ Reference::Reference(Object *entity)
 
 Reference::~Reference() {
 	// TODO Auto-generated destructor stub
-	if (mEntity != nullptr) {
+	if (mEntity != nullptr && mAutoFree) {
 		if ((*mRef) == 1) {
 			delete mEntity;
 			delete mRef;
@@ -52,10 +52,20 @@ Reference& Reference::operator=(Reference other) {
 	return *this;
 }
 
-Reference::Reference(const Reference &other)
-		: mEntity(other.mEntity) {
+Reference::Reference(const Reference &other) {
 	// TODO Auto-generated constructor stub
+	if (mEntity != nullptr) {
+		if ((*mRef) == 1 && mAutoFree) {
+			delete mEntity;
+			delete mRef;
+		} else if((*mRef) > 1){
+			(*mRef)--;
+		}
+	}
+
 	mRef = other.mRef;
+	mEntity = other.mEntity;
+	mAutoFree = other.mAutoFree;
 	if (mEntity != nullptr) {
 		(*mRef)++;
 	}
@@ -68,7 +78,7 @@ Object* Reference::getEntity() const {
 }
 
 type_t Reference::entityType() const {
-	if(isNull()){
+	if (isNull()) {
 		//cast an exception
 	}
 
@@ -76,11 +86,11 @@ type_t Reference::entityType() const {
 }
 
 bool Reference::equals(Reference another) const {
-	if(another.isNull()){
+	if (another.isNull()) {
 		return isNull();
 	}
 
-	if(isNull()){
+	if (isNull()) {
 		return false;
 	}
 

@@ -24,6 +24,14 @@ FloatArray::FloatArray(tlint size, float *initValues)
 	}
 }
 
+FloatArray::FloatArray(tlint size, float value)
+		: NOArray(size) {
+	mElements = new float[mSize];
+	for(tlint index = 0; index < size; index++){
+		mElements[index] = value;
+	}
+}
+
 FloatArray::~FloatArray() {
 	// TODO Auto-generated destructor stub
 	delete[] mElements;
@@ -41,6 +49,12 @@ Reference FloatArray::newFloatArray(tlint size, float *initValues) {
 	return Reference(new FloatArray(size, initValues));
 }
 
+Reference FloatArray::newFloatArray(tlint size, float value){
+	parameterCheck(size);
+
+	return Reference(new FloatArray(size, value));
+}
+
 float FloatArray::get(tlint index) {
 	boundCheck(index);
 
@@ -53,8 +67,12 @@ void FloatArray::set(tlint index, float value) {
 	mElements[index] = value;
 }
 
-Reference FloatArray::clone(){
+Reference FloatArray::clone() {
 	return Reference(new FloatArray(mSize, mElements));
+}
+
+Reference FloatArray::toString(){
+
 }
 
 } /* namespace lang */

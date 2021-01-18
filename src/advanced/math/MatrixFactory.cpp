@@ -13,7 +13,14 @@ namespace math {
 
 MatrixFactory::MatrixFactory() {
 	// TODO Auto-generated constructor stub
+}
 
+type_t MatrixFactory::type(){
+	return CLASS_SERIAL;
+}
+
+bool MatrixFactory::instanceof(type_t type){
+	return (CLASS_SERIAL == type) || Object::instanceof(type);
 }
 
 } /* namespace math */

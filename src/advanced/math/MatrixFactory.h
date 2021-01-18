@@ -9,7 +9,6 @@
 #define SRC_ADVANCED_MATH_MATRIXFACTORY_H_
 
 #include "../../lang/Reference.h"
-#include "Matrix.h"
 
 namespace tl {
 namespace advanced {
@@ -27,9 +26,12 @@ public:
 		VECTOR_1, VECTOR_2, VECTOR_3, VECTOR_4
 	};
 private:
+	const static type_t CLASS_SERIAL = 129;
+
 	MatrixFactory();
 	static bool additionCapable(Reference, Reference);
 	static bool multiplicationCapable(Reference, Reference);
+	static bool dotCapable(Reference, Reference);
 
 public:
 	MatrixFactory(const MatrixFactory &other) = delete;
@@ -45,11 +47,13 @@ public:
 	static Reference negate(Reference);
 	static Reference newMatrix(tlint, tlint);
 	static Reference newMatrix(MATRIX_TYPE);
-	static Reference newVector(tlint);
-	static Reference newVector(tlint, Reference);
+	static Reference newVector(Reference);
 	static Reference matrixRowValue(Reference, tlint, Reference);
 	static Reference matrixColumnValue(Reference, tlint, Reference);
+	static Reference normalize(Reference);
 	static Reference newIdenticalMatrix(tlint);
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace math */

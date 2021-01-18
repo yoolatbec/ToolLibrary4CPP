@@ -19,12 +19,12 @@ private:
 
 	tlint* mElements;
 public:
-	IntArray(tlint);
+	IntArray(tlint, tlint* = nullptr);
 	virtual ~IntArray();
 	IntArray(const IntArray &other) = delete;
 	IntArray& operator=(const IntArray &other) = delete;
-	static Reference newIntArray(tlint, int* = nullptr);
-	int get(tlint);
+	static Reference newIntArray(tlint, tlint* = nullptr);
+	tlint get(tlint);
 	void set(tlint, tlint);
 	Reference clone();
 	Reference toString();

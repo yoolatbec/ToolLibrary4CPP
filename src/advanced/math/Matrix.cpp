@@ -12,26 +12,19 @@ namespace tl {
 namespace advanced {
 namespace math {
 
-Matrix::Matrix(tlint row, tlint col) {
+Matrix::Matrix(tlint row, tlint col)
+		: mRow(row), mColumn(col) {
 	// TODO Auto-generated constructor stub
-	//should check if row and col is legal
-	initParameterCheck(row, col);
-
-	mRow = row;
-	mColumn = col;
-
-	mElements = new float[mRow * mColumn];
 }
 
-Matrix::~Matrix(){
-	delete [] mElements;
+Matrix::~Matrix() {
 }
 
-tlint Matrix::rowSize(){
+tlint Matrix::rowSize() {
 	return mRow;
 }
 
-tlint Matrix::columnSize(){
+tlint Matrix::columnSize() {
 	return mColumn;
 }
 

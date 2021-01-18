@@ -19,7 +19,11 @@ private:
 
 	float* mElements;
 
+	/*
+	 * In the sake of parameter check, make the constructor private.
+	 */
 	FloatArray(tlint, float*);
+	FloatArray(tlint, float);
 
 public:
 	virtual ~FloatArray();
@@ -27,6 +31,7 @@ public:
 	FloatArray& operator=(const FloatArray &other) = delete;
 	static Reference newFloatArray(tlint);
 	static Reference newFloatArray(tlint, float*);
+	static Reference newFloatArray(tlint, float);
 	Reference clone();
 	float get(tlint);
 	void set(tlint, float);

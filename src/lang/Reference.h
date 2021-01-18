@@ -41,11 +41,21 @@ private:
 	 * the pointer to an instance which is in form of allocated memory or to nullptr by default
 	 */
 	Object *mEntity;
+
+	/*
+	 * When the instance fades, whether or not free the instance referred to.
+	 * true to free while false will not free.
+	 */
+	bool mAutoFree;
 public:
 	/*
 	 * Default constructor, nullptr as default argument.
+	 * if autoFree is given true, when the Reference instance fades, the
+	 * instance referred to will be freed.
+	 * autoFree is given false only when an instance referred to should not be freed
+	 * too early or the Reference instance is encapsulate pointer 'this'.
 	 */
-	explicit Reference(Object* entity = nullptr);
+	explicit Reference(Object* entity = nullptr, bool autoFree = true);
 	/*
 	 * The destructor will make sure the memory is appropriately deallocated.
 	 */

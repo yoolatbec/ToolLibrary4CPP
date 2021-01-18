@@ -39,7 +39,15 @@ public:
 	Reference substring(size_t start, size_t length);
 	Reference split(byte);
 	Reference split(Reference);
+	Reference toUpperCase();
+	Reference toLowerCase();
 	Reference toString();
+	Reference valueOf(tlint);
+	Reference valueOf(float);
+	Reference valueOf(double);
+	Reference valueOf(char);
+	Reference valueOf(bool);
+	Reference valueOf(Reference);
 	const byte* bytes();
 	bool instanceof(type_t);
 	static type_t type();

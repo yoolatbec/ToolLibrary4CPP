@@ -8,23 +8,28 @@
 #ifndef SRC_ADVANCED_MATH_MATRIX_H_
 #define SRC_ADVANCED_MATH_MATRIX_H_
 
-#include "../../lang/Reference.h"
+#include "AbstractMatrix.h"
 
 namespace tl {
 namespace advanced {
 namespace math {
 
 using lang::Reference;
-using lang::Array;
 
-class Matrix: public lang::Object {
+class Matrix: public AbstractMatrix {
 private:
 	const static type_t CLASS_SERIAL = 402;
 
-	void initParameterCheck(tlint, tlint);
 protected:
-	tlint mRow, mColumn;
-	float* mElements;
+	const tlint mRow, mColumn;
+	/*
+	 * Store in form of column vectors
+	 */
+	Reference mElements;
+
+	void rowBoundCheck(tlint);
+	void columnBoundCheck(tlint);
+
 public:
 	Matrix(tlint, tlint);
 	Matrix(const Matrix &other) = delete;
@@ -34,11 +39,11 @@ public:
 	tlint columnSize();
 	Reference row(tlint) = 0;
 	Reference column(tlint) = 0;
-	Reference rows() = 0;
+	Reference columns() = 0;
 	float get(tlint, tlint) = 0;
 	void set(tlint, tlint, float) = 0;
 	void setRow(tlint, Reference) = 0;
-	void setColumn(tlint, Reference);
+	void setColumn(tlint, Reference) = 0;
 };
 
 } /* namespace math */
