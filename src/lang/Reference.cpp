@@ -24,9 +24,11 @@ Reference::Reference(Object *entity, bool autoFree)
 
 Reference::~Reference() {
 	// TODO Auto-generated destructor stub
-	if (mEntity != nullptr && mAutoFree) {
+	if (mEntity != nullptr) {
 		if ((*mRef) == 1) {
-			delete mEntity;
+			if (mAutoFree) {
+				delete mEntity;
+			}
 			delete mRef;
 		} else {
 			(*mRef)--;
@@ -37,15 +39,19 @@ Reference::~Reference() {
 Reference& Reference::operator=(Reference other) {
 	if (mEntity != nullptr) {
 		if ((*mRef) == 1) {
-			delete mEntity;
+			if (mAutoFree) {
+				delete mEntity;
+			}
 			delete mRef;
 		} else {
 			(*mRef)--;
 		}
 	}
+
 	mEntity = other.mEntity;
 	mRef = other.mRef;
-	if (mRef != nullptr) {
+	mAutoFree = other.mAutoFree;
+	if (mEntity != nullptr) {
 		(*mRef)++;
 	}
 
@@ -55,10 +61,12 @@ Reference& Reference::operator=(Reference other) {
 Reference::Reference(const Reference &other) {
 	// TODO Auto-generated constructor stub
 	if (mEntity != nullptr) {
-		if ((*mRef) == 1 && mAutoFree) {
-			delete mEntity;
+		if ((*mRef) == 1) {
+			if (mAutoFree) {
+				delete mEntity;
+			}
 			delete mRef;
-		} else if((*mRef) > 1){
+		} else {
 			(*mRef)--;
 		}
 	}

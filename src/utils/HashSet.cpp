@@ -8,7 +8,6 @@
 #include "HashSet.h"
 #include "../lang/Array.h"
 
-
 namespace tl {
 namespace utils {
 
@@ -17,12 +16,11 @@ HashSet::HashSet(type_t type)
 	// TODO Auto-generated constructor stub
 	mTableArray = Reference(new Array(Array::type(), 5));
 	//initialize to 8, 13, 21, 34, 55
-	Array *hashArray = (Array*)mTableArray.getEntity();
+	Array *tableArray = (Array*)mTableArray.getEntity();
 	for (int index = 0; index < TABLE_NUM; index++) {
-		hashArray->set(
+		tableArray->set(index,
 				Reference(
-						new Array(HashEntry::type(), INITIAL_CAPACITY[index])),
-				index);
+						new Array(HashEntry::type(), INITIAL_CAPACITY[index])));
 		mHashFactor[index] = INITIAL_CAPACITY[index];
 	}
 
@@ -31,11 +29,7 @@ HashSet::HashSet(type_t type)
 
 HashSet::~HashSet() {
 	// TODO Auto-generated destructor stub
-	Array* tableArray = (Array*)mTableArray.getEntity();
-	for(int index = 0; index < TABLE_NUM; index++){
-		tableArray->set(Reference(), index);
-	}
-	mTableArray = Reference();
+
 }
 
 HashSet::HashEntry::HashEntry() {
@@ -49,24 +43,25 @@ void HashSet::reHash() {
 	tlint newCapacity = ((Array*)tableArray->get(3).getEntity())->size()
 			+ ((Array*)tableArray->get(4).getEntity())->size();
 
-	if(newCapacity > lang::Integer::MAX_VALUE){
+	if (newCapacity > lang::Integer::MAX_VALUE) {
 
 	}
 
-	Reference newTableRef = Reference(new Array(HashEntry::type(), newCapacity));
-	Array* newTable = (Array*)newTableRef.getEntity();
+	Reference newTableRef = Reference(
+			new Array(HashEntry::type(), newCapacity));
+	Array *newTable = (Array*)newTableRef.getEntity();
 	Reference oldTableRef = tableArray->get(0);
-	Array* oldTable = (Array*)oldTableRef.getEntity();
+	Array *oldTable = (Array*)oldTableRef.getEntity();
 
-	for(int index = 0; index < TABLE_NUM - 1; index++){
+	for (int index = 0; index < TABLE_NUM - 1; index++) {
 		tableArray->set(tableArray->get(index + 1), index);
 	}
 	tableArray->set(newTableRef, TABLE_NUM - 1);
 
-	for(int index = 0; index < oldTable->size(); index++){
+	for (int index = 0; index < oldTable->size(); index++) {
 		Reference ref = oldTable->get(index);
-		HashEntry* entry = dynamic_cast<HashEntry*>(ref.getEntity());
-		if(entry->mValid){
+		HashEntry *entry = dynamic_cast<HashEntry*>(ref.getEntity());
+		if (entry->mValid) {
 			add(entry->mValue);
 		}
 	}
