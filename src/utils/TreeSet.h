@@ -18,7 +18,7 @@ class TreeSet: public Set {
 private:
 	const static type_t CLASS_SERIAL = 510;
 
-	class TreeSetIterator : public SetIterator{
+	class TreeSetIterator: public SetIterator {
 	private:
 		const static type_t CLASS_SERIAL = 511;
 		Reference mSetElements;
@@ -39,7 +39,6 @@ private:
 	void remove0(Reference);
 	byte typeCheck(Reference, type_t);
 
-
 public:
 	TreeSet(type_t);
 	virtual ~TreeSet();
@@ -53,6 +52,15 @@ public:
 	Reference iterator();
 	bool remove(Reference);
 	bool removeAll(Reference);
+	Reference first();
+	Reference last();
+	Reference higher(Reference);
+	Reference lower(Reference);
+	Reference pollFirst();
+	Reference pollLast();
+	Reference subSet(Reference fromElement, bool fromInclusive,
+			Reference toElement, bool toInclusive);
+	Reference toArray();
 	bool instanceof(type_t);
 	type_t elementType();
 	static type_t type();

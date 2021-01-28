@@ -22,7 +22,7 @@ TreeSet::TreeSet(type_t type)
 
 TreeSet::~TreeSet() {
 	// TODO Auto-generated destructor stub
-	mMap = Reference()();
+	clear();
 }
 
 bool TreeSet::add(Reference ref) {

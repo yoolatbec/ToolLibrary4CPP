@@ -27,15 +27,15 @@ public:
 		private:
 			const static type_t CLASS_SERIAL = 74;
 		protected:
-			const tlint mWeight;
 			const Reference mKey;
 			Reference mValue;
 		public:
 			Entry(Reference key, Reference value = Reference());
-			Reference getKey();
-			Reference getValue();
+			Reference key();
+			Reference value();
 			void setValue(Reference);
 		};
+
 	Map(type_t, type_t);
 	virtual ~Map();
 	Map(const Map &other) = delete;
@@ -43,10 +43,11 @@ public:
 	bool containsKey(Reference) = 0;
 	bool containsValue(Reference) = 0;
 	void clear() = 0;
-	Set keySet() = 0;
-	Set values() = 0;
+	Reference keySet() = 0;
+	Reference values() = 0;
 	Reference get(Reference) = 0;
 	Reference put(Reference, Reference) = 0;
+	void putAll(Reference) = 0;
 	Reference putIfAbsent(Reference, Reference) = 0;
 	Reference replace(Reference, Reference) = 0;
 	Reference remove(Reference) = 0;
