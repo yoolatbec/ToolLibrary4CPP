@@ -24,10 +24,10 @@ protected:
 	public:
 		SetIterator(Reference);
 		bool hasNext() = 0;
-		bool hasPrevious() = 0;
 		virtual Reference next() = 0;
-		virtual Reference previous() = 0;
 		void remove();
+		static type_t type();
+		bool instanceof(type_t);
 	};
 
 	class Entry: public Object {

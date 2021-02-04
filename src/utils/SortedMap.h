@@ -26,10 +26,10 @@ public:
 	virtual Reference firstKey() = 0;
 	virtual Reference lastKey() = 0;
 	virtual Reference entrySet() = 0;
-	virtual Reference subMap(Reference, bool, Reference, bool) = 0;
-	virtual Reference subMap(Reference, Reference) = 0;
-	virtual Reference tailMap(Reference) = 0;
-	virtual Reference headMap(Reference) = 0;
+//	virtual Reference subMap(Reference, bool, Reference, bool) = 0;
+//	virtual Reference subMap(Reference, Reference) = 0;
+//	virtual Reference tailMap(Reference) = 0;
+//	virtual Reference headMap(Reference) = 0;
 	static type_t type();
 	bool instanceof(type_t);
 };

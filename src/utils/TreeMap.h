@@ -135,6 +135,8 @@ private:
 		Reference previousEntry();
 		virtual bool hasNext();
 		virtual void remove();
+		static type_t type();
+		bool instanceof(type_t);
 	};
 
 	class EntryIterator: public PrivateEntryIterator {
@@ -143,6 +145,8 @@ private:
 	public:
 		EntryIterator(Reference);
 		Reference next();
+		static type_t type();
+		bool instanceof(type_t);
 	};
 
 	class ValueIterator: public virtual PrivateEntryIterator {
@@ -151,6 +155,8 @@ private:
 	public:
 		ValueIterator(Reference);
 		Reference next();
+		static type_t type();
+		bool instanceof(type_t);
 	};
 
 	class KeySet: public NavigableSet {
@@ -159,10 +165,10 @@ private:
 		Reference mMap;
 	public:
 		KeySet(type_t, Reference);
-		virtual Reference add(Reference);
-		virtual Reference addAll(Reference);
-		virtual Reference remove(Reference);
-		virtual Reference removeAll(Reference);
+		virtual bool add(Reference);
+		virtual bool addAll(Reference);
+		virtual bool remove(Reference);
+		virtual bool removeAll(Reference);
 		virtual bool contains(Reference);
 		virtual bool containsAll(Reference);
 		virtual void clear();
@@ -175,9 +181,9 @@ private:
 		virtual Reference first();
 		virtual Reference pollLast();
 		virtual Reference pollFirst();
-		virtual Reference subSet(Reference fromElement, bool fromInclusive,
-			Reference toElement, bool toInclusive);
-		virtual Reference subSet(Reference fromElement, Reference toElement);
+//		virtual Reference subSet(Reference fromElement, bool fromInclusive,
+//			Reference toElement, bool toInclusive);
+//		virtual Reference subSet(Reference fromElement, Reference toElement);
 		virtual Reference iterator();
 		virtual tlint size();
 		virtual bool isEmpty();
@@ -191,6 +197,8 @@ private:
 	public:
 		KeyIterator(Reference);
 		Reference next();
+		static type_t type();
+		bool instanceof(type_t);
 	};
 
 	class DescendingKeyIterator: public PrivateEntryIterator {
@@ -199,6 +207,8 @@ private:
 	public:
 		DescendingKeyIterator(Reference);
 		Reference next();
+		static type_t type();
+		bool instanceof(type_t);
 	};
 
 	friend class EntrySetView;
@@ -213,6 +223,9 @@ private:
 	void typeCheck(Reference, type_t);
 	void typeCheck(type_t, type_t);
 	Reference put0(Reference, Reference);
+//	bool inRange(Reference);
+//	bool toLow(Reference);
+//	bool toHigh(Reference);
 
 public:
 	TreeMap(type_t, type_t);
@@ -242,9 +255,9 @@ public:
 	bool containsKey(Reference);
 	bool containsValue(Reference);
 	void clear();
-	Reference subMap(Reference fromKey, bool fromInclusive, Reference toKey,
-		bool toInclusive);
-	Reference subMap(Reference fromKey, Reference toKey);
+//	Reference subMap(Reference fromKey, bool fromInclusive, Reference toKey,
+//		bool toInclusive);
+//	Reference subMap(Reference fromKey, Reference toKey);
 	Reference keySet();
 	Reference values();
 	Reference entrySet();

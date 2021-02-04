@@ -392,6 +392,22 @@ Reference TreeMap::TreeEntry::getRight() {
 	return mRight;
 }
 
+Reference TreeMap::TreeEntry::getParent() {
+	return mParent;
+}
+
+void TreeMap::TreeEntry::setLeft(Reference ref) {
+	mLeft = ref;
+}
+
+void TreeMap::TreeEntry::setRight(Reference ref) {
+	mRight = ref;
+}
+
+void TreeMap::TreeEntry::setParent(Reference ref) {
+	mParent = ref;
+}
+
 tlint TreeMap::TreeEntry::getHeight() {
 	return mHeight;
 }
@@ -476,6 +492,14 @@ Reference TreeMap::TreeEntry::predecessor(Reference root, Reference key) {
 
 		return p;
 	}
+}
+
+type_t TreeMap::TreeEntry::type() {
+	return CLASS_SERIAL;
+}
+
+bool TreeMap::TreeEntry::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Map::Entry::instanceof(type);
 }
 
 Reference TreeMap::get(Reference key) {
@@ -731,6 +755,7 @@ Reference TreeMap::pollFirstEntry() {
 	Reference firstEntryRef = TreeMap::TreeEntry::minEntry(mRootEntry);
 	TreeEntry *entry = dynamic_cast<TreeEntry*>(firstEntryRef.getEntity());
 	TreeMap::TreeEntry::remove(mRootEntry, entry->key());
+	mSize--;
 
 	return firstEntryRef;
 }
@@ -743,6 +768,7 @@ Reference TreeMap::pollLastEntry() {
 	Reference lastEntryRef = TreeMap::TreeEntry::maxEntry(mRootEntry);
 	TreeEntry *entry = dynamic_cast<TreeEntry*>(lastEntryRef.getEntity());
 	TreeMap::TreeEntry::remove(mRootEntry, entry->key());
+	mSize--;
 
 	return lastEntryRef;
 }
@@ -824,6 +850,7 @@ bool TreeMap::containsValue(Reference value) {
 void TreeMap::clear() {
 	TreeMap::TreeEntry::clear(mRootEntry);
 	mRootEntry = Reference();
+	mSize = 0;
 }
 
 Reference TreeMap::keySet() {
@@ -940,6 +967,14 @@ Reference TreeMap::Values::toArray() {
 	}
 
 	return rtval;
+}
+
+type_t TreeMap::Values::type() {
+	return CLASS_SERIAL;
+}
+
+bool TreeMap::Values::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Collection::instanceof(type);
 }
 
 tlint TreeMap::Values::size() {
@@ -1165,6 +1200,14 @@ Reference TreeMap::EntrySetView::toArray() {
 	return rtval;
 }
 
+type_t TreeMap::EntrySetView::type() {
+	return CLASS_SERIAL;
+}
+
+bool TreeMap::EntrySetView::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Set::instanceof(type);
+}
+
 //Reference TreeMap::EntrySetView::first() {
 //	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
 //
@@ -1205,6 +1248,8 @@ TreeMap::PrivateEntryIterator::PrivateEntryIterator(Reference map) {
 	TreeMap *treeMap = dynamic_cast<TreeMap*>(mMap.getEntity());
 	mNext = treeMap->firstEntry();
 	mLastReturned = Reference();
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 bool TreeMap::PrivateEntryIterator::hasNext() {
@@ -1252,6 +1297,14 @@ void TreeMap::PrivateEntryIterator::remove() {
 	mLastReturned = Reference();
 }
 
+type_t TreeMap::PrivateEntryIterator::type() {
+	return CLASS_SERIAL;
+}
+
+bool TreeMap::PrivateEntryIterator::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Iterator::instanceof(type);
+}
+
 TreeMap::EntryIterator::EntryIterator(Reference map)
 	: PrivateEntryIterator(map) {
 
@@ -1260,6 +1313,14 @@ TreeMap::EntryIterator::EntryIterator(Reference map)
 
 Reference TreeMap::EntryIterator::next() {
 	return nextEntry();
+}
+
+type_t TreeMap::EntryIterator::type() {
+	return CLASS_SERIAL;
+}
+
+bool TreeMap::EntryIterator::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || PrivateEntryIterator::instanceof(type);
 }
 
 TreeMap::ValueIterator::ValueIterator(Reference map)
@@ -1273,6 +1334,14 @@ Reference TreeMap::ValueIterator::next() {
 	return entry->value();
 }
 
+type_t TreeMap::ValueIterator::type() {
+	return CLASS_SERIAL;
+}
+
+bool TreeMap::ValueIterator::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || PrivateEntryIterator::instanceof(type);
+}
+
 TreeMap::KeyIterator::KeyIterator(Reference map)
 	: PrivateEntryIterator(map) {
 
@@ -1283,6 +1352,14 @@ Reference TreeMap::KeyIterator::next() {
 	Reference entryRef = PrivateEntryIterator::nextEntry();
 	Map::Entry *entry = dynamic_cast<Map::Entry*>(entryRef.getEntity());
 	return entry->key();
+}
+
+type_t TreeMap::KeyIterator::type() {
+	return CLASS_SERIAL;
+}
+
+bool TreeMap::KeyIterator::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || PrivateEntryIterator::instanceof(type);
 }
 
 TreeMap::DescendingKeyIterator::DescendingKeyIterator(Reference map)
@@ -1299,11 +1376,91 @@ Reference TreeMap::DescendingKeyIterator::next() {
 	return entry->key();
 }
 
+type_t TreeMap::DescendingKeyIterator::type() {
+	return CLASS_SERIAL;
+}
+
+bool TreeMap::DescendingKeyIterator::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || PrivateEntryIterator::instanceof(type);
+}
+
 TreeMap::KeySet::KeySet(type_t elementType, Reference map)
 	: NavigableSet(elementType) {
 	mMap = map;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+bool TreeMap::KeySet::add(Reference ref) {
+	return false;
+}
+
+bool TreeMap::KeySet::addAll(Reference ref) {
+	return false;
+}
+
+bool TreeMap::KeySet::remove(Reference ref) {
+	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+	return !map->remove(ref).isNull();
+}
+
+bool TreeMap::KeySet::removeAll(Reference ref) {
+	if (ref.isNull()) {
+		return false;
+	}
+
+	if (!ref.getEntity()->instanceof(Collection::type())) {
+		//cast an exception
+	}
+
+	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
+	Reference iteratorRef = collection->iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
+	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+
+	bool result = false;
+	while (iterator->hasNext()) {
+		Reference key = iterator->next();
+		result = result || !map->remove(key).isNull();
+	}
+
+	return result;
+}
+
+bool TreeMap::KeySet::contains(Reference ref) {
+	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+	return map->containsKey(ref);
+}
+
+bool TreeMap::KeySet::containsAll(Reference ref) {
+	if (ref.isNull()) {
+		return false;
+	}
+
+	if (!ref.getEntity()->instanceof(Collection::type())) {
+		//cast an exception
+	}
+
+	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
+	Reference iteratorRef = collection->iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
+	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+
+	bool result = true;
+	while (iterator->hasNext()) {
+		Reference key = iterator->next();
+		result = result && map->containsKey(key);
+		if (!result) {
+			return result;
+		}
+	}
+
+	return result;
+}
+
+void TreeMap::KeySet::clear() {
+	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+	map->clear();
 }
 
 Reference TreeMap::KeySet::ceiling(Reference keyRef) {
@@ -1326,18 +1483,90 @@ Reference TreeMap::KeySet::higher(Reference keyRef) {
 	return map->higherKey(keyRef);
 }
 
-Reference TreeMap::KeySet::subSet(Reference fromElement, Reference toElement) {
-	return subSet(fromElement, true, toElement, false);
+Reference TreeMap::KeySet::first() {
+	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+	return map->firstKey();
 }
 
-Reference TreeMap::KeySet::subSet(Reference fromElement, bool fromInclusive,
-	Reference toElement, bool toInclusive) {
+Reference TreeMap::KeySet::last() {
 	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
-	Reference subMapRef = map->subMap(fromElement, fromInclusive, toElement,
-		toInclusive);
-	TreeMap *subMap = dynamic_cast<TreeMap*>(subMapRef.getEntity());
-	return subMap->keySet();
+	return map->lastKey();
 }
+
+Reference TreeMap::KeySet::pollLast() {
+	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+
+	Reference entryRef = map->pollLastEntry();
+	if (entryRef.isNull()) {
+		return Reference();
+	}
+
+	Map::Entry *entry = dynamic_cast<Map::Entry*>(entryRef.getEntity());
+	return entry->key();
+}
+
+Reference TreeMap::KeySet::pollFirst() {
+	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+
+	Reference entryRef = map->pollFirstEntry();
+	if (entryRef.isNull()) {
+		return Reference();
+	}
+
+	Map::Entry *entry = dynamic_cast<Map::Entry*>(entryRef.getEntity());
+	return entry->key();
+}
+
+Reference TreeMap::KeySet::toArray() {
+	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+	Reference rtval = Reference(new Array(mElementType, map->size()));
+	Array *arr = dynamic_cast<Array*>(rtval.getEntity());
+
+	Reference iteratorRef = iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
+	tlint index = 0;
+
+	while (iterator->hasNext()) {
+		arr->set(index, iterator->next());
+		index++;
+	}
+
+	return rtval;
+}
+
+tlint TreeMap::KeySet::size() {
+	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+	return map->size();
+}
+
+bool TreeMap::KeySet::isEmpty() {
+	return size() == 0;
+}
+
+Reference TreeMap::KeySet::iterator() {
+	return Reference(new KeyIterator(mMap));
+}
+
+type_t TreeMap::KeySet::type() {
+	return CLASS_SERIAL;
+}
+
+bool TreeMap::KeySet::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || NavigableSet::instanceof(type);
+}
+
+//Reference TreeMap::KeySet::subSet(Reference fromElement, Reference toElement) {
+//	return subSet(fromElement, true, toElement, false);
+//}
+//
+//Reference TreeMap::KeySet::subSet(Reference fromElement, bool fromInclusive,
+//	Reference toElement, bool toInclusive) {
+//	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
+//	Reference subMapRef = map->subMap(fromElement, fromInclusive, toElement,
+//		toInclusive);
+//	TreeMap *subMap = dynamic_cast<TreeMap*>(subMapRef.getEntity());
+//	return subMap->keySet();
+//}
 
 } /* namespace utils */
 } /* namespace tl */

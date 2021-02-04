@@ -29,9 +29,9 @@ public:
 	virtual Reference pollLast() = 0;
 	virtual Reference iterator() = 0;
 	virtual Reference descendingIterator() = 0;
-	virtual Reference subSet(Reference fromElement, bool fromInclusive,
-			Reference toElement, bool toInclusive) = 0;
-	virtual Reference subSet(Reference fromElement, Reference toElement) = 0;
+//	virtual Reference subSet(Reference fromElement, bool fromInclusive,
+//			Reference toElement, bool toInclusive) = 0;
+//	virtual Reference subSet(Reference fromElement, Reference toElement) = 0;
 	virtual bool instanceof(type_t);
 	static type_t type();
 };
