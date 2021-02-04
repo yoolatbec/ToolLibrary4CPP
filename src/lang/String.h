@@ -17,13 +17,13 @@ namespace lang {
 class String : public Comparable{
 private:
 	const static type_t CLASS_SERIAL = 9;
-	byte* mStr;
+	char* mStr;
 	size_t mLength;
 	hash_t genHashCode();
 public:
 	String();
-	explicit String(const byte*);
-	String(size_t, byte);
+	explicit String(const char*);
+	String(size_t, char);
 	String(Reference);
 	String(const String&) = delete;
 	String& operator=(String) = delete;

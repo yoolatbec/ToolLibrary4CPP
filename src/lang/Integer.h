@@ -18,11 +18,12 @@ private:
 	static const type_t CLASS_SERIAL = 3;
 	tlint mValue;
 	hash_t genHashCode();
+
+	explicit Integer(tlint);
+	explicit Integer(Reference);
 public:
 	static const tlint MAX_VALUE = 0x7FFFFFFF;
 	static const tlint MIN_VALUE = 0x80000000;
-	explicit Integer(tlint);
-	explicit Integer(Reference);
 	byte byteValue();
 	word shortValue();
 	tlint intValue();
@@ -32,6 +33,8 @@ public:
 	tlint compareTo(Reference);
 	tlint getBitAt(tlint);
 	Reference toString();
+	static Reference valueOf(tlint);
+	static Reference valueOf(Reference);
 	static tlint larger(tlint, tlint);
 	static tlint smaller(tlint, tlint);
 	static type_t type();

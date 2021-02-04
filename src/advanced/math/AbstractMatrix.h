@@ -20,6 +20,8 @@ class AbstractMatrix: public lang::Object {
 private:
 	const static type_t CLASS_SERIAL = 77;
 
+protected:
+	float* mValues;
 public:
 	AbstractMatrix();
 	virtual ~AbstractMatrix();

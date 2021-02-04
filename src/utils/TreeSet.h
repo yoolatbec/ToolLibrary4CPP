@@ -30,6 +30,7 @@ private:
 		static type_t type();
 		bool instanceof(type_t);
 	};
+	friend class TreeSetIterator;
 
 	Reference mMap;
 
@@ -37,7 +38,8 @@ private:
 	bool contains0(Reference);
 	void add0(Reference);
 	void remove0(Reference);
-	byte typeCheck(Reference, type_t);
+	void typeCheck(Reference, type_t);
+	void typeCheck(type_t, type_t);
 
 public:
 	TreeSet(type_t);
@@ -60,6 +62,7 @@ public:
 	Reference pollLast();
 	Reference subSet(Reference fromElement, bool fromInclusive,
 			Reference toElement, bool toInclusive);
+	Reference subSet(Reference fromElement, Reference toElement);
 	Reference toArray();
 	bool instanceof(type_t);
 	type_t elementType();

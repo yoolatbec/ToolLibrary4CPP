@@ -53,6 +53,9 @@ public:
 	Reference get(Reference);
 	Reference putIfAbsent(Reference, Reference);
 	void putAll(Reference);
+	Reference replace(Reference, Reference);
+	Reference remove(Reference);
+	Reference remove(Reference, Reference);
 	bool instanceof(type_t);
 	static type_t type();
 };

@@ -17,29 +17,31 @@ using lang::FloatArray;
 
 Vec4::Vec4(float value) {
 	// TODO Auto-generated constructor stub
-	mElements = FloatArray::newFloatArray(SIZE, value);
+	mValues = new float[COMPONENT_COUNT];
+	for(tlint index =  0; index < COMPONENT_COUNT; index++){
+		mValues[index] = value;
+	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Vec4::Vec4(Reference ref) {
-	mElements = FloatArray::newFloatArray(4);
-	FloatArray *elements = dynamic_cast<FloatArray*>(mElements.getEntity());
+	mValues = new float[COMPONENT_COUNT];
 
 	if (ref.getEntity()->instanceof(FloatArray::type())) {
 		FloatArray *arr = dynamic_cast<FloatArray*>(ref.getEntity());
-		for (tlint index = 0; index < SIZE && index < arr->size(); index++) {
-			elements->set(index, arr->get(index));
+		for (tlint index = 0; index < COMPONENT_COUNT && index < arr->size(); index++) {
+			mValues[index] = arr->get(index);
 		}
 	} else if (ref.getEntity()->instanceof(Vector::type())) {
 		Vector *another = dynamic_cast<Vector*>(ref.getEntity());
 		tlint size = another->size();
 		tlint index;
 		for (index = 0; index < size; index++) {
-			elements->set(index, another->get(index));
+			mValues[index] = another->get(index);
 		}
-		for (; index < SIZE; index++) {
-			elements->set(index, 0);
+		for (; index < COMPONENT_COUNT; index++) {
+			mValues[index] = 0;
 		}
 	} else {
 		//cast an exception here
@@ -62,13 +64,13 @@ void Vec4::set(Reference ref) {
 	if (ref.getEntity()->instanceof(FloatArray::type())) {
 		FloatArray *arr = dynamic_cast<FloatArray*>(ref.getEntity());
 		FloatArray *elements = dynamic_cast<FloatArray*>(mElements.getEntity());
-		for (tlint index = 0; index < SIZE && index < arr->size(); index++) {
+		for (tlint index = 0; index < COMPONENT_COUNT && index < arr->size(); index++) {
 			elements->set(index, arr->get(index));
 		}
 	} else if (ref.getEntity()->instanceof(Vector::type())) {
 		FloatArray *elements = dynamic_cast<FloatArray*>(mElements.getEntity());
 		Vector *another = dynamic_cast<Vector*>(ref.getEntity());
-		for (tlint index = 0; index < SIZE && index < another->size();
+		for (tlint index = 0; index < COMPONENT_COUNT && index < another->size();
 				index++) {
 			elements->set(index, another->get(index));
 		}

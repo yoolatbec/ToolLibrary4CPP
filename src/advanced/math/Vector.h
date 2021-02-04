@@ -18,9 +18,6 @@ class Vector: public AbstractMatrix {
 private:
 	const static type_t CLASS_SERIAL = 78;
 
-protected:
-	Reference mElements;
-
 public:
 	Vector();
 	virtual ~Vector();

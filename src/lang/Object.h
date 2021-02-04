@@ -83,7 +83,7 @@ public:
 	 * and therefore the two classes are the same. Otherwise, the two clases are not the same.
 	 * The second method, type(), is a static method, which return the class identifier of the caller class.
 	 */
-	virtual bool instanceof(type_t) const;
+	virtual bool instanceof(type_t);
 	static type_t type();
 
 	/*

@@ -370,7 +370,7 @@ bool LinkedList::insertAll(tlint position, Reference ref) {
 }
 
 bool LinkedList::remove(Reference ref) {
-	if (empty()) {
+	if (isEmpty()) {
 		return false;
 	}
 
@@ -393,7 +393,7 @@ bool LinkedList::remove(Reference ref) {
 }
 
 bool LinkedList::remove(tlint position) {
-	if (empty()) {
+	if (isEmpty()) {
 		return false;
 	}
 
@@ -410,7 +410,7 @@ bool LinkedList::removeFirst() {
 }
 
 bool LinkedList::removeLast() {
-	if (empty()) {
+	if (isEmpty()) {
 		return false;
 	}
 
@@ -422,7 +422,7 @@ bool LinkedList::removeLast() {
 }
 
 bool LinkedList::removeAll(Reference ref) {
-	if (empty()) {
+	if (isEmpty()) {
 		return false;
 	}
 

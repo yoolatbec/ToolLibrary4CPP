@@ -291,7 +291,7 @@ tlint ArrayList::lastIndexOf(Reference ref){
 }
 
 bool ArrayList::remove(Reference ref) {
-	if(empty()){
+	if(isEmpty()){
 		return false;
 	}
 
@@ -313,7 +313,7 @@ bool ArrayList::remove(Reference ref) {
 }
 
 bool ArrayList::remove(tlint position) {
-	if(empty()){
+	if(isEmpty()){
 		return false;
 	}
 
@@ -343,7 +343,7 @@ bool ArrayList::removeLast(Reference ref){
 }
 
 bool ArrayList::removeAll(Reference ref) {
-	if(empty()){
+	if(isEmpty()){
 		return false;
 	}
 

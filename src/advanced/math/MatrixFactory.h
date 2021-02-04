@@ -42,8 +42,6 @@ public:
 	static Reference cross(Reference, Reference);
 	static Reference add(Reference, Reference);
 	static Reference minus(Reference, Reference);
-	static Reference transpose(Reference);
-	static Reference invert(Reference);
 	static Reference negate(Reference);
 	static Reference newMatrix(tlint, tlint);
 	static Reference newMatrix(MATRIX_TYPE);

@@ -13,28 +13,30 @@
 namespace tl {
 namespace utils {
 
-class Set: public Collection {
+class Set: public virtual Collection {
 private:
 	const static type_t CLASS_SERIAL = 500;
 protected:
-	class SetIterator: public Iterator{
+	class SetIterator: public Iterator {
 	private:
 		const static type_t CLASS_SERIAL = 501;
 		Reference mSet;
 	public:
 		SetIterator(Reference);
-		bool hasNext();
-		bool hasPrevious();
-		Reference next();
-		Reference previous();
+		bool hasNext() = 0;
+		bool hasPrevious() = 0;
+		virtual Reference next() = 0;
+		virtual Reference previous() = 0;
 		void remove();
 	};
-	class Entry: public Object{
+
+	class Entry: public Object {
 	private:
 		const static type_t CLASS_SERIAL = 81;
-	public:
 		Reference mValue;
+	public:
 		Entry();
+		Reference value();
 	};
 public:
 	Set(type_t);
@@ -44,7 +46,6 @@ public:
 	virtual bool instanceof(type_t);
 	static type_t type();
 };
-
 
 } /* namespace utils */
 } /* namespace tl */

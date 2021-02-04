@@ -37,7 +37,7 @@ tlint Collection::size() {
 	return mSize;
 }
 
-bool Collection::empty() {
+bool Collection::isEmpty() {
 	return mSize == 0;
 }
 

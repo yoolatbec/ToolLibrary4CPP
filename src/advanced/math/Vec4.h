@@ -17,7 +17,7 @@ namespace math {
 class Vec4: public Vector {
 private:
 	const static type_t CLASS_SERIAL = 90;
-	const static tlint SIZE = 4;
+	const static tlint COMPONENT_COUNT = 4;
 
 public:
 	/*

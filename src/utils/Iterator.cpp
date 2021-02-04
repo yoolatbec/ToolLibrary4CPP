@@ -12,15 +12,10 @@ namespace utils {
 
 Iterator::Iterator() {
 	// TODO Auto-generated constructor stub
-	mValid = true;
 }
 
 Iterator::~Iterator() {
 	// TODO Auto-generated destructor stub
-}
-
-bool Iterator::isValid() {
-	return mValid;
 }
 
 type_t Iterator::type() {

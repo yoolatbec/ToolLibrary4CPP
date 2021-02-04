@@ -29,8 +29,12 @@ type_t Set::type(){
 }
 
 Set::Entry::Entry(){
-	mValue = Reference::null;
+	mValue = Reference();
 	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+Reference Set::Entry::value(){
+	return mValue;
 }
 
 } /* namespace utils */

@@ -22,10 +22,6 @@ private:
 
 protected:
 	const tlint mRow, mColumn;
-	/*
-	 * Store in form of column vectors
-	 */
-	Reference mElements;
 
 	void rowBoundCheck(tlint);
 	void columnBoundCheck(tlint);
@@ -35,15 +31,37 @@ public:
 	Matrix(const Matrix &other) = delete;
 	Matrix& operator=(const Matrix &other) = delete;
 	~Matrix();
+
+	/*
+	 * Get the number of rows
+	 */
 	tlint rowSize();
+	/*
+	 * Get the number of columns
+	 */
 	tlint columnSize();
+
+	/*
+	 * Get the n-th row
+	 */
 	Reference row(tlint) = 0;
+	/*
+	 * Get the n-th column
+	 */
 	Reference column(tlint) = 0;
-	Reference columns() = 0;
-	float get(tlint, tlint) = 0;
-	void set(tlint, tlint, float) = 0;
+
+	/*
+	 * Get the value of row i, column j
+	 */
+	float get(tlint i, tlint j) = 0;
+	/*
+	 * Set the value of row i, column j to v
+	 */
+	void set(tlint, tlint, float v) = 0;
 	void setRow(tlint, Reference) = 0;
 	void setColumn(tlint, Reference) = 0;
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace math */

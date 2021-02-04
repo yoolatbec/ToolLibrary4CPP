@@ -24,7 +24,7 @@ String::String() {
 	mHashCode = genHashCode();
 }
 
-String::String(const byte *str) {
+String::String(const char *str) {
 	mLength = strlen(str);
 	mStr = new char[mLength + 1];
 	mStr[mLength] = '\0';
@@ -32,7 +32,7 @@ String::String(const byte *str) {
 	mHashCode = genHashCode();
 }
 
-String::String(size_t length, byte c) {
+String::String(size_t length, char c) {
 	mLength = length;
 	mStr = new char[mLength + 1];
 	mStr[mLength] = '\0';
