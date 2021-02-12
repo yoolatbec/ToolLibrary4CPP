@@ -23,8 +23,8 @@ public:
 	NavigableMap& operator=(const NavigableMap &other) = delete;
 	virtual Reference ceilingEntry(Reference) = 0;
 	virtual Reference ceilingKey(Reference) = 0;
-	virtual Reference descendingKeySet() = 0;
-	virtual Reference descendingMap() = 0;
+//	virtual Reference descendingKeySet() = 0;
+//	virtual Reference descendingMap() = 0;
 	virtual Reference firstEntry() = 0;
 	virtual Reference floorEntry(Reference) = 0;
 	virtual Reference floorKey(Reference) = 0;
@@ -36,7 +36,6 @@ public:
 	virtual Reference lowerKey(Reference) = 0;
 	virtual Reference pollFirstEntry() = 0;
 	virtual Reference pollLastEntry() = 0;
-	virtual Reference tailMap(Reference) = 0;
 	static type_t type();
 	bool instanceof(type_t);
 };

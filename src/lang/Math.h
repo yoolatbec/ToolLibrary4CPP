@@ -19,11 +19,12 @@ private:
 	Math();
 	Math(const Math &other) = delete;
 	Math& operator=(const Math &other) = delete;
-public:
 	static type_t type();
 	bool instanceof(type_t);
+public:
 	static tlint min(tlint, tlint);
 	static tlint max(tlint, tlint);
+	static double power(double, double);
 };
 
 } /* namespace lang */

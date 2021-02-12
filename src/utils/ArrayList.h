@@ -16,7 +16,7 @@ namespace utils {
 
 using lang::Reference;
 
-class ArrayList: virtual public List{
+class ArrayList: virtual public List {
 private:
 	const static type_t CLASS_SERIAL = 13;
 	/*
@@ -24,40 +24,25 @@ private:
 	 */
 	Reference *mElements;
 
-	/*
-	 * child class of ListIterator
-	 */
-	class ArrayListIterator: public ListIterator {
+	class ArrayListIterator: virtual public ListIterator {
 	private:
-		const static type_t CLASS_SERIAL = 14;
-		/*
-		 * pointer to the ArrayList instance which it should iterate
-		 * Considering changing it to a Reference instance, but this will sacrifice
-		 * some performance
-		 */
-		ArrayList *const mList;
-		/*
-		 * the index of the current element it points to in the ArrayList
-		 */
-		tlint mCurrent;
+		const static type_t CLASS_SERIAL = 15;
+	protected:
+		Reference nextElement();
+		Reference previousElement();
 	public:
-		ArrayListIterator(ArrayList*);
-		static hash_t getType();
-		bool instanceof(type_t);
-		bool hasNext();
-		Reference next();
-		bool hasPrevious();
-		Reference previous();
-
-		/*
-		 * Remove the element currently pointing to.
-		 */
-		void remove();
-		bool insert(Reference);
+		ArrayListIterator(Reference, tlint);
+		virtual bool hasNext();
+		virtual bool hasPrevious();
+		virtual void remove();
+		virtual void set(Reference);
+		virtual tlint nextIndex();
+		virtual tlint previousIndex();
+		virtual Reference next();
+		virtual Reference previous();
 		static type_t type();
+		bool instanceof(type_t);
 	};
-
-	friend class ArrayListIterator;
 
 	/*
 	 * Increase the capacity of the list to accommodate more elements.
@@ -186,6 +171,7 @@ public:
 	 */
 	void trim();
 	Reference iterator();
+	Reference iterator(tlint);
 	virtual bool instanceof(type_t);
 	static type_t type();
 };

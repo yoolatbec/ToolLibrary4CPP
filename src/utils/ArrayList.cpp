@@ -14,15 +14,15 @@ using lang::Reference;
 using lang::Array;
 
 ArrayList::ArrayList(type_t type)
-		: Collection(type), List(type) {
+	: Collection(type), List(type) {
 	mElements = new Reference[mCapacity];
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 ArrayList::ArrayList(type_t type, tlint reserved)
-		: Collection(type), List(type, reserved) {
-	if(reserved > MAX_CAPACITY){
+	: Collection(type), List(type, reserved) {
+	if (reserved > MAX_CAPACITY) {
 		//cast an exception here
 	}
 
@@ -36,26 +36,26 @@ ArrayList::~ArrayList() {
 	delete[] mElements;
 }
 
-void ArrayList::boundCheck(tlint position){
-	if(position >= mSize || position < 0){
+void ArrayList::boundCheck(tlint position) {
+	if (position >= mSize || position < 0) {
 		//cast IndexOutOfBoundException exception
 	}
 }
 
-tlint ArrayList::argumentCheck(Reference ref, type_t type){
-	if(ref.isNull()){
+tlint ArrayList::argumentCheck(Reference ref, type_t type) {
+	if (ref.isNull()) {
 		return 0;
 	}
 
-	if(!ref.getEntity()->instanceof(type)){
+	if (!ref.getEntity()->instanceof(type)) {
 		return -1;
 	}
 
 	return 1;
 }
 
-void ArrayList::add0(Reference ref){
-	if(mSize == mCapacity){
+void ArrayList::add0(Reference ref) {
+	if (mSize == mCapacity) {
 		expand();
 	}
 
@@ -64,12 +64,12 @@ void ArrayList::add0(Reference ref){
 	mModified = true;
 }
 
-void ArrayList::insert0(tlint position, Reference ref){
-	if(mSize == mCapacity){
+void ArrayList::insert0(tlint position, Reference ref) {
+	if (mSize == mCapacity) {
 		expand();
 	}
 
-	for(tlint index = mSize; index > position; index--){
+	for (tlint index = mSize; index > position; index--) {
 		mElements[index] = mElements[index - 1];
 	}
 
@@ -78,9 +78,9 @@ void ArrayList::insert0(tlint position, Reference ref){
 	mModified = true;
 }
 
-tlint ArrayList::indexOf0(Reference ref){
-	for(tlint index = 0; index < mSize; index++){
-		if(mElements[index].equals(ref)){
+tlint ArrayList::indexOf0(Reference ref) {
+	for (tlint index = 0; index < mSize; index++) {
+		if (mElements[index].equals(ref)) {
 			return index;
 		}
 	}
@@ -88,9 +88,9 @@ tlint ArrayList::indexOf0(Reference ref){
 	return -1;
 }
 
-tlint ArrayList::lastIndexOf0(Reference ref){
-	for(tlint index = mSize - 1; index >= 0; index--){
-		if(mElements[index].equals(ref)){
+tlint ArrayList::lastIndexOf0(Reference ref) {
+	for (tlint index = mSize - 1; index >= 0; index--) {
+		if (mElements[index].equals(ref)) {
 			return index;
 		}
 	}
@@ -98,9 +98,9 @@ tlint ArrayList::lastIndexOf0(Reference ref){
 	return -1;
 }
 
-Reference ArrayList::set0(tlint position, Reference ref){
+Reference ArrayList::set0(tlint position, Reference ref) {
 	Reference oldElement = mElements[position];
-	if(oldElement.equals(ref)){
+	if (oldElement.equals(ref)) {
 		return ref;
 	}
 
@@ -109,9 +109,9 @@ Reference ArrayList::set0(tlint position, Reference ref){
 	return oldElement;
 }
 
-void ArrayList::remove0(tlint position){
+void ArrayList::remove0(tlint position) {
 	mSize--;
-	for(tlint index = position; index < mSize; index++){
+	for (tlint index = position; index < mSize; index++) {
 		mElements[index] = mElements[index + 1];
 	}
 	mElements[mSize] = Reference();
@@ -119,7 +119,7 @@ void ArrayList::remove0(tlint position){
 }
 
 bool ArrayList::add(Reference value) {
-	switch(argumentCheck(value, mElementType)){
+	switch (argumentCheck(value, mElementType)) {
 	case 0:
 		return false;
 	case -1:
@@ -137,7 +137,7 @@ bool ArrayList::add(Reference value) {
 }
 
 bool ArrayList::addAll(Reference ref) {
-	switch(argumentCheck(ref, Collection::type())){
+	switch (argumentCheck(ref, Collection::type())) {
 	case 0:
 		return false;
 	case -1:
@@ -152,11 +152,12 @@ bool ArrayList::addAll(Reference ref) {
 		return false;
 	}
 
-	if(collection->mSize <= 0){
+	if (collection->mSize <= 0) {
 		return false;
 	}
 
-	Iterator *iterator = dynamic_cast<Iterator*>(collection->iterator().getEntity());
+	Iterator *iterator =
+		dynamic_cast<Iterator*>(collection->iterator().getEntity());
 	while (iterator->hasNext()) {
 		Reference ref = iterator->next();
 		add0(ref);
@@ -165,7 +166,7 @@ bool ArrayList::addAll(Reference ref) {
 }
 
 bool ArrayList::contains(Reference ref) {
-	switch(argumentCheck(ref, mElementType)){
+	switch (argumentCheck(ref, mElementType)) {
 	case 0:
 		return false;
 	case -1:
@@ -177,8 +178,8 @@ bool ArrayList::contains(Reference ref) {
 	return indexOf0(ref) >= 0;
 }
 
-bool ArrayList::containsAll(Reference ref){
-	switch(argumentCheck(ref, Collection::type())){
+bool ArrayList::containsAll(Reference ref) {
+	switch (argumentCheck(ref, Collection::type())) {
 	case 0:
 		return false;
 	case -1:
@@ -187,22 +188,23 @@ bool ArrayList::containsAll(Reference ref){
 		//do nothing
 	}
 
-	if(mSize == 0){
+	if (mSize == 0) {
 		return false;
 	}
 
-	Collection* collection = dynamic_cast<Collection*>(ref.getEntity());
-	if(collection->elementType() != mElementType){
+	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
+	if (collection->elementType() != mElementType) {
 		//should cast an exception
 		return false;
 	}
 
 	bool result = true;
-	Iterator* iterator = dynamic_cast<Iterator*>(collection->iterator().getEntity());
-	while(iterator->hasNext()){
+	Iterator *iterator =
+		dynamic_cast<Iterator*>(collection->iterator().getEntity());
+	while (iterator->hasNext()) {
 		Reference obj = iterator->next();
 		result = result && (indexOf0(obj) >= 0);
-		if(!result){
+		if (!result) {
 			return result;
 		}
 	}
@@ -211,7 +213,7 @@ bool ArrayList::containsAll(Reference ref){
 }
 
 bool ArrayList::insert(tlint position, Reference ref) {
-	switch(argumentCheck(ref, mElementType)){
+	switch (argumentCheck(ref, mElementType)) {
 	case 0:
 		return false;
 	case -1:
@@ -237,7 +239,7 @@ bool ArrayList::insertAll(tlint position, Reference ref) {
 		return addAll(ref);
 	}
 
-	switch(argumentCheck(ref, Collection::type())){
+	switch (argumentCheck(ref, Collection::type())) {
 	case 0:
 		return false;
 	case -1:
@@ -261,12 +263,13 @@ bool ArrayList::insertAll(tlint position, Reference ref) {
 	}
 
 	tlint index;
-	for(index = mSize - 1; index >= position; index--){
+	for (index = mSize - 1; index >= position; index--) {
 		mElements[index + size] = mElements[index];
 	}
 
 	index = position;
-	Iterator *iterator = dynamic_cast<Iterator*>(collection->iterator().getEntity());
+	Iterator *iterator =
+		dynamic_cast<Iterator*>(collection->iterator().getEntity());
 	while (iterator->hasNext()) {
 		mElements[index] = iterator->next();
 		index++;
@@ -277,8 +280,8 @@ bool ArrayList::insertAll(tlint position, Reference ref) {
 	return true;
 }
 
-tlint ArrayList::lastIndexOf(Reference ref){
-	switch(argumentCheck(ref, mElementType)){
+tlint ArrayList::lastIndexOf(Reference ref) {
+	switch (argumentCheck(ref, mElementType)) {
 	case 0:
 		return -1;
 	case -1:
@@ -291,11 +294,11 @@ tlint ArrayList::lastIndexOf(Reference ref){
 }
 
 bool ArrayList::remove(Reference ref) {
-	if(isEmpty()){
+	if (isEmpty()) {
 		return false;
 	}
 
-	switch(argumentCheck(ref, mElementType)){
+	switch (argumentCheck(ref, mElementType)) {
 	case 0:
 		return false;
 	case -1:
@@ -305,7 +308,7 @@ bool ArrayList::remove(Reference ref) {
 	}
 
 	tlint index = indexOf0(ref);
-	if(index >= 0){
+	if (index >= 0) {
 		remove0(index);
 	}
 
@@ -313,7 +316,7 @@ bool ArrayList::remove(Reference ref) {
 }
 
 bool ArrayList::remove(tlint position) {
-	if(isEmpty()){
+	if (isEmpty()) {
 		return false;
 	}
 
@@ -324,8 +327,8 @@ bool ArrayList::remove(tlint position) {
 	return true;
 }
 
-bool ArrayList::removeLast(Reference ref){
-	switch(argumentCheck(ref, mElementType)){
+bool ArrayList::removeLast(Reference ref) {
+	switch (argumentCheck(ref, mElementType)) {
 	case 0:
 		return false;
 	case -1:
@@ -335,7 +338,7 @@ bool ArrayList::removeLast(Reference ref){
 	}
 
 	tlint index = lastIndexOf0(ref);
-	if(index >= 0){
+	if (index >= 0) {
 		remove0(index);
 	}
 
@@ -343,11 +346,11 @@ bool ArrayList::removeLast(Reference ref){
 }
 
 bool ArrayList::removeAll(Reference ref) {
-	if(isEmpty()){
+	if (isEmpty()) {
 		return false;
 	}
 
-	switch(argumentCheck(ref, Collection::type())){
+	switch (argumentCheck(ref, Collection::type())) {
 	case 0:
 		return false;
 	case -1:
@@ -362,8 +365,8 @@ bool ArrayList::removeAll(Reference ref) {
 		return false;
 	}
 
-
-	Iterator *iterator = dynamic_cast<Iterator*>(collection->iterator().getEntity());
+	Iterator *iterator =
+		dynamic_cast<Iterator*>(collection->iterator().getEntity());
 	bool removed = false;
 	while (iterator->hasNext()) {
 		removed = remove(iterator->next()) || removed;
@@ -378,7 +381,7 @@ Reference ArrayList::get(tlint position) {
 }
 
 Reference ArrayList::set(tlint position, Reference ref) {
-	switch(argumentCheck(ref, mElementType)){
+	switch (argumentCheck(ref, mElementType)) {
 	case -1:
 		//cast an exception here
 	default:
@@ -398,8 +401,8 @@ Reference ArrayList::toArray() {
 	return Reference(arr);
 }
 
-Reference ArrayList::sublist(tlint begin, tlint end){
-	if(end < begin){
+Reference ArrayList::sublist(tlint begin, tlint end) {
+	if (end < begin) {
 		//should cast an exception
 		return Reference();
 	}
@@ -407,9 +410,9 @@ Reference ArrayList::sublist(tlint begin, tlint end){
 	boundCheck(begin);
 	boundCheck(end);
 
-	ArrayList* list = new ArrayList(mElementType);
+	ArrayList *list = new ArrayList(mElementType);
 
-	for(tlint index = begin; index < end; index++){
+	for (tlint index = begin; index < end; index++) {
 		list->add(mElements[index]);
 	}
 
@@ -428,51 +431,51 @@ void ArrayList::clear() {
 	mModified = true;
 }
 
-void ArrayList::expand(){
-	if(mCapacity == MAX_CAPACITY){
+void ArrayList::expand() {
+	if (mCapacity == MAX_CAPACITY) {
 		//cast SizeOutOfLimitException
 	}
 
 	tlint newCapacity;
-	if(mCapacity > MAX_CAPACITY / 2){
+	if (mCapacity > MAX_CAPACITY / 2) {
 		newCapacity = MAX_CAPACITY;
 	} else {
 		newCapacity = mCapacity * 2;
 	}
 
-	Reference* newElements = new Reference[newCapacity];
-	for(tlint index = 0; index < mSize; index++){
+	Reference *newElements = new Reference[newCapacity];
+	for (tlint index = 0; index < mSize; index++) {
 		newElements[index] = mElements[index];
 	}
 
-	delete [] mElements;
+	delete[] mElements;
 	mElements = newElements;
 	mCapacity = newCapacity;
 }
 
-void ArrayList::trim(){
-	if(mSize == mCapacity){
+void ArrayList::trim() {
+	if (mSize == mCapacity) {
 		return;
 	}
 
-	Reference* newElements = new Reference[mSize];
-	for(tlint index = 0; index < mSize; index++){
+	Reference *newElements = new Reference[mSize];
+	for (tlint index = 0; index < mSize; index++) {
 		newElements[index] = mElements[index];
 	}
 
-	delete [] mElements;
+	delete[] mElements;
 	mElements = newElements;
 	mCapacity = mSize;
 	mModified = true;
 }
 
-void ArrayList::ensureCapacity(tlint capacity){
-	if(capacity <= mCapacity){
+void ArrayList::ensureCapacity(tlint capacity) {
+	if (capacity <= mCapacity) {
 		return;
 	}
 
-	Reference* newElements = new Reference[capacity];
-	for(tlint index = 0; index < mSize; index++){
+	Reference *newElements = new Reference[capacity];
+	for (tlint index = 0; index < mSize; index++) {
 		newElements[index] = mElements[index];
 	}
 
@@ -482,17 +485,92 @@ void ArrayList::ensureCapacity(tlint capacity){
 }
 
 Reference ArrayList::iterator() {
-	return Reference(new ArrayListIterator(this));
+	return Reference(new ArrayListIterator(Reference(this, false), 0));
 }
 
-type_t ArrayList::type(){
+type_t ArrayList::type() {
 	return CLASS_SERIAL;
 }
 
-ArrayList::ArrayListIterator::ArrayListIterator(ArrayList *list)
-		: mList(list) {
-	mCurrent = -1;
-	mList->mModified = false;
+Reference ArrayList::iterator(tlint initCursor) {
+	return Reference(new ArrayListIterator(Reference(this, false), initCursor));
+}
+
+ArrayList::ArrayListIterator::ArrayListIterator(Reference list,
+	tlint initCursor)
+	: ListIterator(list, initCursor) {
+	indexRangeCheck();
+
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+bool ArrayList::ArrayListIterator::hasNext() {
+	List *list = dynamic_cast<List*>(mList.getEntity());
+	return mCursor < (list->size() - 1);
+}
+
+bool ArrayList::ArrayListIterator::hasPrevious() {
+	return mCursor > 0;
+}
+
+void ArrayList::ArrayListIterator::remove() {
+	if (mLastCursor < 0) {
+		//cast an exception
+	}
+
+	List *list = dynamic_cast<List*>(mList.getEntity());
+	list->remove(mLastCursor);
+
+	mCursor = mLastCursor;
+	mLastCursor = -1;
+}
+
+void ArrayList::ArrayListIterator::set(Reference newValue) {
+	if (mLastCursor < 0) {
+		//cast an exception
+	}
+
+	List *list = dynamic_cast<List*>(mList.getEntity());
+	list->set(mLastCursor, newValue);
+}
+
+
+Reference ArrayList::ArrayListIterator::nextElement() {
+	indexRangeCheck();
+
+	List *list = dynamic_cast<List*>(mList.getEntity());
+	Reference element = list->get(mCursor);
+	mLastCursor = mCursor;
+	mCursor++;
+
+	return element;
+}
+
+Reference ArrayList::ArrayListIterator::previousElement() {
+	indexRangeCheck();
+
+	List *list = dynamic_cast<List*>(mList.getEntity());
+	Reference element = list->get(mCursor);
+	mLastCursor = mCursor;
+	mCursor--;
+
+	return element;
+}
+
+tlint ArrayList::ArrayListIterator::nextIndex() {
+	return mCursor;
+}
+
+tlint ArrayList::ArrayListIterator::previousIndex() {
+	return mCursor - 1;
+}
+
+Reference ArrayList::ArrayListIterator::next() {
+	return nextElement();
+}
+
+Reference ArrayList::ArrayListIterator::previous() {
+	return previousElement();
 }
 
 type_t ArrayList::ArrayListIterator::type() {
@@ -500,85 +578,7 @@ type_t ArrayList::ArrayListIterator::type() {
 }
 
 bool ArrayList::ArrayListIterator::instanceof(type_t type) {
-	return (CLASS_SERIAL == type) || Iterator::instanceof(type);
-}
-
-bool ArrayList::ArrayListIterator::hasNext() {
-	if (mList->mModified) {
-
-	}
-
-	return mCurrent < mList->mSize - 1;
-}
-
-Reference ArrayList::ArrayListIterator::next() {
-	if (mList->mModified) {
-
-	}
-
-	return mList->mElements[++mCurrent];
-}
-
-bool ArrayList::ArrayListIterator::hasPrevious(){
-	if(mList->mModified){
-
-	}
-
-	return mCurrent > 0;
-}
-
-Reference ArrayList::ArrayListIterator::previous(){
-	if(mList->mModified){
-
-	}
-
-	return mList->mElements[--mCurrent];
-}
-
-void ArrayList::ArrayListIterator::remove() {
-	if (mList->mModified) {
-
-	}
-
-	if (mList->mSize == 0) {
-		return;
-	}
-
-	if(mCurrent < 0){
-		return;
-	}
-
-	for (tlint index = mCurrent; index < mList->mSize - 1; index++) {
-		mList->mElements[index] = mList->mElements[index + 1];
-	}
-	(mList->mSize)--;
-	mList->mElements[mList->mSize] = Reference();
-}
-
-bool ArrayList::ArrayListIterator::insert(Reference ref) {
-	if (mList->mModified) {
-		//cast an exception
-	}
-
-	if (ref.isNull()) {
-		return false;
-	}
-
-	if (!ref.getEntity()->instanceof(mList->mElementType)) {
-		return false;
-	}
-
-	if (mList->mSize == mList->mCapacity) {
-		mList->expand();
-	}
-
-	for (tlint index = mList->mSize; index > mCurrent + 1; index--) {
-		mList->mElements[index] = mList->mElements[index - 1];
-	}
-	mList->mElements[mCurrent + 1] = ref;
-	(mList->mSize)++;
-
-	return true;
+	return (CLASS_SERIAL == type) || ListIterator::instanceof(type);
 }
 
 } /* namespace utils */

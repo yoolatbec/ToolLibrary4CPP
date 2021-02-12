@@ -24,8 +24,11 @@ private:
 public:
 	static const tlint MAX_VALUE = 0x7FFFFFFF;
 	static const tlint MIN_VALUE = 0x80000000;
+	static const tlint SIZE_IN_BYTES = sizeof(tlint);
+	static const tlint SIZE_IN_BITS = sizeof(tlint) * 8;
+
 	byte byteValue();
-	word shortValue();
+	short shortValue();
 	tlint intValue();
 	tlint64 longValue();
 	double doubleValue();
@@ -33,8 +36,11 @@ public:
 	tlint compareTo(Reference);
 	tlint getBitAt(tlint);
 	Reference toString();
+	static Reference toString(tlint);
 	static Reference valueOf(tlint);
 	static Reference valueOf(Reference);
+	static tluint toUnsignedInt(tlint);
+	static tluint64 toUnsignedLong(tlint);
 	static tlint larger(tlint, tlint);
 	static tlint smaller(tlint, tlint);
 	static type_t type();

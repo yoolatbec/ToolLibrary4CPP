@@ -14,7 +14,7 @@
 namespace tl {
 namespace utils {
 
-class TreeSet: public Set {
+class TreeSet: public NavigableSet {
 private:
 	const static type_t CLASS_SERIAL = 510;
 
@@ -56,13 +56,15 @@ public:
 	bool removeAll(Reference);
 	Reference first();
 	Reference last();
+	Reference ceiling(Reference);
+	Reference floor(Reference);
 	Reference higher(Reference);
 	Reference lower(Reference);
 	Reference pollFirst();
 	Reference pollLast();
-	Reference subSet(Reference fromElement, bool fromInclusive,
-			Reference toElement, bool toInclusive);
-	Reference subSet(Reference fromElement, Reference toElement);
+//	Reference subSet(Reference fromElement, bool fromInclusive,
+//			Reference toElement, bool toInclusive);
+//	Reference subSet(Reference fromElement, Reference toElement);
 	Reference toArray();
 	bool instanceof(type_t);
 	type_t elementType();

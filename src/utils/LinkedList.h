@@ -56,39 +56,23 @@ private:
 	class LinkedListIterator: public ListIterator {
 	private:
 		const static type_t CLASS_SERIAL = 18;
-		LinkedList *const mList;
-		Reference mCurrent;
+		Reference mCurrentNode;
+		Reference mLastNode;
 	public:
-		LinkedListIterator(LinkedList*);
+		LinkedListIterator(Reference, tlint);
 		bool hasNext();
 		Reference next();
+		tlint nextIndex();
 		bool hasPrevious();
+		tlint previousIndex();
 		Reference previous();
-		bool insert(Reference);
 		void remove();
+		void set(Reference);
 		static type_t type();
 		bool instanceof(type_t);
-	};
-
-	class LinkedListReversedIterator: public ListIterator {
-	private:
-		const static type_t CLASS_SERIAL = 19;
-		LinkedList *const mList;
-		Reference mCurrent;
-	public:
-		LinkedListReversedIterator(LinkedList*);
-		bool hasNext();
-		Reference next();
-		bool hasPrevious();
-		Reference previous();
-		bool insert(Reference);
-		void remove();
-		bool instanceof(type_t);
-		static type_t type();
 	};
 
 	friend class LinkedListIterator;
-	friend class LinkedListReversedIterator;
 
 private:
 	tlint typeCheck(Reference, type_t);
@@ -149,6 +133,8 @@ private:
 	 */
 	void seek0(tlint);
 
+	Reference seekNode0(tlint);
+
 public:
 	LinkedList(type_t);
 	virtual ~LinkedList();
@@ -202,8 +188,8 @@ public:
 	 * Return an iterator which iterates elements from the end of the list
 	 * to the beginning of the list.
 	 */
-	Reference reversedIterator();
 	Reference set(tlint, Reference);
+	Reference sublist(tlint, tlint);
 	virtual bool instanceof(type_t);
 	static type_t type();
 };

@@ -6,6 +6,7 @@
  */
 
 #include "Math.h"
+#include <math.h>
 
 namespace tl {
 namespace lang {

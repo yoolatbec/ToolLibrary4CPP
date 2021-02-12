@@ -188,58 +188,68 @@ Reference TreeSet::pollLast() {
 	return entry->key();
 }
 
-Reference TreeSet::subSet(Reference fromElement, bool fromInclusive,
-		Reference toElement, bool toInclusive) {
-	typeCheck(fromElement, mElementType);
-	typeCheck(toElement, mElementType);
-
-	if (!contains0(fromElement) || !contains0(toElement)) {
-		//cast IllegalArgumentException
-	}
-
-	if (fromElement.getEntity()->mHashCode > toElement.getEntity()->mHashCode) {
-		//cast IllegalArgumentException
-	}
-
-	Reference resultSetRef = Reference(new TreeSet(mElementType));
-	TreeSet *set = dynamic_cast<TreeSet*>(resultSetRef.getEntity());
-	Reference iteratorRef = iterator();
-	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
-
-	while (iterator->hasNext()) {
-		Reference element = iterator->next();
-		if (element.getEntity()->mHashCode
-				< fromElement.getEntity()->mHashCode) {
-			continue;
-		}
-
-		if (element.getEntity()->mHashCode > toElement.getEntity()->mHashCode) {
-			break;
-		}
-
-		if ((element.getEntity()->mHashCode == fromElement.getEntity())
-				&& fromInclusive) {
-			set->add(element);
-		} else {
-			continue;
-		}
-
-		if ((element.getEntity()->mHashCode == toElement.getEntity()->mHashCode)
-				&& toInclusive) {
-			set->add(element);
-		} else {
-			break;
-		}
-
-		set->add(element);
-	}
-
-	return resultSetRef;
+Reference TreeSet::ceiling(Reference ref){
+	TreeMap* map = dynamic_cast<TreeMap*>(mMap.getEntity());
+	return map->ceilingKey(ref);
 }
 
-Reference TreeSet::subSet(Reference fromElement, Reference toElement) {
-	return subSet(fromElement, true, toElement, false);
+Reference TreeSet::floor(Reference ref){
+	TreeMap* map = dynamic_cast<TreeMap*>(mMap.getEntity());
+	return map->floorKey(ref);
 }
+
+//Reference TreeSet::subSet(Reference fromElement, bool fromInclusive,
+//		Reference toElement, bool toInclusive) {
+//	typeCheck(fromElement, mElementType);
+//	typeCheck(toElement, mElementType);
+//
+//	if (!contains0(fromElement) || !contains0(toElement)) {
+//		//cast IllegalArgumentException
+//	}
+//
+//	if (fromElement.getEntity()->mHashCode > toElement.getEntity()->mHashCode) {
+//		//cast IllegalArgumentException
+//	}
+//
+//	Reference resultSetRef = Reference(new TreeSet(mElementType));
+//	TreeSet *set = dynamic_cast<TreeSet*>(resultSetRef.getEntity());
+//	Reference iteratorRef = iterator();
+//	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
+//
+//	while (iterator->hasNext()) {
+//		Reference element = iterator->next();
+//		if (element.getEntity()->mHashCode
+//				< fromElement.getEntity()->mHashCode) {
+//			continue;
+//		}
+//
+//		if (element.getEntity()->mHashCode > toElement.getEntity()->mHashCode) {
+//			break;
+//		}
+//
+//		if ((element.getEntity()->mHashCode == fromElement.getEntity())
+//				&& fromInclusive) {
+//			set->add(element);
+//		} else {
+//			continue;
+//		}
+//
+//		if ((element.getEntity()->mHashCode == toElement.getEntity()->mHashCode)
+//				&& toInclusive) {
+//			set->add(element);
+//		} else {
+//			break;
+//		}
+//
+//		set->add(element);
+//	}
+//
+//	return resultSetRef;
+//}
+//
+//Reference TreeSet::subSet(Reference fromElement, Reference toElement) {
+//	return subSet(fromElement, true, toElement, false);
+//}
 
 Reference TreeSet::toArray() {
 	Reference arrayRef = Reference(new Array(mElementType, mSize));

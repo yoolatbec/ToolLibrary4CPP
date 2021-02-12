@@ -1,28 +1,24 @@
 /*
- * Float.cpp
+ * Short.cpp
  *
- *  Created on: 3 Feb 2021
+ *  Created on: Feb 6, 2021
  *      Author: yoolatbec
  */
 
-#include "Float.h"
+#include "Short.h"
 
 namespace tl {
 namespace lang {
 
-Float::Float(float value) {
+Short::Short(short value) {
 	// TODO Auto-generated constructor stub
 	mValue = value;
 
 	mHashCode = genHashCode();
 }
 
-Float::~Float() {
+Short::~Short() {
 	// TODO Auto-generated destructor stub
-}
-
-hash_t Float::genHashCode(){
-	return CLASS_SERIAL << 32 + *((tlint*)(&mValue));
 }
 
 } /* namespace lang */

@@ -12,9 +12,9 @@
 namespace tl {
 namespace lang {
 
-Integer::Integer(tlint value) {
+Integer::Integer(tlint value)
+	: mValue(value) {
 	// TODO Auto-generated ructor stub
-	mValue = value;
 	mHashCode = genHashCode();
 }
 
@@ -39,11 +39,11 @@ Integer::Integer(Reference ref) {
 }
 
 byte Integer::byteValue() {
-	return (byte)mValue;
+	return (byte) mValue;
 }
 
-word Integer::shortValue() {
-	return (word)mValue;
+short Integer::shortValue() {
+	return (short) mValue;
 }
 
 tlint Integer::intValue() {
@@ -51,15 +51,15 @@ tlint Integer::intValue() {
 }
 
 tlint64 Integer::longValue() {
-	return (tlint64)mValue;
+	return (tlint64) mValue;
 }
 
 double Integer::doubleValue() {
-	return (double)mValue;
+	return (double) mValue;
 }
 
 float Integer::floatValue() {
-	return (float)mValue;
+	return (float) mValue;
 }
 
 tlint Integer::compareTo(Reference ref) {
@@ -105,7 +105,6 @@ type_t Integer::type() {
 hash_t Integer::genHashCode() {
 	return CLASS_SERIAL << 32 + mValue;
 }
-
 
 } /* namespace lang */
 } /* namespace tl */

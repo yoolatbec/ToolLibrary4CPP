@@ -22,16 +22,24 @@ protected:
 	class ListIterator: public virtual Iterator {
 	private:
 		const static type_t CLASS_SERIAL = 157;
+	protected:
+		Reference mList;
+		tlint mCursor;
+		tlint mLastCursor;
+
+		void indexRangeCheck();
 	public:
-		ListIterator();
+		ListIterator(Reference, tlint);
 		ListIterator& operator=(const ListIterator&) = delete;
 		ListIterator(const ListIterator&) = delete;
 		bool hasNext() = 0;
 		virtual bool hasPrevious() = 0;
 		virtual Reference next() = 0;
+		virtual tlint nextIndex() = 0;
 		virtual Reference previous() = 0;
-		virtual bool insert(Reference) = 0;
-		void remove() = 0;
+		virtual tlint previousIndex() = 0;
+		virtual void remove() = 0;
+		virtual void set(Reference) = 0;
 		virtual bool instanceof(type_t);
 		static type_t type();
 	};
@@ -58,6 +66,10 @@ public:
 	virtual Reference set(tlint, Reference) = 0;
 	virtual tlint indexOf(Reference) = 0;
 	virtual Reference toArray() = 0;
+
+	/*
+	 * from inclusive, to exclusive
+	 */
 	virtual Reference sublist(tlint, tlint) = 0;
 	virtual void trim() = 0;
 	type_t elementType();

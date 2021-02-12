@@ -28,6 +28,13 @@ public:
 	tlint compareTo(Reference);
 	static Reference valueOf(float);
 	static Reference valueOf(Reference);
+	tlint64 longValue();
+	tlint intValue()
+	short shortValue();
+	byte byteValue();
+	float floatValue();
+	Reference toString();
+	double doubleValue();
 	virtual bool instanceof(type_t);
 };
 

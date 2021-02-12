@@ -21,12 +21,32 @@ typedef unsigned int size_t
 #endif
 
 typedef signed char byte;
-typedef short word;
+//typedef short word;
 typedef int tlint;
 typedef long long tlint64;
 typedef unsigned int tluint;
 typedef unsigned long long tluint64;
 typedef unsigned long long hash_t;
 typedef unsigned int type_t;
+
+//typedef struct{
+//	short: 16;
+//} word;
+//
+//typedef struct{
+//	int: 32;
+//} tlint;
+//
+//typedef struct{
+//	unsigned int: 32;
+//} tluint;
+//
+//typedef struct{
+//	signed long long: 64;
+//} tlint64;
+//
+//typedef struct{
+//	unsigned long long: 64;
+//} tluint64;
 
 #endif /* SRC_TL_DEF_H_ */

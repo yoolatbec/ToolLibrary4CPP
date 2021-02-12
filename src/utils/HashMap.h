@@ -16,12 +16,10 @@ namespace utils {
 class HashMap: virtual public Map {
 private:
 	const static type_t CLASS_SERIAL = 789;
-	const static tlint INIT_CAPACITY[5] = {
-			8, 13, 21, 34, 55
-	};
+	const static tlint INIT_CAPACITY[5] = { 8, 13, 21, 34, 55 };
 	const static tlint TABLE_COUNT = 5;
 
-	class HashEntry : public Entry{
+	class HashEntry: public Map::Entry {
 	private:
 		const static type_t CLASS_SERIAL = 780;
 		bool mValid;
@@ -44,18 +42,18 @@ public:
 	virtual ~HashMap();
 	HashMap(const HashMap &other) = delete;
 	HashMap& operator=(const HashMap &other) = delete;
-	bool containsKey(Reference);
-	bool containsValue(Reference);
-	void clear();
-	Reference keySet();
-	Reference values();
-	Reference put(Reference, Reference);
-	Reference get(Reference);
-	Reference putIfAbsent(Reference, Reference);
-	void putAll(Reference);
-	Reference replace(Reference, Reference);
-	Reference remove(Reference);
-	Reference remove(Reference, Reference);
+	virtual bool containsKey(Reference);
+	virtual bool containsValue(Reference);
+	virtual void clear();
+	virtual Reference keySet();
+	virtual Reference entrySet();
+	virtual Reference put(Reference, Reference);
+	virtual Reference get(Reference);
+	virtual Reference putIfAbsent(Reference, Reference);
+	virtual void putAll(Reference);
+	virtual Reference replace(Reference, Reference);
+	virtual Reference remove(Reference);
+	virtual Reference remove(Reference, Reference);
 	bool instanceof(type_t);
 	static type_t type();
 };

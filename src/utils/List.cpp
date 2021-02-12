@@ -42,8 +42,17 @@ type_t List::type(){
 	return CLASS_SERIAL;
 }
 
-List::ListIterator::ListIterator(){
+List::ListIterator::ListIterator(Reference list, tlint initCursor){
+	mList = list;
+	mCursor = initCursor;
+	mLastCursor = -1;
+}
 
+void List::ListIterator::indexRangeCheck(){
+	List* list = dynamic_cast<List*>(mList.getEntity());
+	if(mCursor < 0 || mCursor >= list->size()){
+		//cast an exception
+	}
 }
 
 bool List::ListIterator::instanceof(type_t type){
