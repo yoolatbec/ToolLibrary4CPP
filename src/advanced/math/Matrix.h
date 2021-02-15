@@ -32,15 +32,6 @@ public:
 	virtual ~Matrix();
 
 	/*
-	 * Get the number of rows
-	 */
-	virtual tlint rowSize() = 0;
-	/*
-	 * Get the number of columns
-	 */
-	virtual tlint columnSize() =  0;
-
-	/*
 	 * Get the n-th row
 	 */
 	virtual Reference getRow(tlint) = 0;
@@ -57,6 +48,7 @@ public:
 	 * Set the value of row i, column j to v
 	 */
 	virtual void set(tlint, tlint, float v) = 0;
+	virtual Reference transpose() = 0;
 	static type_t type();
 	bool instanceof(type_t);
 };

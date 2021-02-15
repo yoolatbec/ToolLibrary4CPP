@@ -8,7 +8,7 @@
 #ifndef SRC_ADVANCED_MATH_MAT4X4_H_
 #define SRC_ADVANCED_MATH_MAT4X4_H_
 
-#include "Matrix.h"
+#include "SquareMatrix.h"
 
 namespace tl {
 namespace advanced {
@@ -16,7 +16,7 @@ namespace math {
 
 using lang::Reference;
 
-class Mat4x4: public Matrix {
+class Mat4x4: public virtual SquareMatrix {
 private:
 	const static type_t CLASS_SERIAL = 53;
 	const static MATRIX_TYPE MATRIX_ARRANGEMENT = MATRIX_4X4;
@@ -29,9 +29,15 @@ private:
 	void columnBoundCheck(tlint);
 
 	mat4x4 mValue;
+	mat4x4 mTranspose;
+	Reference mInverse;
 
 	vec4 getRow0(tlint);
 	vec4 getColumn0(tlint);
+	mat4x4 transpose0();
+	Reference inverse0();
+	double computeDeterminant();
+	void update();
 
 public:
 	Mat4x4();
@@ -45,6 +51,11 @@ public:
 	void set(tlint, tlint, float);
 	void setRow(tlint, vec4);
 	void setColumn(tlint, vec4);
+	double determinant();
+	bool invertible();
+	Reference inverse();
+	Reference transpose();
+	Reference toString();
 	static type_t type();
 	bool instanceof(type_t);
 };
