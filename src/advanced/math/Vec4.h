@@ -14,25 +14,28 @@ namespace tl {
 namespace advanced {
 namespace math {
 
-class Vec4: public Vector {
+
+class Vec4: virtual public Vector {
 private:
 	const static type_t CLASS_SERIAL = 90;
 	const static tlint COMPONENT_COUNT = 4;
 
+	vec4 mValue;
+
 public:
 	/*
-	 * Create a new instance and initialize all elements to the given value
+	 * Create a new instance and initialise elements to the given value
 	 */
-	Vec4(float = 0);
+	Vec4(float = 0, float = 0, float = 0, float =  0);
+	Vec4(vec4);
 	/*
 	 * Create a new instance by an given Vector instance or FloatArray instance.
-	 * If a Vector instance is given, the n-th element will be initialized the same
+	 * If a Vector instance is given, the n-th element will be initialised the same
 	 * as the n-th element of the given Vector instance, where n can be 1, 2, 3, 4.
 	 * If the given Vector instance has less elements than the newly created instance,
-	 * the elements remained of the newly created instance will be initialized to 0.
+	 * the elements remained of the newly created instance will be initialised to 0.
 	 * If a FloatArray instance is given, the action occurs in the same way.
 	 */
-	Vec4(Reference);
 	virtual ~Vec4();
 	Vec4(const Vec4 &other) = delete;
 	Vec4& operator=(const Vec4 &other) = delete;
@@ -42,13 +45,13 @@ public:
 	tlint size();
 	float get(tlint);
 	void set(tlint, float);
+	void set(vec4);
 
 	/*
 	 * Modify values of elements. Only instances of Vector or FloatArray can be given.
 	 */
-	void set(Reference);
-	tlint rowSize();
 	Reference toString();
+	vec4 values();
 	static type_t type();
 	bool instanceof(type_t);
 };

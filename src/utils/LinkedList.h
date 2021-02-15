@@ -25,6 +25,7 @@ private:
 		Reference mPrevious;
 		Reference mNext;
 		Reference mValue;
+
 	public:
 		LinkedListNode(Reference);
 		LinkedListNode(const LinkedListNode&) = delete;
@@ -158,8 +159,12 @@ public:
 	bool addAllFirst(Reference);
 	bool addAllLast(Reference);
 	bool contains(Reference);
+	bool containsAll(Reference);
+	void trim();
 	bool insert(tlint, Reference);
 	bool insertAll(tlint, Reference);
+	tlint indexOf(Reference);
+	tlint lastIndexOf(Reference);
 	/*
 	 * Remove the first encountered element with the given value when iterating from the
 	 * beginning to the end

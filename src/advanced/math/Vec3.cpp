@@ -1,11 +1,11 @@
 /*
- * Vec4.cpp
+ * Vec3.cpp
  *
- *  Created on: Jan 17, 2021
+ *  Created on: Feb 14, 2021
  *      Author: yoolatbec
  */
 
-#include "Vec4.h"
+#include "Vec3.h"
 #include "../../lang/String.h"
 #include <stdio.h>
 
@@ -15,27 +15,26 @@ namespace math {
 
 using lang::String;
 
-Vec4::Vec4(float x, float y, float z, float w) {
+Vec3::Vec3(float x, float y, float z) {
 	// TODO Auto-generated constructor stub
 	mValue.x = x;
 	mValue.y = y;
 	mValue.z = z;
-	mValue.w = w;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-Vec4::Vec4(vec4 initValue){
+Vec3::Vec3(vec3 initValue){
 	mValue = initValue;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-tlint Vec4::size() {
-	return COMPONENT_COUNT;
+Vec3::~Vec3() {
+	// TODO Auto-generated destructor stub
 }
 
-float Vec4::get(tlint index) {
+float Vec3::get(tlint index) {
 	float value;
 	switch (index) {
 	case 0:
@@ -47,9 +46,6 @@ float Vec4::get(tlint index) {
 	case 2:
 		value = mValue.z;
 		break;
-	case 3:
-		value = mValue.w;
-		break;
 	default:
 		//cast an exception
 	}
@@ -57,41 +53,38 @@ float Vec4::get(tlint index) {
 	return value;
 }
 
-void Vec4::set(vec4 value) {
-	mValue = value;
+tlint Vec3::size() {
+	return COMPONENT_COUNT;
 }
 
-void Vec4::set(tlint index, float value) {
-	switch (index) {
+vec3 Vec3::values() {
+	return mValue;
+}
+
+void Vec3::set(vec3 v) {
+	mValue = v;
+}
+
+void Vec3::set(tlint index, float v){
+	switch(index){
 	case 0:
-		mValue.x = value;
+		mValue.x = v;
 		break;
 	case 1:
-		mValue.y = value;
+		mValue.y = v;
 		break;
 	case 2:
-		mValue.z = value;
-		break;
-	case 3:
-		mValue.w = value;
+		mValue.z = v;
 		break;
 	default:
 		//cast an exception
 	}
 }
 
-vec4 Vec4::values() {
-	return mValue;
-}
-
-Reference Vec4::toString() {
+Reference Vec3::toString(){
 	char str[60];
-	sprintf(str, "[%f, %f, %f, %f]");
+	sprintf(str, "[%f, %f, %f]");
 	return Reference(new String(str));
-}
-
-Vec4::~Vec4() {
-	// TODO Auto-generated destructor stub
 }
 
 } /* namespace math */

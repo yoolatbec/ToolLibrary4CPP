@@ -9,6 +9,7 @@
 #define SRC_ADVANCED_MATH_MATRIX_H_
 
 #include "AbstractMatrix.h"
+#include "mat_func.h"
 
 namespace tl {
 namespace advanced {
@@ -21,45 +22,41 @@ private:
 	const static type_t CLASS_SERIAL = 402;
 
 protected:
-	const tlint mRow, mColumn;
-
-	void rowBoundCheck(tlint);
-	void columnBoundCheck(tlint);
+	virtual void rowBoundCheck(tlint) = 0;
+	virtual void columnBoundCheck(tlint) = 0;
 
 public:
-	Matrix(tlint, tlint);
+	Matrix();
 	Matrix(const Matrix &other) = delete;
 	Matrix& operator=(const Matrix &other) = delete;
-	~Matrix();
+	virtual ~Matrix();
 
 	/*
 	 * Get the number of rows
 	 */
-	tlint rowSize();
+	virtual tlint rowSize() = 0;
 	/*
 	 * Get the number of columns
 	 */
-	tlint columnSize();
+	virtual tlint columnSize() =  0;
 
 	/*
 	 * Get the n-th row
 	 */
-	Reference row(tlint) = 0;
+	virtual Reference getRow(tlint) = 0;
 	/*
 	 * Get the n-th column
 	 */
-	Reference column(tlint) = 0;
+	virtual Reference getColumn(tlint) = 0;
 
 	/*
 	 * Get the value of row i, column j
 	 */
-	float get(tlint i, tlint j) = 0;
+	virtual float get(tlint i, tlint j) = 0;
 	/*
 	 * Set the value of row i, column j to v
 	 */
-	void set(tlint, tlint, float v) = 0;
-	void setRow(tlint, Reference) = 0;
-	void setColumn(tlint, Reference) = 0;
+	virtual void set(tlint, tlint, float v) = 0;
 	static type_t type();
 	bool instanceof(type_t);
 };

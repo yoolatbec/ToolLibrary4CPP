@@ -19,18 +19,32 @@ using lang::Reference;
 class Mat4x4: public Matrix {
 private:
 	const static type_t CLASS_SERIAL = 53;
+	const static MATRIX_TYPE MATRIX_ARRANGEMENT = MATRIX_4X4;
+	const static tlint MAX_ROW_INDEX = 3;
+	const static tlint MIN_ROW_INDEX = 0;
+	const static tlint MAX_COLUMN_INDEX = 3;
+	const static tlint MIN_COLUMN_INDEX =  0;
+
+	void rowBoundCheck(tlint);
+	void columnBoundCheck(tlint);
+
+	mat4x4 mValue;
+
+	vec4 getRow0(tlint);
+	vec4 getColumn0(tlint);
+
 public:
 	Mat4x4();
+	Mat4x4(mat4x4);
 	virtual ~Mat4x4();
 	Mat4x4(const Mat4x4 &other) = delete;
 	Mat4x4& operator=(const Mat4x4 &other) = delete;
-	Reference column(tlint = 0);
-	Reference row(tlint = 0);
-	Reference columns();
 	float get(tlint, tlint);
+	Reference getRow(tlint);
+	Reference getColumn(tlint);
 	void set(tlint, tlint, float);
-	void setRow(tlint, Reference);
-	void setColumn(tlint, Reference);
+	void setRow(tlint, vec4);
+	void setColumn(tlint, vec4);
 	static type_t type();
 	bool instanceof(type_t);
 };

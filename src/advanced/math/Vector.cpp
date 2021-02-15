@@ -11,17 +11,13 @@ namespace tl {
 namespace advanced {
 namespace math {
 
-Vector::Vector(tlint size) {
+Vector::Vector() {
 	// TODO Auto-generated constructor stub
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Vector::~Vector() {
 	// TODO Auto-generated destructor stub
-}
-
-tlint Vector::columnSize() {
-	return 1;
 }
 
 type_t Vector::type() {

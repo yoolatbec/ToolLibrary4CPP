@@ -107,11 +107,11 @@ void LinkedList::seek0(tlint position) {
 	}
 }
 
-Reference LinkedList::seekNode0(tlint position){
+Reference LinkedList::seekNode0(tlint position) {
 	Reference currentNode;
 	tlint currentPosition;
 
-	if(position < (mSize / 2)){
+	if (position < (mSize / 2)) {
 		currentNode = mHead;
 		currentPosition = -1;
 	} else {
@@ -119,13 +119,15 @@ Reference LinkedList::seekNode0(tlint position){
 		currentPosition = mSize;
 	}
 
-	while(currentPosition < position){
-		LinkedListNode* node = dynamic_cast<LinkedListNode*>(currentNode.getEntity());
+	while (currentPosition < position) {
+		LinkedListNode *node =
+			dynamic_cast<LinkedListNode*>(currentNode.getEntity());
 		currentNode = node->next();
 	}
 
-	while(currentPosition > position){
-		LinkedListNode* node = dynamic_cast<LinkedListNode*>(currentNode.getEntity());
+	while (currentPosition > position) {
+		LinkedListNode *node =
+			dynamic_cast<LinkedListNode*>(currentNode.getEntity());
 		currentNode = node->previous();
 	}
 
@@ -512,6 +514,24 @@ Reference LinkedList::set(tlint position, Reference ref) {
 	return set0(ref);
 }
 
+Reference LinkedList::sublist(tlint fromIndex, tlint toIndex) {
+	boundCheck(fromIndex);
+	boundCheck(toIndex);
+	if (fromIndex > toIndex) {
+		//cast an exception
+	}
+
+	Reference rtval = Reference(new LinkedList(mElementType));
+	List *list = dynamic_cast<List*>(rtval.getEntity());
+
+	for (tlint index = fromIndex; index < toIndex; index++) {
+		seek0(index);
+		list->add(get0());
+	}
+
+	return rtval;
+}
+
 Reference LinkedList::toArray() {
 	Array *arr = new Array(mElementType, mSize);
 	Reference current = ((LinkedListNode*) mHead.getEntity())->mNext;
@@ -521,6 +541,85 @@ Reference LinkedList::toArray() {
 	}
 
 	return Reference(arr);
+}
+
+void LinkedList::trim() {
+
+}
+
+bool LinkedList::containsAll(Reference ref) {
+	if (ref.isNull()) {
+		return false;
+	}
+
+	if (!ref.getEntity()->instanceof(Collection::type())) {
+		//cast an exception
+	}
+
+	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
+
+	bool result = true;
+	Reference iteratorRef = collection->iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
+	while (iterator->hasNext()) {
+		Reference e = iterator->next();
+		result = result && contains(e);
+		if (!result) {
+			break;
+		}
+	}
+
+	return result;
+}
+
+tlint LinkedList::indexOf(Reference ref) {
+	if (ref.isNull()) {
+		return -1;
+	}
+
+	if (!ref.getEntity()->instanceof(mElementType)) {
+		//cast an exception
+	}
+
+	LinkedListNode *head = dynamic_cast<LinkedListNode*>(mHead.getEntity());
+	tlint index = 0;
+	Reference current = head->next();
+	while (!current.equals(mTail)) {
+		LinkedListNode *n = dynamic_cast<LinkedListNode*>(current.getEntity());
+		if (n->value().equals(ref)) {
+			return index;
+		}
+
+		index++;
+		current = n->next();
+	}
+
+	return -1;
+}
+
+tlint LinkedList::lastIndexOf(Reference ref) {
+	if (ref.isNull()) {
+		return -1;
+	}
+
+	if (!ref.getEntity()->instanceof(mElementType)) {
+		//cast an exception
+	}
+
+	LinkedListNode *tail = dynamic_cast<LinkedListNode*>(mTail.getEntity());
+	tlint index = mSize - 1;
+	Reference current = tail->previous();
+	while (!current.equals(mHead)) {
+		LinkedListNode *n = dynamic_cast<LinkedListNode*>(current.getEntity());
+		if (n->value().equals(ref)) {
+			return index;
+		}
+
+		index++;
+		current = n->previous();
+	}
+
+	return -1;
 }
 
 Reference LinkedList::iterator() {
@@ -571,10 +670,8 @@ LinkedList::LinkedListIterator::LinkedListIterator(Reference list,
 	tlint initCursor)
 	: ListIterator(list, initCursor) {
 
-
-
 	mLastNode = Reference();
-	LinkedList* l = dynamic_cast<LinkedList*>(mList.getEntity());
+	LinkedList *l = dynamic_cast<LinkedList*>(mList.getEntity());
 	mCurrentNode = l->seekNode0(initCursor);
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -585,19 +682,68 @@ bool LinkedList::LinkedListIterator::hasNext() {
 }
 
 Reference LinkedList::LinkedListIterator::next() {
+	if (mCurrentNode.isNull()) {
+		//cast an exception
+	}
 
+	Reference current = mCurrentNode;
+	LinkedList *list = dynamic_cast<LinkedList*>(mList.getEntity());
+	LinkedListNode *node = dynamic_cast<LinkedListNode*>(current.getEntity());
+	mLastNode = mCurrentNode;
+	if (node->next().equals(list->mTail)) {
+		mCurrentNode = Reference();
+	} else {
+		mCurrentNode = node->next();
+	}
+
+	mLastCursor = mCursor;
+	mCursor++;
+	return node->value();
 }
 
 bool LinkedList::LinkedListIterator::hasPrevious() {
-
+	return !(mCurrentNode.isNull());
 }
 
 Reference LinkedList::LinkedListIterator::previous() {
+	if (mCurrentNode.isNull()) {
+		//cast an exception
+	}
 
+	LinkedListNode *node =
+		dynamic_cast<LinkedListNode*>(mCurrentNode.getEntity());
+	LinkedList *list = dynamic_cast<LinkedList*>(mList.getEntity());
+	mLastNode = mCurrentNode;
+	if (node->previous().equals(list->mHead)) {
+		mCurrentNode = Reference();
+	} else {
+		mCurrentNode = node->previous();
+	}
+
+	mLastCursor = mCursor;
+	mCursor--;
+
+	return node->value();
 }
 
 void LinkedList::LinkedListIterator::remove() {
+	if (mLastNode.isNull()) {
+		//cast an exception
+	}
 
+	List *list = dynamic_cast<List*>(mList.getEntity());
+	LinkedListNode *node = dynamic_cast<LinkedListNode*>(mLastNode.getEntity());
+
+	Reference pre = node->previous();
+	Reference nxt = node->next();
+	LinkedListNode *preNode = dynamic_cast<LinkedListNode*>(pre.getEntity());
+	LinkedListNode *nxtNode = dynamic_cast<LinkedListNode*>(nxt.getEntity());
+	preNode->setNext(nxt);
+	nxtNode->setPrevious(pre);
+
+	mCursor = mLastCursor;
+	mLastCursor = -1;
+	mLastNode = Reference();
 }
 
 type_t LinkedList::LinkedListIterator::type() {

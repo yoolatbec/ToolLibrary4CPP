@@ -9,22 +9,16 @@
 #define SRC_ADVANCED_MATH_MATRIXFACTORY_H_
 
 #include "../../lang/Reference.h"
+#include "Mat4x4.h"
 
 namespace tl {
 namespace advanced {
 namespace math {
 
 using lang::Reference;
+using AbstractMatrix::MATRIX_TYPE;
 
 class MatrixFactory: public lang::Object {
-public:
-	static enum MATRIX_TYPE{
-		MATRIX_1X1, MATRIX_1X2, MATRIX_1X3, MATRIX_1X4,
-		MATRIX_2X1, MATRIX_2X2, MATRIX_2X3, MATRIX_2X4,
-		MATRIX_3X1, MATRIX_3X2, MATRIX_3X3, MATRIX_3X4,
-		MATRIX_4X1, MATRIX_4X2, MATRIX_4X3, MATRIX_4X4,
-		VECTOR_1, VECTOR_2, VECTOR_3, VECTOR_4
-	};
 private:
 	const static type_t CLASS_SERIAL = 129;
 

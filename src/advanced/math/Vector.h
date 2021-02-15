@@ -9,6 +9,7 @@
 #define SRC_ADVANCED_MATH_VECTOR_H_
 
 #include "AbstractMatrix.h"
+#include "vec_func.h"
 
 namespace tl {
 namespace advanced {
@@ -23,11 +24,8 @@ public:
 	virtual ~Vector();
 	Vector(const Vector &other) = delete;
 	Vector& operator=(const Vector &other) = delete;
-	tlint size() = 0;
-	float get(tlint) = 0;
-	void set(tlint, float) = 0;
-	void set(Reference) = 0;
-	tlint columnSize();
+	virtual tlint size() = 0;
+	virtual float get(tlint) = 0;
 	static type_t type();
 	bool instanceof(type_t);
 };

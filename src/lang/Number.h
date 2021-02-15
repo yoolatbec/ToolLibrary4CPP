@@ -20,7 +20,7 @@ public:
 	Number();
 	virtual ~Number();
 	virtual byte byteValue() = 0;
-	virtual word shortValue() = 0;
+	virtual short shortValue() = 0;
 	virtual tlint intValue() = 0;
 	virtual tlint64 longValue() = 0;
 	virtual double doubleValue() = 0;
