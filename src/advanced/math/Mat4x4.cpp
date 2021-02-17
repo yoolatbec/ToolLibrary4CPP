@@ -8,6 +8,7 @@
 #include "Mat4x4.h"
 #include "Vec4.h"
 #include "../../lang/String.h"
+#include "../../lang/Math.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -17,6 +18,7 @@ namespace math {
 
 using lang::Reference;
 using lang::String;
+using lang::Math;
 
 Mat4x4::Mat4x4() {
 	// TODO Auto-generated constructor stub
@@ -30,13 +32,7 @@ Mat4x4::Mat4x4() {
 
 Mat4x4::Mat4x4(mat4x4 initValue) {
 	mValue = initValue;
-	mTranspose = transpose0();
-	mDeterminant = computeDeterminant();
-	if (invertible()) {
-		mInverse = inverse0();
-	} else {
-		mInverse = Reference();
-	}
+	update();
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -48,16 +44,101 @@ Mat4x4::~Mat4x4() {
 mat4x4 Mat4x4::transpose0() {
 	mat4x4 m;
 
-	m.r0 = { mValue.r0.x, mValue.r1.x, mValue.r2.x, mValue.r3.x };
-	m.r1 = { mValue.r0.y, mValue.r1.y, mValue.r2.y, mValue.r3.y };
-	m.r2 = { mValue.r0.z, mValue.r1.z, mValue.r2.z, mValue.r3.z };
-	m.r3 = { mValue.r0.w, mValue.r1.w, mValue.r2.w, mValue.r3.w };
+	m.r0 = getColumn0(0);
+	m.r1 = getColumn0(1);
+	m.r2 = getColumn0(2);
+	m.r3 = getColumn0(3);
 
 	return m;
 }
 
 Reference Mat4x4::inverse0() {
+	mat4x4 m;
 
+	m.r0.x = (mValue.r1.y
+		* (mValue.r2.z * mValue.r3.w - mValue.r2.w * mValue.r3.z)
+		- mValue.r1.z * (mValue.r2.y * mValue.r3.w - mValue.r2.w * mValue.r3.y)
+		+ mValue.r1.w * (mValue.r2.y * mValue.r3.z - mValue.r2.z * mValue.r3.y))
+		/ mDeterminant;
+	m.r0.y = -(mValue.r1.x
+		* (mValue.r2.z * mValue.r3.w - mValue.r2.w * mValue.r3.z)
+		- mValue.r1.z * (mValue.r2.x * mValue.r3.w - mValue.r2.w * mValue.r3.x)
+		+ mValue.r1.w * (mValue.r2.x * mValue.r3.z - mValue.r2.z * mValue.r3.x))
+		/ mDeterminant;
+	m.r0.z = (mValue.r1.x
+		* (mValue.r2.y * mValue.r3.w - mValue.r2.w * mValue.r3.y)
+		- mValue.r1.y * (mValue.r2.x * mValue.r3.w - mValue.r2.w * mValue.r3.x)
+		+ mValue.r1.w * (mValue.r2.x * mValue.r3.y - mValue.r2.y * mValue.r3.x))
+		/ mDeterminant;
+	m.r0.w = -(mValue.r1.x
+		* (mValue.r2.y * mValue.r3.z - mValue.r2.z * mValue.r3.y)
+		- mValue.r1.y * (mValue.r2.x * mValue.r3.z - mValue.r2.z * mValue.r3.x)
+		+ mValue.r1.z * (mValue.r2.x * mValue.r3.y - mValue.r2.y * mValue.r3.x))
+		/ mDeterminant;
+
+	m.r1.x = -(mValue.r0.y
+		* (mValue.r2.z * mValue.r3.w - mValue.r2.w * mValue.r3.z)
+		- mValue.r0.z * (mValue.r2.y * mValue.r3.w - mValue.r2.w * mValue.r3.y)
+		+ mValue.r0.w * (mValue.r2.y * mValue.r3.z - mValue.r2.z * mValue.r3.y))
+		/ mDeterminant;
+	m.r1.y = (mValue.r0.x
+		* (mValue.r2.z * mValue.r3.w - mValue.r2.w * mValue.r3.z)
+		- mValue.r0.z * (mValue.r2.x * mValue.r3.w - mValue.r2.w * mValue.r3.x)
+		+ mValue.r0.w * (mValue.r2.x * mValue.r3.z - mValue.r2.z * mValue.r3.x))
+		/ mDeterminant;
+	m.r1.z = -(mValue.r0.x
+		* (mValue.r2.y * mValue.r3.w - mValue.r2.w * mValue.r3.y)
+		- mValue.r0.y * (mValue.r2.x * mValue.r3.w - mValue.r2.w * mValue.r3.x)
+		+ mValue.r0.w * (mValue.r2.x * mValue.r3.y - mValue.r2.y * mValue.r3.x))
+		/ mDeterminant;
+	m.r1.w = (mValue.r0.x
+		* (mValue.r2.y * mValue.r3.z - mValue.r2.z * mValue.r3.y)
+		- mValue.r0.y * (mValue.r2.x * mValue.r3.z - mValue.r2.z * mValue.r3.x)
+		+ mValue.r0.z * (mValue.r2.x * mValue.r3.y - mValue.r2.y * mValue.r3.x))
+		/ mDeterminant;
+
+	m.r2.x = (mValue.r0.y
+		* (mValue.r1.z * mValue.r3.w - mValue.r1.w * mValue.r3.z)
+		- mValue.r0.z * (mValue.r1.y * mValue.r3.w - mValue.r1.w * mValue.r3.y)
+		+ mValue.r0.w * (mValue.r1.y * mValue.r3.z - mValue.r1.z * mValue.r3.y))
+		/ mDeterminant;
+	m.r2.y = -(mValue.r0.x
+		* (mValue.r1.z * mValue.r3.w - mValue.r1.w * mValue.r3.z)
+		- mValue.r0.z * (mValue.r1.x * mValue.r3.w - mValue.r1.w * mValue.r3.x)
+		+ mValue.r0.w * (mValue.r1.x * mValue.r3.z - mValue.r1.z * mValue.r3.x))
+		/ mDeterminant;
+	m.r2.z = (mValue.r0.x
+		* (mValue.r1.y * mValue.r3.w - mValue.r1.w * mValue.r3.y)
+		- mValue.r0.y * (mValue.r1.x * mValue.r3.w - mValue.r1.w * mValue.r3.x)
+		+ mValue.r0.w * (mValue.r1.x * mValue.r3.y - mValue.r1.y * mValue.r3.x))
+		/ mDeterminant;
+	m.r2.w = -(mValue.r0.x
+		* (mValue.r1.y * mValue.r3.z - mValue.r1.z * mValue.r3.y)
+		- mValue.r0.y * (mValue.r1.x * mValue.r3.z - mValue.r1.z * mValue.r3.z)
+		+ mValue.r0.z * (mValue.r1.x * mValue.r3.y - mValue.r1.y * mValue.r3.x))
+		/ mDeterminant;
+
+	m.r3.x = -(mValue.r0.y
+		* (mValue.r1.z * mValue.r2.w - mValue.r1.w * mValue.r2.z)
+		- mValue.r0.z * (mValue.r1.y * mValue.r2.w - mValue.r1.w * mValue.r2.y)
+		+ mValue.r0.w * (mValue.r1.y * mValue.r2.z - mValue.r1.z * mValue.r2.y))
+		/ mDeterminant;
+	m.r3.y = (mValue.r0.x * (mValue.r1.z * mValue.r2.w)
+		- mValue.r0.z * (mValue.r1.x * mValue.r2.w - mValue.r1.w * mValue.r2.x)
+		+ mValue.r0.w * (mValue.r1.x * mValue.r2.z - mValue.r1.z * mValue.r2.x))
+		/ mDeterminant;
+	m.r3.z = -(mValue.r0.x
+		* (mValue.r1.y * mValue.r2.w - mValue.r1.w * mValue.r2.y)
+		- mValue.r0.y * (mValue.r1.x * mValue.r2.w - mValue.r1.w * mValue.r2.x)
+		+ mValue.r0.w * (mValue.r1.x * mValue.r2.y - mValue.r1.y * mValue.r2.x))
+		/ mDeterminant;
+	m.r3.w = (mValue.r0.x
+		* (mValue.r1.y * mValue.r2.z - mValue.r1.z * mValue.r2.y)
+		- mValue.r0.y * (mValue.r1.x * mValue.r2.z - mValue.r1.z * mValue.r2.x)
+		+ mValue.r0.z * (mValue.r1.x * mValue.r2.y - mValue.r1.y * mValue.r2.x))
+		/ mDeterminant;
+
+	return Reference(new Mat4x4(m));
 }
 
 double Mat4x4::computeDeterminant() {
@@ -150,9 +231,6 @@ vec4 Mat4x4::getColumn0(tlint j) {
 }
 
 float Mat4x4::get(tlint i, tlint j) {
-	rowBoundCheck(i);
-	columnBoundCheck(j);
-
 	vec4 r = getRow0(i);
 
 	float value;
@@ -176,26 +254,23 @@ float Mat4x4::get(tlint i, tlint j) {
 	return value;
 }
 
-Reference Mat4x4::getRow(tlint index) {
-	rowBoundCheck(index);
+mat4x4 Mat4x4::values() {
+	return mValue;
+}
 
+Reference Mat4x4::getRow(tlint index) {
 	vec4 v = getRow0(index);
 
 	return Reference(new Vec4(v));
 }
 
 Reference Mat4x4::getColumn(tlint index) {
-	columnBoundCheck(index);
-
 	vec4 v = getColumn0(index);
 
 	return Reference(new Vec4(v));
 }
 
 void Mat4x4::set(tlint i, tlint j, float value) {
-	rowBoundCheck(i);
-	columnBoundCheck(j);
-
 	vec4 v = getRow0(i);
 
 	switch (j) {
@@ -272,12 +347,8 @@ void Mat4x4::setColumn(tlint j, vec4 u) {
 	update();
 }
 
-double Mat4x4::determinant() {
-	return mDeterminant;
-}
-
 bool Mat4x4::invertible() {
-	return mDeterminant != 0;
+	return Math::abs(mDeterminant) < SquareMatrix::CRITICAL_DETERMINANT;
 }
 
 Reference Mat4x4::inverse() {

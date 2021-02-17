@@ -25,12 +25,11 @@ private:
 	const static tlint MAX_COLUMN_INDEX = 3;
 	const static tlint MIN_COLUMN_INDEX =  0;
 
-	void rowBoundCheck(tlint);
-	void columnBoundCheck(tlint);
+//	void rowBoundCheck(tlint);
+//	void columnBoundCheck(tlint);
 
 	mat4x4 mValue;
 	mat4x4 mTranspose;
-	Reference mInverse;
 
 	vec4 getRow0(tlint);
 	vec4 getColumn0(tlint);
@@ -48,10 +47,10 @@ public:
 	float get(tlint, tlint);
 	Reference getRow(tlint);
 	Reference getColumn(tlint);
+	mat4x4 values();
 	void set(tlint, tlint, float);
 	void setRow(tlint, vec4);
 	void setColumn(tlint, vec4);
-	double determinant();
 	bool invertible();
 	Reference inverse();
 	Reference transpose();

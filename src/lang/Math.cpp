@@ -21,7 +21,7 @@ type_t Math::type(){
 }
 
 bool Math::instanceof(type_t type){
-	return CLASS_SERIAL == type || Object::instanceof(type);0
+	return CLASS_SERIAL == type || Object::instanceof(type);
 }
 
 tlint Math::min(tlint a, tlint b){
@@ -30,6 +30,10 @@ tlint Math::min(tlint a, tlint b){
 
 tlint Math::max(tlint a, tlint b){
 	return a > b ? a : b;
+}
+
+double Math::abs(double i){
+	return i > 0 ? i : -i;
 }
 
 } /* namespace lang */

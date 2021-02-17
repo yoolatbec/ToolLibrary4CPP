@@ -22,8 +22,8 @@ private:
 	const static type_t CLASS_SERIAL = 402;
 
 protected:
-	virtual void rowBoundCheck(tlint) = 0;
-	virtual void columnBoundCheck(tlint) = 0;
+//	virtual void rowBoundCheck(tlint) = 0;
+//	virtual void columnBoundCheck(tlint) = 0;
 
 public:
 	Matrix();

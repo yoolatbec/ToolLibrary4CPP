@@ -25,6 +25,7 @@ public:
 	static tlint min(tlint, tlint);
 	static tlint max(tlint, tlint);
 	static double power(double, double);
+	static double abs(double);
 };
 
 } /* namespace lang */

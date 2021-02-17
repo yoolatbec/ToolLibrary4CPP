@@ -19,15 +19,19 @@ private:
 	const static type_t CLASS_SERIAL = 111;
 
 protected:
+	const static double CRITICAL_DETERMINANT = 0.005;
 	double mDeterminant;
+	Reference mInverse;
+
 	virtual double computeDeterminant() = 0;
+	virtual Reference inverse0() = 0;
 
 public:
 	SquareMatrix();
 	virtual ~SquareMatrix();
 	SquareMatrix(const SquareMatrix &other) = delete;
 	SquareMatrix& operator=(const SquareMatrix &other) = delete;
-	virtual double determinant() = 0;
+	double determinant();
 	virtual bool invertible() = 0;
 	virtual Reference inverse() = 0;
 	static type_t type();

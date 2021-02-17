@@ -20,12 +20,16 @@ SquareMatrix::~SquareMatrix() {
 	// TODO Auto-generated destructor stub
 }
 
-type_t SquareMatrix::type(){
+type_t SquareMatrix::type() {
 	return CLASS_SERIAL;
 }
 
-bool SquareMatrix::instanceof(type_t type){
+bool SquareMatrix::instanceof(type_t type) {
 	return (CLASS_SERIAL == type) || Matrix::instanceof(type);
+}
+
+double SquareMatrix::determinant() {
+	return mDeterminant;
 }
 
 } /* namespace math */
