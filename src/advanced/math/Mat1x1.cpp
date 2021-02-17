@@ -23,7 +23,7 @@ Mat1x1::Mat1x1() {
 	// TODO Auto-generated constructor stub
 	mValue = identity_initialiser_mat1x1();
 	mDeterminant = 1.0;
-	mInverse = Reference(new Mat1x1(mValue));
+	mInverse = mValue;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -43,11 +43,11 @@ double Mat1x1::computeDeterminant() {
 	return mValue.r0.x;
 }
 
-Reference Mat1x1::inverse0() {
+mat1x1 Mat1x1::inverse0() {
 	mat1x1 m;
 	m.r0.x = 1.0 / mValue.r0.x;
 
-	return Reference(new Mat1x1(m));
+	return m;
 }
 
 void Mat1x1::update() {
@@ -55,7 +55,7 @@ void Mat1x1::update() {
 	if (invertible()) {
 		mInverse = inverse0();
 	} else {
-		mInverse = Reference();
+		mInverse = { { 0 } };
 	}
 }
 
@@ -64,7 +64,7 @@ bool Mat1x1::invertible() {
 }
 
 Reference Mat1x1::inverse() {
-	return mInverse;
+	return Reference(new Mat1x1(mInverse));
 }
 
 Reference Mat1x1::transpose() {
@@ -140,6 +140,22 @@ type_t Mat1x1::type() {
 
 bool Mat1x1::instanceof(type_t type) {
 	return (CLASS_SERIAL == type) || SquareMatrix::instanceof(type);
+}
+
+tlint Mat1x1::maxRowIndex() {
+	return MAX_ROW_INDEX;
+}
+
+tlint Mat1x1::minRowIndex() {
+	return MIN_ROW_INDEX;
+}
+
+tlint Mat1x1::maxColumnIndex() {
+	return MAX_COLUMN_INDEX;
+}
+
+tlint Mat1x1::minColumnIndex() {
+	return MIN_COLUMN_INDEX;
 }
 
 } /* namespace math */

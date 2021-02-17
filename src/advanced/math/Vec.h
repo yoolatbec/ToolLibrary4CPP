@@ -18,6 +18,9 @@ class Vec: public virtual Vector {
 private:
 	const static type_t CLASS_SERIAL = 101;
 	const static tlint COMPONENT_COUNT = 1;
+	const static tlint MAX_INDEX = 0;
+	const static tlint MIN_INDEX = 0;
+	const static VECTOR_TYPE VECTOR_TYPE_VALUE = VECTOR_1;
 	vec mValue;
 
 public:
@@ -32,6 +35,9 @@ public:
 	void set(Reference);
 	float get(tlint);
 	vec values();
+	VECTOR_TYPE vectorType();
+	tlint maxIndex();
+	tlint minIndex();
 	Reference toString();
 	static type_t type();
 	bool instanceof(type_t);

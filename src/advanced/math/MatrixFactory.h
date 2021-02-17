@@ -9,7 +9,12 @@
 #define SRC_ADVANCED_MATH_MATRIXFACTORY_H_
 
 #include "../../lang/Reference.h"
+
 #include "Mat4x4.h"
+#include "Vec4.h"
+#include "Vec3.h"
+#include "Vec2.h"
+#include "Vec.h"
 
 namespace tl {
 namespace advanced {
@@ -27,23 +32,25 @@ private:
 	static bool multiplicationCapable(Reference, Reference);
 	static bool dotCapable(Reference, Reference);
 
+	static Reference vectorMultiply(Reference, float);
+	static Reference matrixMultiply(Reference, float);
+
+	static float dot0(vec4, vec4);
+	static float dot0(vec3, vec3);
+	static float dot0(vec2, vec2);
+	static float dot0(vec, vec);
+
 public:
 	MatrixFactory(const MatrixFactory &other) = delete;
 	MatrixFactory& operator=(const MatrixFactory &other) = delete;
 	static Reference multiply(Reference, Reference);
 	static Reference multiply(Reference, float);
-	static Reference dot(Reference, Reference);
+	static float dot(Reference, Reference);
 	static Reference cross(Reference, Reference);
 	static Reference add(Reference, Reference);
 	static Reference minus(Reference, Reference);
 	static Reference negate(Reference);
-	static Reference newMatrix(tlint, tlint);
-	static Reference newMatrix(MATRIX_TYPE);
-	static Reference newVector(Reference);
-	static Reference matrixRowValue(Reference, tlint, Reference);
-	static Reference matrixColumnValue(Reference, tlint, Reference);
 	static Reference normalize(Reference);
-	static Reference newIdenticalMatrix(tlint);
 	static type_t type();
 	bool instanceof(type_t);
 };

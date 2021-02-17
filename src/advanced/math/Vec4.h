@@ -14,11 +14,13 @@ namespace tl {
 namespace advanced {
 namespace math {
 
-
 class Vec4: virtual public Vector {
 private:
 	const static type_t CLASS_SERIAL = 90;
 	const static tlint COMPONENT_COUNT = 4;
+	const static VECTOR_TYPE VECTOR_TYPE_VALUE = VECTOR_4;
+	const static tlint MAX_INDEX = 3;
+	const static tlint MIN_INDEX = 0;
 
 	vec4 mValue;
 
@@ -26,7 +28,7 @@ public:
 	/*
 	 * Create a new instance and initialise elements to the given value
 	 */
-	Vec4(float = 0, float = 0, float = 0, float =  0);
+	Vec4(float = 0, float = 0, float = 0, float = 0);
 	Vec4(vec4);
 	/*
 	 * Create a new instance by an given Vector instance or FloatArray instance.
@@ -46,12 +48,15 @@ public:
 	float get(tlint);
 	void set(tlint, float);
 	void set(vec4);
+	tlint maxIndex();
+	tlint minIndex();
 
 	/*
 	 * Modify values of elements. Only instances of Vector or FloatArray can be given.
 	 */
 	Reference toString();
 	vec4 values();
+	VECTOR_TYPE vectorType();
 	static type_t type();
 	bool instanceof(type_t);
 };

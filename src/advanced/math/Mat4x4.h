@@ -30,11 +30,12 @@ private:
 
 	mat4x4 mValue;
 	mat4x4 mTranspose;
+	mat4x4 mInverse;
 
 	vec4 getRow0(tlint);
 	vec4 getColumn0(tlint);
 	mat4x4 transpose0();
-	Reference inverse0();
+	mat4x4 inverse0();
 	double computeDeterminant();
 	void update();
 
@@ -54,6 +55,10 @@ public:
 	bool invertible();
 	Reference inverse();
 	Reference transpose();
+	tlint maxRowIndex();
+	tlint minRowIndex();
+	tlint maxColumnIndex();
+	tlint minColumnIndex();
 	Reference toString();
 	static type_t type();
 	bool instanceof(type_t);

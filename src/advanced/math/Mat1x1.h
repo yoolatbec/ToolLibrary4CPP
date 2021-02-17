@@ -21,12 +21,13 @@ private:
 	const static tlint MAX_ROW_INDEX = 0;
 	const static tlint MIN_ROW_INDEX = 0;
 	const static tlint MAX_COLUMN_INDEX = 0;
-	const static tlint MIN_COLUMMN_INDEX = 0;
+	const static tlint MIN_COLUMN_INDEX = 0;
 
 	mat1x1 mValue;
+	mat1x1 mInverse;
 
 	double computeDeterminant();
-	Reference inverse0();
+	mat1x1 inverse0();
 	void update();
 
 public:
@@ -46,6 +47,10 @@ public:
 	Reference getColumn(tlint);
 	Reference toString();
 	mat1x1 values();
+	tlint maxRowIndex();
+	tlint minRowIndex();
+	tlint maxColumnIndex();
+	tlint minColumnIndex();
 	static type_t type();
 	bool instanceof(type_t);
 };

@@ -14,6 +14,7 @@ namespace advanced {
 namespace math {
 
 using lang::String;
+using Vector::VECTOR_TYPE;
 
 Vec::Vec(float x) {
 	// TODO Auto-generated constructor stub
@@ -38,6 +39,10 @@ tlint Vec::size() {
 
 vec Vec::values() {
 	return mValue;
+}
+
+VECTOR_TYPE Vec::vectorType() {
+	return VECTOR_TYPE_VALUE;
 }
 
 void Vec::set(vec v) {
@@ -71,6 +76,14 @@ float Vec::get(tlint index) {
 
 type_t Vec::type() {
 	return CLASS_SERIAL;
+}
+
+tlint Vec::maxIndex() {
+	return MAX_INDEX;
+}
+
+tlint Vec::minIndex() {
+	return MIN_INDEX;
 }
 
 bool Vec::instanceof(type_t type) {

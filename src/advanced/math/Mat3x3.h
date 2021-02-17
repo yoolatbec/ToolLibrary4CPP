@@ -28,13 +28,13 @@ private:
 
 	mat3x3 mValue;
 	mat3x3 mTranspose;
-	Reference mInverse;
+	mat3x3 mInverse;
 
 	vec3 getRow0(tlint);
 	vec3 getColumn0(tlint);
 	mat3x3 transpose0();
+	mat3x3 inverse0();
 	double computeDeterminant();
-	Reference inverse0();
 	void update();
 
 
@@ -55,6 +55,10 @@ public:
 	void setColumn(tlint, vec3);
 	Reference toString();
 	mat3x3 values();
+	tlint maxRowIndex();
+	tlint minRowIndex();
+	tlint maxColumnIndex();
+	tlint minColumnIndex();
 	static type_t type();
 	bool instanceof(type_t);
 };

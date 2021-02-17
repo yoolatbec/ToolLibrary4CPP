@@ -14,6 +14,7 @@ namespace advanced {
 namespace math {
 
 using lang::String;
+using Vector::VECTOR_TYPE;
 
 Vec3::Vec3(float x, float y, float z) {
 	// TODO Auto-generated constructor stub
@@ -24,7 +25,7 @@ Vec3::Vec3(float x, float y, float z) {
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-Vec3::Vec3(vec3 initValue){
+Vec3::Vec3(vec3 initValue) {
 	mValue = initValue;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -61,12 +62,16 @@ vec3 Vec3::values() {
 	return mValue;
 }
 
+VECTOR_TYPE Vec3::vectorType() {
+	return VECTOR_TYPE_VALUE;
+}
+
 void Vec3::set(vec3 v) {
 	mValue = v;
 }
 
-void Vec3::set(tlint index, float v){
-	switch(index){
+void Vec3::set(tlint index, float v) {
+	switch (index) {
 	case 0:
 		mValue.x = v;
 		break;
@@ -81,10 +86,26 @@ void Vec3::set(tlint index, float v){
 	}
 }
 
-Reference Vec3::toString(){
+Reference Vec3::toString() {
 	char str[60];
 	sprintf(str, "[%f, %f, %f]");
 	return Reference(new String(str));
+}
+
+tlint Vec3::maxIndex() {
+	return MAX_INDEX;
+}
+
+tlint Vec3::minIndex() {
+	return MIN_INDEX;
+}
+
+type_t Vec3::type() {
+	return CLASS_SERIAL;
+}
+
+bool Vec3::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Vector::instanceof(type);
 }
 
 } /* namespace math */

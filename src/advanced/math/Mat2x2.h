@@ -25,12 +25,13 @@ private:
 
 	mat2x2 mValue;
 	mat2x2 mTranspose;
+	mat2x2 mInverse;
 
 	vec2 getRow0(tlint);
 	vec2 getColumn0(tlint);
 	mat2x2 transpose0();
 	double computeDeterminant();
-	Reference inverse0();
+	mat2x2 inverse0();
 	void update();
 
 public:
@@ -46,6 +47,10 @@ public:
 	Reference getColumn(tlint);
 	Reference getRow(tlint);
 	mat2x2 values();
+	tlint maxRowIndex();
+	tlint minRowIndex();
+	tlint maxColumnIndex();
+	tlint minColumnIndex();
 	bool invertible();
 	Reference inverse();
 	Reference transpose();

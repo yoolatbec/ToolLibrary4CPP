@@ -21,10 +21,8 @@ private:
 protected:
 	const static double CRITICAL_DETERMINANT = 0.005;
 	double mDeterminant;
-	Reference mInverse;
 
 	virtual double computeDeterminant() = 0;
-	virtual Reference inverse0() = 0;
 
 public:
 	SquareMatrix();

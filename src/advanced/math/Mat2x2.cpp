@@ -24,7 +24,7 @@ Mat2x2::Mat2x2() {
 	mValue = identity_initialiser_mat2x2();
 	mTranspose = mValue;
 	mDeterminant = 1.0;
-	mInverse = Reference(new Mat2x2(mValue));
+	mInverse = mValue;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -86,7 +86,7 @@ double Mat2x2::computeDeterminant() {
 	return (mValue.r0.x * mValue.r1.y - mValue.r0.y * mValue.r1.x);
 }
 
-Reference Mat2x2::inverse0() {
+mat2x2 Mat2x2::inverse0() {
 	mat2x2 m;
 	m.r0.x = mValue.r1.y / mDeterminant;
 	m.r0.y = -mValue.r1.x / mDeterminant;
@@ -102,7 +102,7 @@ void Mat2x2::update() {
 	if (invertible()) {
 		mInverse = inverse0();
 	} else {
-		mInverse = Reference();
+		mInverse = { { 0, 0 }, { 0, 0 } };
 	}
 }
 
@@ -190,7 +190,7 @@ bool Mat2x2::invertible() {
 }
 
 Reference Mat2x2::inverse() {
-	return mInverse;
+	return Reference(new Mat2x2(mInverse));
 }
 
 Reference Mat2x2::transpose() {
@@ -202,6 +202,22 @@ Reference Mat2x2::toString() {
 	sprintf(str, "[%f, %f,\n", mValue.r0.x, mValue.r0.y);
 	sprintf(str + strlen(str), " %f, %f]", mValue.r1.x, mValue.r1.y);
 	return Reference(new String(str));
+}
+
+tlint Mat2x2::maxRowIndex() {
+	return MAX_ROW_INDEX;
+}
+
+tlint Mat2x2::minRowIndex() {
+	return MIN_ROW_INDEX;
+}
+
+tlint Mat2x2::maxColumnIndex() {
+	return MAX_COLUMN_INDEX;
+}
+
+tlint Mat2x2::minColumnIndex() {
+	return MIN_COLUMN_INDEX;
 }
 
 type_t Mat2x2::type() {

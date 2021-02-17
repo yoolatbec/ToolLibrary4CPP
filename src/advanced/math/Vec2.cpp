@@ -9,12 +9,12 @@
 #include "../../lang/String.h"
 #include <stdio.h>
 
-
 namespace tl {
 namespace advanced {
 namespace math {
 
 using lang::String;
+using Vector::VECTOR_TYPE;
 
 Vec2::Vec2(float x, float y) {
 	// TODO Auto-generated constructor stub
@@ -24,7 +24,7 @@ Vec2::Vec2(float x, float y) {
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-Vec2::Vec2(vec2 initValue){
+Vec2::Vec2(vec2 initValue) {
 	mValue = initValue;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -54,6 +54,10 @@ vec2 Vec2::values() {
 	return mValue;
 }
 
+VECTOR_TYPE Vec2::vectorType() {
+	return VECTOR_TYPE_VALUE;
+}
+
 tlint Vec2::size() {
 	return COMPONENT_COUNT;
 }
@@ -75,6 +79,14 @@ void Vec2::set(tlint index, float v) {
 	}
 }
 
+tlint Vec2::maxIndex() {
+	return MAX_INDEX;
+}
+
+tlint Vec2::minIndex() {
+	return MIN_INDEX;
+}
+
 static type_t Vec2::type() {
 	return CLASS_SERIAL;
 }
@@ -83,7 +95,7 @@ bool Vec2::instanceof(type_t type) {
 	return (CLASS_SERIAL == type) || Vector::instanceof(type);
 }
 
-Reference Vec2::toString(){
+Reference Vec2::toString() {
 	char str[60];
 	sprintf(str, "[%f, %f]");
 	return Reference(new String(str));

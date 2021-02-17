@@ -24,7 +24,7 @@ Mat3x3::Mat3x3() {
 	// TODO Auto-generated constructor stub
 	mValue = identity_initialiser_mat3x3();
 	mTranspose = mValue;
-	mInverse = Reference(new Mat3x3(mValue));
+	mInverse = mValue;
 	mDeterminant = 1.0;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -101,7 +101,7 @@ double Mat3x3::computeDeterminant() {
 		+ mValue.r0.z * (mValue.r1.x * mValue.r2.y - mValue.r1.y * mValue.r2.x));
 }
 
-Reference Mat3x3::inverse0() {
+mat3x3 Mat3x3::inverse0() {
 	mat3x3 m;
 	m.r0.x = (mValue.r1.y * mValue.r2.z - mValue.r1.z * mValue.r2.y)
 		/ mDeterminant;
@@ -124,7 +124,7 @@ Reference Mat3x3::inverse0() {
 	m.r2.z = (mValue.r0.x * mValue.r1.y - mValue.r0.y * mValue.r1.x)
 		/ mDeterminant;
 
-	return Reference(new Mat3x3(m));
+	return m;
 }
 
 void Mat3x3::update() {
@@ -133,7 +133,7 @@ void Mat3x3::update() {
 	if (invertible()) {
 		mInverse = inverse0();
 	} else {
-		mInverse = Reference();
+		mInverse = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
 	}
 }
 
@@ -142,7 +142,7 @@ bool Mat3x3::invertible() {
 }
 
 Reference Mat3x3::inverse() {
-	return mInverse;
+	return Reference(new Mat3x3(mInverse));
 }
 
 Reference Mat3x3::transpose() {
@@ -250,6 +250,22 @@ Reference Mat3x3::toString() {
 	sprintf(str + strlen(str), " %f, %f, %f]", mValue.r2.x, mValue.r2.y,
 		mValue.r2.z);
 	return Reference(new String(str));
+}
+
+tlint Mat3x3::maxRowIndex() {
+	return MAX_ROW_INDEX;
+}
+
+tlint Mat3x3::minRowIndex() {
+	return MIN_ROW_INDEX;
+}
+
+tlint Mat3x3::maxColumnIndex() {
+	return MAX_COLUMN_INDEX;
+}
+
+tlint Mat3x3::minColumnIndex() {
+	return MIN_COLUMN_INDEX;
 }
 
 type_t Mat3x3::type() {

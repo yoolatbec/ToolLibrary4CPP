@@ -25,7 +25,7 @@ Mat4x4::Mat4x4() {
 	mValue = identity_initialiser_mat4x4();
 	mTranspose = mValue;
 	mDeterminant = 1.0;
-	mInverse = Reference(new Mat4x4(mValue));
+	mInverse = mValue;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -52,7 +52,7 @@ mat4x4 Mat4x4::transpose0() {
 	return m;
 }
 
-Reference Mat4x4::inverse0() {
+mat4x4 Mat4x4::inverse0() {
 	mat4x4 m;
 
 	m.r0.x = (mValue.r1.y
@@ -138,7 +138,7 @@ Reference Mat4x4::inverse0() {
 		+ mValue.r0.z * (mValue.r1.x * mValue.r2.y - mValue.r1.y * mValue.r2.x))
 		/ mDeterminant;
 
-	return Reference(new Mat4x4(m));
+	return m;
 }
 
 double Mat4x4::computeDeterminant() {
@@ -169,7 +169,8 @@ void Mat4x4::update() {
 	if (invertible()) {
 		mInverse = inverse0();
 	} else {
-		mInverse = Reference();
+		mInverse =
+			{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } };
 	}
 }
 
@@ -352,7 +353,7 @@ bool Mat4x4::invertible() {
 }
 
 Reference Mat4x4::inverse() {
-	return mInverse;
+	return Reference(new Mat4x4(mInverse));
 }
 
 Reference Mat4x4::transpose() {
@@ -371,6 +372,22 @@ Reference Mat4x4::toString() {
 		mValue.r3.z, mValue.r3.w);
 
 	return Reference(new String(str));
+}
+
+tlint Mat4x4::maxRowIndex() {
+	return MAX_ROW_INDEX;
+}
+
+tlint Mat4x4::maxColumnIndex() {
+	return MAX_COLUMN_INDEX;
+}
+
+tlint Mat4x4::minRowIndex() {
+	return MIN_ROW_INDEX;
+}
+
+tlint Mat4x4::minColumnIndex() {
+	return MIN_COLUMN_INDEX;
 }
 
 type_t Mat4x4::type() {
