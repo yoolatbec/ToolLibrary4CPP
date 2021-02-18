@@ -14,8 +14,8 @@ namespace lang {
 
 Integer::Integer(tlint value)
 	: mValue(value) {
-	// TODO Auto-generated ructor stub
-	mHashCode = genHashCode();
+	// TODO Auto-generated constructor stub
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Integer::Integer(Reference ref) {
@@ -35,7 +35,7 @@ Integer::Integer(Reference ref) {
 		mValue = 0;
 	}
 
-	mHashCode = genHashCode();
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 byte Integer::byteValue() {
@@ -102,8 +102,8 @@ type_t Integer::type() {
 	return CLASS_SERIAL;
 }
 
-hash_t Integer::genHashCode() {
-	return CLASS_SERIAL << 32 + mValue;
+hash_t Integer::genHashCode(type_t type) {
+	return (type << 32) + mValue;
 }
 
 } /* namespace lang */

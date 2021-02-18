@@ -17,7 +17,7 @@ class Integer: virtual public Number {
 private:
 	static const type_t CLASS_SERIAL = 3;
 	tlint mValue;
-	hash_t genHashCode();
+	hash_t genHashCode(type_t);
 
 	explicit Integer(tlint);
 	explicit Integer(Reference);
