@@ -38,6 +38,7 @@ protected:
 	 */
 	hash_t mHashCode;
 public:
+	const static hash_t INSTANCE_MASK = 0X0000FFFF;
 
 protected:
 	/*

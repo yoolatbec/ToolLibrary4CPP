@@ -51,7 +51,7 @@ type_t Object::type() {
 }
 
 hash_t Object::genHashCode(type_t type) {
-	return (hash_t)((((hash_t)this) ^ (((hash_t)this) >> 32)) | type << 32);
+	return (hash_t)((((hash_t)this) ^ (((hash_t)this) >> 32)) | (type << 32));
 }
 
 } /* namespace lang */
