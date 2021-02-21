@@ -14,7 +14,6 @@ namespace advanced {
 namespace math {
 
 using lang::String;
-using Vector::VECTOR_TYPE;
 
 Vec2::Vec2(float x, float y) {
 	// TODO Auto-generated constructor stub

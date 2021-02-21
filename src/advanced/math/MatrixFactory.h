@@ -23,7 +23,7 @@ class MatrixFactory: public lang::Object {
 private:
 	const static type_t CLASS_SERIAL = 129;
 
-	const static MATRIX_TYPE MATRIX_MAP[][] = { {
+	constexpr const static MATRIX_TYPE MATRIX_MAP[4][4] = { {
 		MATRIX_1X1,
 		MATRIX_1X2,
 		MATRIX_1X3,
@@ -63,18 +63,24 @@ private:
 	static vec2 negate0(vec2);
 	static vec negate0(vec);
 
-	static vec4 multiply0(vec4, float);
-	static vec3 multiply0(vec3, float);
-	static vec2 multiply0(vec2, float);
-	static vec multiply0(vec, float);
+	static vec4 scale0(vec4, float);
+	static vec3 scale0(vec3, float);
+	static vec2 scale0(vec2, float);
+	static vec scale0(vec, float);
+
+	static Reference matrixScale(Reference, float);
+	static Reference vectorScale(Reference, float);
 
 	static Reference newMatrix(tlint, tlint);
 	static Reference newMatrix(MATRIX_TYPE);
+
+	static Reference newVector(tlint);
+	static Reference newVector(VECTOR_TYPE);
 public:
 	MatrixFactory(const MatrixFactory &other) = delete;
 	MatrixFactory& operator=(const MatrixFactory &other) = delete;
 	static Reference multiply(Reference, Reference);
-	static Reference multiply(Reference, float);
+	static Reference scale(Reference, float);
 	static float dot(Reference, Reference);
 	static Reference cross(Reference, Reference);
 	static Reference add(Reference, Reference);

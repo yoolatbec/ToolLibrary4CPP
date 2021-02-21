@@ -1,24 +1,22 @@
 /*
- * Socket.cpp
+ * Inet4Address.cpp
  *
- *  Created on: Feb 19, 2021
+ *  Created on: Feb 21, 2021
  *      Author: yoolatbec
  */
 
-#include "Socket.h"
-#include <sys/socket.h>
-#include <unistd.h>
+#include "Inet4Address.h"
 
 namespace tl {
 namespace net {
 
-Socket::Socket() {
+Inet4Address::Inet4Address() {
 	// TODO Auto-generated constructor stub
+
 }
 
-Socket::~Socket() {
+Inet4Address::~Inet4Address() {
 	// TODO Auto-generated destructor stub
-	close(mSocketID);
 }
 
 } /* namespace net */

@@ -53,12 +53,15 @@ public:
 	void set(tlint, tlint, float);
 	void setRow(tlint, vec3);
 	void setColumn(tlint, vec3);
+	void setRow(tlint, Reference);
+	void setColumn(tlint, Reference);
 	Reference toString();
 	mat3x3 values();
 	tlint maxRowIndex();
 	tlint minRowIndex();
 	tlint maxColumnIndex();
 	tlint minColumnIndex();
+	MATRIX_TYPE matrixType();
 	static type_t type();
 	bool instanceof(type_t);
 };

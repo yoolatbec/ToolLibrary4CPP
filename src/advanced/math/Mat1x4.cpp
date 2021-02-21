@@ -149,6 +149,15 @@ void Mat1x4::setRow(tlint i, vec4 v) {
 	update();
 }
 
+void Mat1x4::setRow(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec4::type())) {
+		//cast an exception
+	}
+
+	Vec4 *v = dynamic_cast<Vec4*>(ref.getEntity());
+	setRow(i, v->values());
+}
+
 void Mat1x4::setColumn(tlint i, vec v) {
 	switch (i) {
 	case 0:
@@ -168,6 +177,15 @@ void Mat1x4::setColumn(tlint i, vec v) {
 	}
 
 	update();
+}
+
+void Mat1x4::setColumn(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec::type())) {
+		//cast an exception
+	}
+
+	Vec *v = dynamic_cast<Vec*>(ref.getEntity());
+	setColumn(i, v->values());
 }
 
 Reference Mat1x4::transpose() {
@@ -195,6 +213,10 @@ tlint Mat1x4::maxColumnIndex() {
 
 tlint Mat1x4::minColumnIndex() {
 	return MIN_COLUMN_INDEX;
+}
+
+MATRIX_TYPE Mat1x4::matrixType() {
+	return MATRIX_ARRANGEMENT;
 }
 
 Mat1x4::~Mat1x4() {

@@ -32,7 +32,6 @@ public:
 	tlint size();
 	void set(tlint, float);
 	void set(vec);
-	void set(Reference);
 	float get(tlint);
 	vec values();
 	VECTOR_TYPE vectorType();

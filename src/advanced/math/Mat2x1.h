@@ -22,7 +22,7 @@ private:
 	const static tlint MIN_ROW_INDEX = 0;
 	const static tlint MAX_COLUMN_INDEX = 0;
 	const static tlint MIN_COLUMN_INDEX = 0;
-	const static mat2x1 DEFAULT_VALUE = { { 0 }, { 0 } };
+	constexpr const static mat2x1 DEFAULT_VALUE = { { 0 }, { 0 } };
 
 	mat2x1 mValue;
 	mat1x2 mTranspose;
@@ -45,12 +45,15 @@ public:
 	void set(tlint, tlint, float);
 	void setRow(tlint, vec);
 	void setColumn(tlint, vec2);
+	void setRow(tlint, Reference);
+	void setColumn(tlint, Reference);
 	Reference transpose();
 	Reference toString();
 	tlint maxRowIndex();
 	tlint minRowIndex();
 	tlint maxColumnIndex();
 	tlint minColumnIndex();
+	MATRIX_TYPE matrixType();
 	static type_t type();
 	bool instanceof(type_t);
 };

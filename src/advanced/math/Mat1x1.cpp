@@ -89,6 +89,15 @@ void Mat1x1::setRow(tlint i, vec v) {
 	update();
 }
 
+void Mat1x1::setRow(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec::type())) {
+		//cast an exception
+	}
+
+	Vec *v = dynamic_cast<Vec*>(ref.getEntity());
+	setRow(i, v->values());
+}
+
 void Mat1x1::setColumn(tlint j, vec v) {
 	if (j != MAX_COLUMN_INDEX) {
 		//cast an exception
@@ -96,6 +105,15 @@ void Mat1x1::setColumn(tlint j, vec v) {
 
 	mValue.r0 = v;
 	update();
+}
+
+void Mat1x1::setColumn(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec::type())) {
+		//cast an exception
+	}
+
+	Vec *v = dynamic_cast<Vec*>(ref.getEntity());
+	setColumn(i, v->values());
 }
 
 float Mat1x1::get(tlint i, tlint j) {
@@ -156,6 +174,10 @@ tlint Mat1x1::maxColumnIndex() {
 
 tlint Mat1x1::minColumnIndex() {
 	return MIN_COLUMN_INDEX;
+}
+
+MATRIX_TYPE Mat1x1::matrixType() {
+	return MATRIX_ARRANGEMENT;
 }
 
 } /* namespace math */

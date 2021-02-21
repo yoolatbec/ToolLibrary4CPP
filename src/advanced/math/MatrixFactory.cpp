@@ -50,22 +50,22 @@ float MatrixFactory::dot(Reference v, Reference u) {
 
 	float product;
 	switch (vector_v->vectorType()) {
-	case Vector::VECTOR_1:
+	case VECTOR_1:
 		Vec *v1 = vector_v;
 		Vec *u1 = vector_u;
 		product = dot_vec(v1->values(), u1->values());
 		break;
-	case Vector::VECTOR_2:
+	case VECTOR_2:
 		Vec2 *v2 = vector_v;
 		Vec2 *u2 = vector_u;
 		product = dot_vec2(v2->values(), u2->values());
 		break;
-	case Vector::VECTOR_3:
+	case VECTOR_3:
 		Vec3 *v3 = vector_v;
 		Vec3 *u3 = vector_u;
 		product = dot_vec3(v3->values(), u3->values());
 		break;
-	case Vector::VECTOR_4:
+	case VECTOR_4:
 		Vec4 *v4 = vector_v;
 		Vec4 *u4 = vector_u;
 		product = dot_vec4(v4->values(), u4->values());
@@ -130,7 +130,7 @@ vec MatrixFactory::negate0(vec v) {
 	return make_vec(u);
 }
 
-vec4 MatrixFactory::multiply0(vec4 v, float a) {
+vec4 MatrixFactory::scale0(vec4 v, float a) {
 	vec4 u;
 	u.x = v.x * a;
 	u.y = v.y * a;
@@ -140,19 +140,55 @@ vec4 MatrixFactory::multiply0(vec4 v, float a) {
 	return u;
 }
 
-vec3 MatrixFactory::multiply0(vec3 v, float a) {
-	vec4 u = multiply0(make_vec4(v), a);
+vec3 MatrixFactory::scale0(vec3 v, float a) {
+	vec4 u = scale0(make_vec4(v), a);
 	return make_vec3(u);
 }
 
-vec2 MatrixFactory::multiply0(vec2 v, float a) {
-	vec4 u = multiply0(make_vec4(v), a);
+vec2 MatrixFactory::scale0(vec2 v, float a) {
+	vec4 u = scale0(make_vec4(v), a);
 	return make_vec2(u);
 }
 
-vec MatrixFactory::multiply0(vec v, float a) {
-	vec4 u = multiply0(make_vec4(v), a);
+vec MatrixFactory::scale0(vec v, float a) {
+	vec4 u = scale0(make_vec4(v), a);
 	return make_vec(u);
+}
+
+Reference MatrixFactory::scale(Reference ref, float a) {
+	if (!ref.getEntity()->instanceof(AbstractMatrix::type())) {
+		//cast an exception
+	}
+
+	if (ref.getEntity()->instanceof(Matrix::type())) {
+		return matrixScale(ref, a);
+	} else {
+		return vectorScale(ref, a);
+	}
+}
+
+Reference MatrixFactory::matrixScale(Reference ref, float a) {
+	Matrix *m = dynamic_cast<Matrix*>(ref.getEntity());
+	Reference r = newMatrix(m->matrixType());
+	Matrix *n = dynamic_cast<Matrix*>(r.getEntity());
+
+	for (tlint index = m->minRowIndex(); index <= m->maxRowIndex(); index++) {
+		n->setRow(index, vectorScale(m->getRow(index), a));
+	}
+
+	return r;
+}
+
+Reference MatrixFactory::vectorScale(Reference ref, float a) {
+	Vector *v = dynamic_cast<Vector*>(ref.getEntity());
+	ref = newVector(v->vectorType());
+	Vector *u = dynamic_cast<Vector*>(ref.getEntity());
+
+	for (tlint index = v->minIndex(); index <= v->maxIndex(); index++) {
+		u->set(index, v->get(index) * a);
+	}
+
+	return ref;
 }
 
 Reference MatrixFactory::newMatrix(tlint i, tlint j) {
@@ -216,6 +252,58 @@ Reference MatrixFactory::newMatrix(MATRIX_TYPE type) {
 	}
 
 	return ref;
+}
+
+Reference MatrixFactory::newVector(tlint i) {
+	Reference ref;
+	switch (i) {
+	case 1:
+		ref = Reference(new Vec());
+		break;
+	case 2:
+		ref = Reference(new Vec2());
+		break;
+	case 3:
+		ref = Reference(new Vec3());
+		break;
+	case 4:
+		ref = Reference(new Vec4());
+		break;
+	default:
+		//cast an exception
+	}
+
+	return ref;
+}
+
+Reference MatrixFactory::newVector(VECTOR_TYPE type) {
+	Reference ref;
+	switch (type) {
+	case VECTOR_1:
+		ref = Reference(new Vec());
+		break;
+	case VECTOR_2:
+		ref = Reference(new Vec2());
+		break;
+	case VECTOR_3:
+		ref = Reference(new Vec3());
+		break;
+	case VECTOR_4:
+		ref = Reference(new Vec4());
+		break;
+	default:
+		//cast an exception
+	}
+
+	return ref;
+}
+
+Reference MatrixFactory::multiply(Reference m1, Reference m2) {
+	if (!(m1.getEntity()->instanceof(AbstractMatrix::type())
+		&& m2.getEntity()->instanceof(AbstractMatrix::type()))) {
+		//cast an exception
+	}
+
 }
 
 type_t MatrixFactory::type() {

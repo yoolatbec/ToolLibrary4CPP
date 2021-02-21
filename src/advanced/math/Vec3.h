@@ -33,7 +33,6 @@ public:
 	tlint size();
 	void set(vec3);
 	void set(tlint, float);
-	void set(Reference);
 	Reference toString();
 	vec3 values();
 	VECTOR_TYPE vectorType();

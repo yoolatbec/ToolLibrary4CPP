@@ -121,6 +121,10 @@ tlint Mat4x3::minColumnIndex() {
 	return MIN_COLUMN_INDEX;
 }
 
+MATRIX_TYPE Mat4x3::matrixType() {
+	return MATRIX_ARRANGEMENT;
+}
+
 Reference Mat4x3::getRow(tlint i) {
 	vec3 v = getRow0(i);
 	return Reference(new Vec3(v));
@@ -171,6 +175,15 @@ void Mat4x3::setRow(tlint i, vec3 v) {
 	update();
 }
 
+void Mat4x3::setRow(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec3::type())) {
+		//cast an exception
+	}
+
+	Vec3 *v = dynamic_cast<Vec3*>(ref.getEntity());
+	setRow(i, v->values());
+}
+
 void Mat4x3::setColumn(tlint i, vec4 v) {
 	switch (i) {
 	case 0:
@@ -196,6 +209,15 @@ void Mat4x3::setColumn(tlint i, vec4 v) {
 	}
 
 	update();
+}
+
+void Mat4x3::setColumn(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec4::type())) {
+		//cast an exception
+	}
+
+	Vec4 *v = dynamic_cast<Vec4*>(ref.getEntity());
+	setColumn(i, v->values());
 }
 
 float Mat4x3::get(tlint i, tlint j) {

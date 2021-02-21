@@ -137,6 +137,15 @@ void Mat2x2::setRow(tlint i, vec2 v) {
 	update();
 }
 
+void Mat2x2::setRow(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec2::type())) {
+		//cast an exception
+	}
+
+	Vec2 *v = dynamic_cast<Vec2*>(ref.getEntity());
+	setRow(i, v->values());
+}
+
 void Mat2x2::setColumn(tlint i, vec2 v) {
 	switch (i) {
 	case 0:
@@ -152,6 +161,15 @@ void Mat2x2::setColumn(tlint i, vec2 v) {
 	}
 
 	update();
+}
+
+void Mat2x2::setColumn(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec2::type())) {
+		//cast an exception
+	}
+
+	Vec2 *v = dynamic_cast<Vec2*>(ref.getEntity());
+	setColumn(i, v->values());
 }
 
 float Mat2x2::get(tlint i, tlint j) {
@@ -218,6 +236,10 @@ tlint Mat2x2::maxColumnIndex() {
 
 tlint Mat2x2::minColumnIndex() {
 	return MIN_COLUMN_INDEX;
+}
+
+MATRIX_TYPE Mat2x2::matrixType(){
+	return MATRIX_ARRANGEMENT;
 }
 
 type_t Mat2x2::type() {

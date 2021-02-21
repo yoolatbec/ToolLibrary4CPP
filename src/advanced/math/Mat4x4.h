@@ -48,6 +48,8 @@ public:
 	float get(tlint, tlint);
 	Reference getRow(tlint);
 	Reference getColumn(tlint);
+	void setRow(tlint, Reference);
+	void setColumn(tlint, Reference);
 	mat4x4 values();
 	void set(tlint, tlint, float);
 	void setRow(tlint, vec4);
@@ -59,6 +61,7 @@ public:
 	tlint minRowIndex();
 	tlint maxColumnIndex();
 	tlint minColumnIndex();
+	MATRIX_TYPE matrixType();
 	Reference toString();
 	static type_t type();
 	bool instanceof(type_t);

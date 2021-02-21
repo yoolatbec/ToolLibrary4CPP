@@ -22,7 +22,7 @@ private:
 	const static tlint MIN_ROW_INDEX = 0;
 	const static tlint MAX_COLUMN_INDEX = 2;
 	const static tlint MIN_COLUMN_INDEX = 0;
-	const static mat4x3 DEFAULT_VALUE = {
+	constexpr const static mat4x3 DEFAULT_VALUE = {
 		{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}
 	};
 
@@ -47,11 +47,14 @@ public:
 	void set(tlint, tlint, float);
 	void setRow(tlint, vec3);
 	void setColumn(tlint, vec4);
+	void setRow(tlint, Reference);
+	void setColumn(tlint, Reference);
 	mat4x3 values();
 	tlint maxRowIndex();
 	tlint minRowIndex();
 	tlint maxColumnIndex();
 	tlint minColumnIndex();
+	MATRIX_TYPE matrixType();
 	Reference toString();
 	Reference transpose();
 	static type_t type();

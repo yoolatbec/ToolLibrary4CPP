@@ -43,6 +43,8 @@ public:
 	void set(tlint, tlint, float);
 	void setRow(tlint, vec2);
 	void setColumn(tlint, vec2);
+	void setRow(tlint, Reference);
+	void setColumn(tlint, Reference);
 	float get(tlint, tlint);
 	Reference getColumn(tlint);
 	Reference getRow(tlint);
@@ -51,6 +53,7 @@ public:
 	tlint minRowIndex();
 	tlint maxColumnIndex();
 	tlint minColumnIndex();
+	MATRIX_TYPE matrixType();
 	bool invertible();
 	Reference inverse();
 	Reference transpose();

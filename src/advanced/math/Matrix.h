@@ -69,11 +69,14 @@ public:
 	 * Set the value of row i, column j to v
 	 */
 	virtual void set(tlint, tlint, float v) = 0;
+	virtual void setRow(tlint, Reference) = 0;
+	virtual void setColumn(tlint, Reference) = 0;
 	virtual Reference transpose() = 0;
 	virtual tlint maxRowIndex() = 0;
 	virtual tlint maxColumnIndex() = 0;
 	virtual tlint minRowIndex() = 0;
 	virtual tlint minColumnIndex() = 0;
+	virtual MATRIX_TYPE matrixType() = 0;
 	static type_t type();
 	bool instanceof(type_t);
 };

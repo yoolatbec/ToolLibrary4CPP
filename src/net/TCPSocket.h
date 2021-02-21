@@ -21,6 +21,7 @@ public:
 	virtual ~TCPSocket();
 	TCPSocket(const TCPSocket &other) = delete;
 	TCPSocket& operator=(const TCPSocket &other) = delete;
+	void connectTo(Reference);
 };
 
 } /* namespace net */

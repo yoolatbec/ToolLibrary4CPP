@@ -169,8 +169,11 @@ void Mat4x4::update() {
 	if (invertible()) {
 		mInverse = inverse0();
 	} else {
-		mInverse =
-			{ { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } };
+		mInverse = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, {
+			0,
+			0,
+			0,
+			0 } };
 	}
 }
 
@@ -294,6 +297,15 @@ void Mat4x4::set(tlint i, tlint j, float value) {
 	setRow(i, v);
 }
 
+void Mat4x4::setRow(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec4::type())) {
+		//cast an exception
+	}
+
+	Vec4 *v = dynamic_cast<Vec4*>(ref.getEntity());
+	setRow(i, v->values());
+}
+
 void Mat4x4::setRow(tlint i, vec4 v) {
 	switch (i) {
 	case 0:
@@ -348,6 +360,15 @@ void Mat4x4::setColumn(tlint j, vec4 u) {
 	update();
 }
 
+void Mat4x4::setColumn(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec4::type())) {
+		//cast an exception
+	}
+
+	Vec4 *v = dynamic_cast<Vec4*>(ref.getEntity());
+	setColumn(i, v->values());
+}
+
 bool Mat4x4::invertible() {
 	return Math::abs(mDeterminant) < SquareMatrix::CRITICAL_DETERMINANT;
 }
@@ -388,6 +409,10 @@ tlint Mat4x4::minRowIndex() {
 
 tlint Mat4x4::minColumnIndex() {
 	return MIN_COLUMN_INDEX;
+}
+
+MATRIX_TYPE Mat4x4::matrixType() {
+	return MATRIX_ARRANGEMENT;
 }
 
 type_t Mat4x4::type() {

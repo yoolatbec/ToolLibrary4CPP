@@ -175,6 +175,15 @@ void Mat3x4::setRow(tlint i, vec4 v) {
 	update();
 }
 
+void Mat3x4::setRow(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec4::type())) {
+		//cast an exception
+	}
+
+	Vec4 *v = dynamic_cast<Vec4*>(ref.getEntity());
+	setRow(i, v->values());
+}
+
 void Mat3x4::setColumn(tlint j, vec3 v) {
 	switch (j) {
 	case 0:
@@ -204,6 +213,15 @@ void Mat3x4::setColumn(tlint j, vec3 v) {
 	update();
 }
 
+void Mat3x4::setColumn(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec3::type())) {
+		//cast an exception
+	}
+
+	Vec3 *v = dynamic_cast<Vec3*>(ref.getEntity());
+	setColumn(i, v->values());
+}
+
 tlint Mat3x4::maxRowIndex() {
 	return MAX_ROW_INDEX;
 }
@@ -218,6 +236,10 @@ tlint Mat3x4::maxColumnIndex() {
 
 tlint Mat3x4::minColumnIndex() {
 	return MIN_COLUMN_INDEX;
+}
+
+MATRIX_TYPE Mat3x4::matrixType() {
+	return MATRIX_ARRANGEMENT;
 }
 
 type_t Mat3x4::type() {

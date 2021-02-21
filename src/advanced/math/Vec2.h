@@ -34,7 +34,6 @@ public:
 	VECTOR_TYPE vectorType();
 	void set(tlint, float);
 	void set(vec2);
-	void set(Reference);
 	Reference toString();
 	tlint maxIndex();
 	tlint minIndex();

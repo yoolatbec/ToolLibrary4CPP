@@ -133,6 +133,15 @@ void Mat3x1::setRow(tlint i, vec v) {
 	update();
 }
 
+void Mat3x1::setRow(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec::type())) {
+		//cast an exception
+	}
+
+	Vec *v = dynamic_cast<Vec*>(ref.getEntity());
+	setRow(i, v->values());
+}
+
 void Mat3x1::setColumn(tlint i, vec3 v) {
 	if (i != MIN_ROW_INDEX) {
 		//cast an exception
@@ -143,6 +152,15 @@ void Mat3x1::setColumn(tlint i, vec3 v) {
 	mValue.r2.x = v.z;
 
 	update();
+}
+
+void Mat3x1::setColumn(tlint i, Reference ref) {
+	if (!ref.getEntity()->instanceof(Vec3::type())) {
+		//cast an exception
+	}
+
+	Vec3 *v = dynamic_cast<Vec3*>(ref.getEntity());
+	setColumn(i, v->values());
 }
 
 Reference Mat3x1::transpose() {
@@ -171,11 +189,15 @@ tlint Mat3x1::minColumnIndex() {
 	return MIN_COLUMN_INDEX;
 }
 
+MATRIX_TYPE Mat3x1::matrixType() {
+	return MATRIX_ARRANGEMENT;
+}
+
 Mat3x1::~Mat3x1() {
 	// TODO Auto-generated destructor stub
 }
 
-type_t Mat3x1::type(){
+type_t Mat3x1::type() {
 	return CLASS_SERIAL;
 }
 

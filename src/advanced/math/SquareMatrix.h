@@ -19,7 +19,7 @@ private:
 	const static type_t CLASS_SERIAL = 111;
 
 protected:
-	const static double CRITICAL_DETERMINANT = 0.005;
+	constexpr const static double CRITICAL_DETERMINANT = 0.005;
 	double mDeterminant;
 
 	virtual double computeDeterminant() = 0;

@@ -10,9 +10,6 @@
 
 #include "../lang/Reference.h"
 
-#include <sys/socket.h>
-#include <sys/types.h>
-
 namespace tl {
 namespace net {
 
@@ -23,7 +20,7 @@ private:
 	const static type_t CLASS_SERIAL = 200;
 
 protected:
-	tlint mSocket;
+	tlint mSocketID;
 
 public:
 	Socket();

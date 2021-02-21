@@ -25,9 +25,9 @@ public:
 	virtual ~AbstractMatrix();
 	AbstractMatrix(const AbstractMatrix &other) = delete;
 	AbstractMatrix& operator=(const AbstractMatrix &other) = delete;
-	Reference toString() = 0;
+	virtual Reference toString() = 0;
 	static type_t type();
-	bool instanceof(type_t);
+	virtual bool instanceof(type_t);
 };
 
 } /* namespace math */

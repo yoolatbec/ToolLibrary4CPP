@@ -42,6 +42,8 @@ public:
 	void set(tlint, tlint, float);
 	void setColumn(tlint, vec);
 	void setRow(tlint, vec);
+	void setRow(tlint, Reference);
+	void setColumn(tlint, Reference);
 	float get(tlint, tlint);
 	Reference getRow(tlint);
 	Reference getColumn(tlint);
@@ -51,6 +53,7 @@ public:
 	tlint minRowIndex();
 	tlint maxColumnIndex();
 	tlint minColumnIndex();
+	MATRIX_TYPE matrixType();
 	static type_t type();
 	bool instanceof(type_t);
 };
