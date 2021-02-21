@@ -6,10 +6,14 @@
  */
 
 #include "MatrixFactory.h"
+#include "MatrixType.h"
+#include "VectorType.h"
 
 namespace tl {
 namespace advanced {
 namespace math {
+
+using lang::Reference;
 
 MatrixFactory::MatrixFactory() {
 	// TODO Auto-generated constructor stub
@@ -151,8 +155,67 @@ vec MatrixFactory::multiply0(vec v, float a) {
 	return make_vec(u);
 }
 
-Reference MatrixFactory::newMatrix(tlint i, tlint j){
+Reference MatrixFactory::newMatrix(tlint i, tlint j) {
+	MATRIX_TYPE type = MATRIX_MAP[i][j];
+	return MatrixFactory::newMatrix(type);
+}
 
+Reference MatrixFactory::newMatrix(MATRIX_TYPE type) {
+	Reference ref;
+	switch (type) {
+	case MATRIX_1X1:
+		ref = Reference(new Mat1x1());
+		break;
+	case MATRIX_1X2:
+		ref = Reference(new Mat1x2());
+		break;
+	case MATRIX_1X3:
+		ref = Reference(new Mat1x3());
+		break;
+	case MATRIX_1X4:
+		ref = Reference(new Mat1x4());
+		break;
+	case MATRIX_2X1:
+		ref = Reference(new Mat2x1());
+		break;
+	case MATRIX_2X2:
+		ref = Reference(new Mat2x2());
+		break;
+	case MATRIX_2X3:
+		ref = Reference(new Mat2x3());
+		break;
+	case MATRIX_2X4:
+		ref = Reference(new Mat2x4());
+		break;
+	case MATRIX_3X1:
+		ref = Reference(new Mat3x1());
+		break;
+	case MATRIX_3X2:
+		ref = Reference(new Mat3x2());
+		break;
+	case MATRIX_3X3:
+		ref = Reference(new Mat3x3());
+		break;
+	case MATRIX_3X4:
+		ref = Reference(new Mat3x4());
+		break;
+	case MATRIX_4X1:
+		ref = Reference(new Mat4x1());
+		break;
+	case MATRIX_4X2:
+		ref = Reference(new Mat4x2());
+		break;
+	case MATRIX_4X3:
+		ref = Reference(new Mat4x3());
+		break;
+	case MATRIX_4X4:
+		ref = Reference(new Mat4x4());
+		break;
+	default:
+		// cast an exception
+	}
+
+	return ref;
 }
 
 type_t MatrixFactory::type() {

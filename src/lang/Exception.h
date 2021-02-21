@@ -8,12 +8,14 @@
 #ifndef SRC_LANG_EXCEPTION_H_
 #define SRC_LANG_EXCEPTION_H_
 
-#include "String.h"
+#include "Reference.h"
 
 namespace tl {
 namespace lang {
 
 class Exception: public Object {
+private:
+	const static type_t CLASS_SERIAL = 10;
 public:
 	Exception();
 	explicit Exception(const String&);

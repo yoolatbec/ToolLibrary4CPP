@@ -10,40 +10,36 @@
 
 #include "../../lang/Reference.h"
 
-#include "Mat4x4.h"
-#include "Vec4.h"
-#include "Vec3.h"
-#include "Vec2.h"
-#include "Vec.h"
+#include "Matrix.h"
+#include "Vector.h"
 
 namespace tl {
 namespace advanced {
 namespace math {
 
 using lang::Reference;
-using Matrix::MATRIX_TYPE;
 
 class MatrixFactory: public lang::Object {
 private:
 	const static type_t CLASS_SERIAL = 129;
 
 	const static MATRIX_TYPE MATRIX_MAP[][] = { {
-		MATRIX_TYPE::MATRIX_1X1,
-		MATRIX_TYPE::MATRIX_1X2,
-		MATRIX_TYPE::MATRIX_1X3,
-		MATRIX_TYPE::MATRIX_1X4 }, {
-		MATRIX_TYPE::MATRIX_2X1,
-		MATRIX_TYPE::MATRIX_2X2,
-		MATRIX_TYPE::MATRIX_2X3,
-		MATRIX_TYPE::MATRIX_2X4 }, {
-		MATRIX_TYPE::MATRIX_3X1,
-		MATRIX_TYPE::MATRIX_3X2,
-		MATRIX_TYPE::MATRIX_3X3,
-		MATRIX_TYPE::MATRIX_3X4 }, {
-		MATRIX_TYPE::MATRIX_4X1,
-		MATRIX_TYPE::MATRIX_4X2,
-		MATRIX_TYPE::MATRIX_4X3,
-		MATRIX_TYPE::MATRIX_4X4 } };
+		MATRIX_1X1,
+		MATRIX_1X2,
+		MATRIX_1X3,
+		MATRIX_1X4 }, {
+		MATRIX_2X1,
+		MATRIX_2X2,
+		MATRIX_2X3,
+		MATRIX_2X4 }, {
+		MATRIX_3X1,
+		MATRIX_3X2,
+		MATRIX_3X3,
+		MATRIX_3X4 }, {
+		MATRIX_4X1,
+		MATRIX_4X2,
+		MATRIX_4X3,
+		MATRIX_4X4 } };
 
 	MatrixFactory();
 	static bool additionCapable(Reference, Reference);
