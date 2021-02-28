@@ -13,14 +13,19 @@
 namespace tl {
 namespace lang {
 
-class Exception: public Object {
+using lang::Reference;
+
+class Exception: public virtual Object {
 private:
 	const static type_t CLASS_SERIAL = 10;
+	Reference mMessage;
 public:
 	Exception();
-	explicit Exception(const String&);
+	explicit Exception(Reference);
 	virtual ~Exception();
-	Exception(const Exception &other) = delete;
+	Reference message();
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace lang */

@@ -13,7 +13,7 @@ namespace lang {
 
 Math::Math() {
 	// TODO Auto-generated constructor stub
-
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 type_t Math::type(){
@@ -24,16 +24,12 @@ bool Math::instanceof(type_t type){
 	return CLASS_SERIAL == type || Object::instanceof(type);
 }
 
-tlint Math::min(tlint a, tlint b){
-	return a < b ? a : b;
-}
-
-tlint Math::max(tlint a, tlint b){
-	return a > b ? a : b;
-}
-
 double Math::abs(double i){
 	return i > 0 ? i : -i;
+}
+
+double Math::power(double base, double exp){
+	return pow(base, exp);
 }
 
 } /* namespace lang */

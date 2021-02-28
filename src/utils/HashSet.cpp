@@ -11,18 +11,13 @@
 namespace tl {
 namespace utils {
 
+using lang::Array;
+using lang::Reference;
+
 HashSet::HashSet(type_t type)
-		: Set(type) {
+	: Collection(type), Set(type) {
 	// TODO Auto-generated constructor stub
-	mTableArray = Reference(new Array(Array::type(), 5));
-	//initialize to 8, 13, 21, 34, 55
-	Array *tableArray = (Array*)mTableArray.getEntity();
-	for (int index = 0; index < TABLE_NUM; index++) {
-		tableArray->set(index,
-				Reference(
-						new Array(HashEntry::type(), INITIAL_CAPACITY[index])));
-		mHashFactor[index] = INITIAL_CAPACITY[index];
-	}
+	mMap = Reference(new HashMap(type, Object::type()));
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -32,39 +27,119 @@ HashSet::~HashSet() {
 
 }
 
-HashSet::HashEntry::HashEntry() {
-	mValid = false;
+void HashSet::invalidateIterators() {
+	if (mIterator.isNull()) {
+		return;
+	}
 
-	mHashCode = genHashCode(CLASS_SERIAL);
+	Iterator *iterator = dynamic_cast<Iterator*>(mIterator.getEntity());
+	iterator->invalidate();
 }
 
-void HashSet::reHash() {
-	Array *tableArray = (Array*)mTableArray.getEntity();
-	tlint newCapacity = ((Array*)tableArray->get(3).getEntity())->size()
-			+ ((Array*)tableArray->get(4).getEntity())->size();
+bool HashSet::add(Reference ref) {
+	invalidateIterators();
 
-	if (newCapacity > lang::Integer::MAX_VALUE) {
+	HashMap *map = dynamic_cast<HashMap*>(mMap.getEntity());
+	return map->put(ref, Reference()).isNull();
+}
 
+bool HashSet::addAll(Reference ref) {
+	if (ref.isNull()) {
+		return false;
 	}
 
-	Reference newTableRef = Reference(
-			new Array(HashEntry::type(), newCapacity));
-	Array *newTable = (Array*)newTableRef.getEntity();
-	Reference oldTableRef = tableArray->get(0);
-	Array *oldTable = (Array*)oldTableRef.getEntity();
+	argumentTypeCheck(ref, Collection::type());
+	invalidateIterators();
 
-	for (int index = 0; index < TABLE_NUM - 1; index++) {
-		tableArray->set(tableArray->get(index + 1), index);
+	Collection* c = dynamic_cast<Collection*>(ref.getEntity());
+	Reference iteratorRef = c->iterator();
+	Iterator* iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
+
+	bool result = false;
+	while(iterator->hasNext()){
+		Reference e = iterator->next();
+		result = result || add(e);
 	}
-	tableArray->set(newTableRef, TABLE_NUM - 1);
 
-	for (int index = 0; index < oldTable->size(); index++) {
-		Reference ref = oldTable->get(index);
-		HashEntry *entry = dynamic_cast<HashEntry*>(ref.getEntity());
-		if (entry->mValid) {
-			add(entry->mValue);
+	return result;
+}
+
+bool HashSet::remove(Reference ref){
+	invalidateIterators();
+
+	HashMap* map = dynamic_cast<HashMap*>(mMap.getEntity());
+	return !map->remove(ref).isNull();
+}
+
+bool HashSet::removeAll(Reference ref){
+	if(ref.isNull()){
+		return false;
+	}
+
+	argumentTypeCheck(ref, Collection::type());
+	invalidateIterators();
+
+	Collection* c = dynamic_cast<Collection*>(ref.getEntity());
+	Reference iteratorRef = c->iterator();
+	Iterator* iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
+
+	bool result = false;
+	while(iterator->hasNext()){
+		Reference e = iterator->next();
+		result = result || remove(e);
+	}
+
+	return result;
+}
+
+bool HashSet::contains(Reference ref){
+	HashMap* map = dynamic_cast<HashMap*>(mMap.getEntity());
+	return map->containsKey(ref);
+}
+
+bool HashSet::containsAll(Reference ref){
+	if(ref.isNull()){
+		return false;
+	}
+
+	argumentTypeCheck(ref, Collection::type());
+
+	Collection* c = dynamic_cast<Collection*>(ref.getEntity());
+	Reference iteratorRef = c->iterator();
+	Iterator* iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
+
+	bool result = true;
+	while(iterator->hasNext()){
+		Reference e = iterator->next();
+		result = result && contains(e);
+		if(!result){
+			return result;
 		}
 	}
+
+	return result;
+}
+
+void HashSet::clear(){
+	invalidateIterators();
+
+	HashMap* map = dynamic_cast<HashMap*>(mMap.getEntity());
+	map->clear();
+}
+
+Reference HashSet::iterator() {
+	HashMap *map = dynamic_cast<HashMap*>(mMap.getEntity());
+	Reference keySetRef = map->keySet();
+	Set *keySet = dynamic_cast<Set*>(keySetRef.getEntity());
+	mIterator = keySet->iterator();
+	return mIterator;
+}
+
+Reference HashSet::toArray(){
+	HashMap* map = dynamic_cast<HashMap*>(mMap.getEntity());
+	Reference keySetRef = map->keySet();
+	Set* keySet = dynamic_cast<Set*>(keySetRef.getEntity());
+	return keySet->toArray();
 }
 
 type_t HashSet::type() {

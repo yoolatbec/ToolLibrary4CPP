@@ -6,13 +6,21 @@
  */
 
 #include "TCPServer.h"
+#include <unistd.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <string.h>
 
 namespace tl {
 namespace net {
 
 TCPServer::TCPServer() {
 	// TODO Auto-generated constructor stub
-
+	mSocketID = socket(AF_INET, SOCK_STREAM, 0);
+	if(mSocketID < 0){
+		//cast an exception
+	}
 }
 
 TCPServer::~TCPServer() {

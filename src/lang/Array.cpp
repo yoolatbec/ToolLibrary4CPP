@@ -12,9 +12,9 @@ namespace tl {
 namespace lang {
 
 Array::Array(type_t element_type, tlint size)
-		: mSize(size), mElementType(element_type) {
+	: mSize(size), mElementType(element_type) {
 	// TODO Auto-generated constructor stub
-	if(size > MAX_SIZE){
+	if (size > MAX_SIZE) {
 		//case an exception
 	}
 
@@ -55,16 +55,20 @@ tlint Array::size() {
 	return mSize;
 }
 
-Reference Array::toString(){
-	String** elementStrings = new String*[mSize];
-	tlint* length = new tlint[mSize];
-	for(int index = 0; index < mSize; index++){
-		if(mElements[index].isNull()){
+Reference Array::toString() {
+	Reference rtval = Reference(new String());
+
+	for (int index = 0; index < mSize; index++) {
+		if (mElements[index].isNull()) {
 			continue;
 		}
 
-		elementStrings[index] = mElements[index].getEntity()->toString();
+		String *str = dynamic_cast<String*>(rtval.getEntity());
+		rtval= str->append(
+			dynamic_cast<Object*>(mElements[index].getEntity())->toString());
 	}
+
+	return rtval;
 }
 
 type_t Array::type() {

@@ -6,6 +6,8 @@
  */
 
 #include "Byte.h"
+#include "String.h"
+#include <stdio.h>
 
 namespace tl {
 namespace lang {
@@ -21,11 +23,54 @@ Byte::~Byte() {
 	// TODO Auto-generated destructor stub
 }
 
-type_t Byte::type(){
+tlint Byte::intValue() {
+	return (tlint)mValue;
+}
+
+short Byte::shortValue() {
+	return mValue;
+}
+
+byte Byte::byteValue() {
+	return mValue;
+}
+
+tlint64 Byte::longValue() {
+	return mValue;
+}
+
+float Byte::floatValue() {
+	return (float)mValue;
+}
+
+double Byte::doubleValue() {
+	return (double)mValue;
+}
+
+Reference Byte::toString() {
+	char str[10];
+	sprintf(str, "%d", mValue);
+	return Reference(new String(str));
+}
+
+tlint Byte::compareTo(Reference ref) {
+	if (ref.isNull()) {
+		return mValue;
+	}
+
+	if (!ref.getEntity()->instanceof(Number::type())) {
+		//cast an exception
+	}
+
+	Number *n = dynamic_cast<Number*>(ref.getEntity());
+	return mValue - n->byteValue();
+}
+
+type_t Byte::type() {
 	return CLASS_SERIAL;
 }
 
-bool Byte::instanceof(type_t type){
+bool Byte::instanceof(type_t type) {
 	return (CLASS_SERIAL == type) || Number::instanceof(type);
 }
 

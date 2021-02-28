@@ -20,12 +20,14 @@ public:
 	StringBuilder(const StringBuilder &other) = delete;
 	StringBuilder& operator=(const StringBuilder &other) = delete;
 	Reference append(Reference);
+	Reference append(char);
 	Reference append(tlint);
 	Reference append(float);
 	Reference append(double);
 	Reference append(tlint64);
 	Reference append(bool);
 	Reference prepend(Reference);
+	Reference prepend(char);
 	Reference prepend(tlint);
 	Reference prepend(float);
 	Reference prepend(double);

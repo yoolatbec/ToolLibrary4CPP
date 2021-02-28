@@ -13,7 +13,7 @@
 namespace tl {
 namespace lang {
 
-class Byte: public Number {
+class Byte: public virtual Number {
 private:
 	const static type_t CLASS_SERIAL = 9;
 
@@ -23,6 +23,11 @@ private:
 	Byte(byte);
 	Byte(Reference);
 public:
+	const static byte MAX_VALUE = 0x7F;
+	const static byte MIN_VALUE = 0x80;
+	const static tlint SIZE_IN_BYTES = sizeof(byte);
+	const static tlint SIZE_IN_BITS = sizeof(byte) * 8;
+
 	virtual ~Byte();
 	Byte(const Byte &other) = delete;
 	Byte& operator=(const Byte &other) = delete;
@@ -34,6 +39,10 @@ public:
 	float floatValue();
 	double doubleValue();
 	Reference toString();
+	Reference valueOf(byte);
+	Reference valueOf(Reference);
+	static tlint compare(byte, byte);
+	static byte parseByte(Reference);
 	static type_t type();
 	bool instanceof(type_t type);
 };

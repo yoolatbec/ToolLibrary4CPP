@@ -19,13 +19,19 @@ private:
 	Math();
 	Math(const Math &other) = delete;
 	Math& operator=(const Math &other) = delete;
-	static type_t type();
 	bool instanceof(type_t);
 public:
-	static tlint min(tlint, tlint);
-	static tlint max(tlint, tlint);
 	static double power(double, double);
 	static double abs(double);
+	static double cos(double);
+	static double sin(double);
+	static double tan(double);
+	static double acos(double);
+	static double asin(double);
+	static double atan(double);
+	static double log(double);
+	static double log2(double);
+	static type_t type();
 };
 
 } /* namespace lang */

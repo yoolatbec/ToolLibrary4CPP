@@ -15,7 +15,7 @@ namespace utils {
 
 class SortedSet: public virtual Set {
 private:
-	const static type_t CLASS_SERIA = 92;
+	const static type_t CLASS_SERIAL = 92;
 public:
 	SortedSet(type_t);
 	virtual ~SortedSet();

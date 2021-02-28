@@ -17,6 +17,9 @@ using lang::Reference;
 class Iterator: public virtual tl::lang::Object {
 private:
 	const static type_t CLASS_SERIAL = 156;
+	bool mValid;
+protected:
+	virtual void checkValidation();
 public:
 	Iterator();
 	virtual ~Iterator();
@@ -25,6 +28,8 @@ public:
 	virtual Reference next() = 0;
 	virtual bool hasNext() = 0;
 	virtual void remove() = 0;
+	bool valid();
+	void invalidate();
 	static type_t type();
 	bool instanceof(type_t);
 };

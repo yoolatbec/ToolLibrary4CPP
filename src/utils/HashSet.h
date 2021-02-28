@@ -8,35 +8,23 @@
 #ifndef SRC_UTILS_HASHSET_H_
 #define SRC_UTILS_HASHSET_H_
 
-#include "Set.h"
+#include "HashMap.h"
 
 namespace tl {
 namespace utils {
 
-using lang::Array;
 using lang::Reference;
 
-class HashSet: public Set {
+class HashSet: public virtual Set {
 private:
-	const static type_t CLASS_SERIAL = 84;
-	const static tlint TABLE_NUM = 5;
-	const static tlint MAX_TRANSFER = 9;
-	const static tlint INITIAL_CAPACITY[] = {
-			8, 13, 21, 34, 55
-	};
+	const static type_t CLASS_SERIAL = 604;
 
-	class HashEntry: public Entry{
-	private:
-		const static type_t CLASS_SERIAL = 85;
-	public:
-		bool mValid;
-		HashEntry();
-	};
+	Reference mMap;
 
-	Reference mTableArray;
-	tlint mHashFactor[TABLE_NUM];
+	Reference mIterator;
 
-	void reHash();
+	void invalidateIterators();
+
 public:
 	HashSet(type_t);
 	virtual ~HashSet();

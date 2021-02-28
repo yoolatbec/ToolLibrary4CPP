@@ -9,7 +9,6 @@
 #define SRC_UTILS_MAP_H_
 
 #include "../lang/Reference.h"
-#include "Set.h"
 
 namespace tl {
 namespace utils {
@@ -42,16 +41,20 @@ public:
 	Map& operator=(const Map &other) = delete;
 	virtual bool containsKey(Reference) = 0;
 	virtual bool containsValue(Reference) = 0;
+	virtual bool containsEntry(Reference) = 0;
 	virtual void clear() = 0;
 	virtual Reference get(Reference) = 0;
 	virtual Reference put(Reference, Reference) = 0;
 	virtual void putAll(Reference) = 0;
 	virtual Reference putIfAbsent(Reference, Reference) = 0;
-	virtual Reference replace(Reference, Reference) = 0;
 	virtual Reference remove(Reference) = 0;
 	virtual Reference entrySet() = 0;
+	virtual Reference keySet() = 0;
 	tlint size();
 	bool isEmpty();
+	type_t keyType();
+	type_t valueType();
+	static Reference entry(Reference, Reference);
 	bool instanceof(type_t);
 	static type_t type();
 };

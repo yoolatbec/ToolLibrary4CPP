@@ -10,8 +10,8 @@
 namespace tl {
 namespace lang {
 
-bool Comparable::instanceof(type_t t){
-	return (CLASS_SERIAL == type) || Object::instanceof(t);
+bool Comparable::instanceof(type_t type){
+	return (CLASS_SERIAL == type) || Object::instanceof(type);
 }
 
 type_t Comparable::type(){

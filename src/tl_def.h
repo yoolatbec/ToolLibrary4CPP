@@ -27,7 +27,7 @@ typedef long long tlint64;
 typedef unsigned int tluint;
 typedef unsigned long long tluint64;
 typedef unsigned long long hash_t;
-typedef unsigned int type_t;
+typedef unsigned long long type_t;
 
 //typedef struct{
 //	short: 16;

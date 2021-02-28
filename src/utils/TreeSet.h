@@ -14,32 +14,19 @@
 namespace tl {
 namespace utils {
 
-class TreeSet: public NavigableSet {
+class TreeSet: public virtual NavigableSet {
 private:
 	const static type_t CLASS_SERIAL = 510;
 
-	class TreeSetIterator: public SetIterator {
-	private:
-		const static type_t CLASS_SERIAL = 511;
-		Reference mSetElements;
-	public:
-		TreeSetIterator(Reference);
-		Reference next();
-		bool hasNext();
-		void remove();
-		static type_t type();
-		bool instanceof(type_t);
-	};
-	friend class TreeSetIterator;
-
 	Reference mMap;
 
+	Reference mIterator;
+
+	void invalidateIterators();
 private:
 	bool contains0(Reference);
 	void add0(Reference);
 	void remove0(Reference);
-	void typeCheck(Reference, type_t);
-	void typeCheck(type_t, type_t);
 
 public:
 	TreeSet(type_t);

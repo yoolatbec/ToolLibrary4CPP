@@ -17,13 +17,13 @@ namespace lang {
 /*
  *
  */
-class Array: public Object {
+class Array: public virtual Object {
 private:
 	const static type_t CLASS_SERIAL = 8;
 protected:
 	const tlint mSize;
 	const type_t mElementType;
-	Reference* mElements;
+	Reference *mElements;
 public:
 	const static tlint MAX_SIZE = Integer::MAX_VALUE;
 	Array(type_t, tlint);

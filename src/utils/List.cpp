@@ -13,7 +13,6 @@ namespace utils {
 List::List(type_t element_type)
 		:Collection(element_type) {
 	mCapacity = DEFAULT_CAPACITY;
-	mModified = false;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -21,7 +20,6 @@ List::List(type_t element_type)
 List::List(type_t element_type, tlint reserved)
 		:Collection(element_type) {
 	mCapacity = reserved > 0 ? reserved : DEFAULT_CAPACITY;
-	mModified = false;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }

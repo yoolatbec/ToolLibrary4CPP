@@ -18,8 +18,8 @@ LinkedList::LinkedList(type_t type)
 	// TODO Auto-generated constructor stub
 	mHead = Reference(new LinkedListNode(Reference()));
 	mTail = Reference(new LinkedListNode(Reference()));
-	((LinkedListNode*) mHead.getEntity())->setNext(mTail);
-	((LinkedListNode*) mTail.getEntity())->setPrevious(mHead);
+	(dynamic_cast<LinkedListNode*>(mHead.getEntity()))->setNext(mTail);
+	(dynamic_cast<LinkedListNode*>(mTail.getEntity()))->setPrevious(mHead);
 	mSize = 0;
 	mCapacity = mSize;
 
@@ -33,16 +33,13 @@ LinkedList::~LinkedList() {
 	// TODO Auto-generated destructor stub
 }
 
-tlint LinkedList::typeCheck(Reference ref, type_t type) {
-	if (ref.isNull()) {
-		return 0;
+void LinkedList::invalidateIterators() {
+	if (mIterator.isNull()) {
+		return;
 	}
 
-	if (!ref.getEntity()->instanceof(type)) {
-		return -1;
-	}
-
-	return 1;
+	Iterator *iterator = dynamic_cast<Iterator*>(mIterator.getEntity());
+	iterator->invalidate();
 }
 
 void LinkedList::boundCheck(tlint position) {
@@ -63,7 +60,6 @@ void LinkedList::add0(Reference ref) {
 	dynamic_cast<LinkedListNode*>(oldLast.getEntity())->setNext(newLastRef);
 
 	mSize++;
-	mModified = true;
 }
 
 void LinkedList::addFirst0(Reference ref) {
@@ -80,7 +76,6 @@ void LinkedList::addFirst0(Reference ref) {
 
 	mSize++;
 	mCurrentIndex++;
-	mModified = true;
 }
 
 void LinkedList::seek0(tlint position) {
@@ -97,8 +92,6 @@ void LinkedList::seek0(tlint position) {
 	}
 
 	while (mCurrentIndex - position != 0) {
-		LinkedListNode *node =
-			dynamic_cast<LinkedListNode*>(mCurrentNode.getEntity());
 		if (mCurrentIndex < position) {
 			moveForward();
 		} else {
@@ -149,7 +142,6 @@ void LinkedList::remove0() {
 
 	mCurrentNode = nextNodeRef;
 	mSize--;
-	mModified = true;
 }
 
 void LinkedList::insert0(Reference ref) {
@@ -168,7 +160,6 @@ void LinkedList::insert0(Reference ref) {
 		newNodeRef);
 
 	mCurrentNode = newNodeRef;
-	mModified = true;
 	mSize++;
 }
 
@@ -184,6 +175,7 @@ tlint LinkedList::indexOf0(Reference ref) {
 			return mCurrentIndex;
 		}
 
+		mCurrentIndex++;
 		moveForward();
 	}
 
@@ -239,28 +231,26 @@ Reference LinkedList::set0(Reference ref) {
 }
 
 bool LinkedList::add(Reference ref) {
-	switch (typeCheck(ref, mElementType)) {
-	case 0:
+	if (ref.isNull()) {
 		return false;
-	case -1:
-		//cast an exception
-	default:
-		//do nothing
 	}
+
+	argumentTypeCheck(ref, mElementType);
+
+	invalidateIterators();
 
 	add0(ref);
 	return true;
 }
 
 bool LinkedList::addFirst(Reference ref) {
-	switch (typeCheck(ref, mElementType)) {
-	case 0:
+	if (ref.isNull()) {
 		return false;
-	case -1:
-		//cast an exception
-	default:
-		//do nothing
 	}
+
+	argumentTypeCheck(ref, mElementType);
+
+	invalidateIterators();
 
 	addFirst0(ref);
 	return true;
@@ -271,24 +261,21 @@ bool LinkedList::addLast(Reference ref) {
 }
 
 bool LinkedList::addAll(Reference ref) {
-	switch (typeCheck(ref, Collection::type())) {
-	case 0:
+	if (ref.isNull()) {
 		return false;
-	case -1:
-		//cast an exception
-	default:
-		//do nothing
 	}
+
+	argumentTypeCheck(ref, Collection::type());
+
+	invalidateIterators();
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->elementType() != mElementType) {
-		return false;
-	}
 
-	Iterator *iterator = collection->iterator();
+	Reference iteratorRef = collection->iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
 	while (iterator->hasNext()) {
 		Reference ref = iterator->next();
-		add0(ref);
+		add(ref);
 	}
 
 	return true;
@@ -299,27 +286,22 @@ bool LinkedList::addAllLast(Reference ref) {
 }
 
 bool LinkedList::addAllFirst(Reference ref) {
-	switch (typeCheck(ref, Collection::type())) {
-	case 0:
+	if (ref.isNull()) {
 		return false;
-	case -1:
-		//cast an exception
-	default:
-		//do nothing
 	}
+
+	argumentTypeCheck(ref, Collection::type());
+	invalidateIterators();
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->elementType() != mElementType) {
-		return false;
-	}
 
 	Reference current = mHead;
-	Iterator *iterator = collection->iterator();
+	Reference iteratorRef = collection->iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
 	tlint index = 0;
 	while (iterator->hasNext()) {
 		Reference value = iterator->next();
-		seek0(index);
-		insert0(value);
+		insert(index, value);
 
 		index++;
 	}
@@ -327,14 +309,11 @@ bool LinkedList::addAllFirst(Reference ref) {
 }
 
 bool LinkedList::contains(Reference ref) {
-	switch (typeCheck(ref, mElementType)) {
-	case 0:
+	if (ref.isNull()) {
 		return false;
-	case -1:
-		//cast an exception
-	default:
-		//do nothing
 	}
+
+	argumentTypeCheck(ref, mElementType);
 
 	return indexOf0(ref) >= 0;
 }
@@ -345,14 +324,12 @@ bool LinkedList::insert(tlint position, Reference ref) {
 	}
 
 	boundCheck(position);
-	switch (typeCheck(ref, mElementType)) {
-	case 0:
+	if (ref.isNull()) {
 		return false;
-	case -1:
-		//cast an exception here
-	default:
-		//do nothing
 	}
+
+	argumentTypeCheck(ref, mElementType);
+	invalidateIterators();
 
 	seek0(position);
 	insert0(ref);
@@ -364,33 +341,26 @@ bool LinkedList::insertAll(tlint position, Reference ref) {
 		return addAll(ref);
 	}
 
-	switch (typeCheck(ref, Collection::type())) {
-	case 0:
+	if (ref.isNull()) {
 		return false;
-	case -1:
-		//cast an exception
-	default:
-		//do nothing
 	}
 
+	argumentTypeCheck(ref, Collection::type());
 	boundCheck(position);
+	invalidateIterators();
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->elementType() != mElementType) {
-		//cast an exception
-		return false;
-	}
 
 	if (collection->size() == 0) {
 		return false;
 	}
 
 	tlint index = 0;
-	Iterator *iterator = collection->iterator();
+	Reference iteratorRef = collection->iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
 	while (iterator->hasNext()) {
-		seek0(position + index);
 		Reference value = iterator->next();
-		insert0(value);
+		insert(position + index, value);
 	}
 
 	return true;
@@ -401,14 +371,12 @@ bool LinkedList::remove(Reference ref) {
 		return false;
 	}
 
-	switch (typeCheck(ref, mElementType)) {
-	case 0:
+	if (ref.isNull()) {
 		return false;
-	case -1:
-		//cast an exception
-	default:
-		//do nothing
 	}
+
+	argumentTypeCheck(ref, mElementType);
+	invalidateIterators();
 
 	tlint index = indexOf0(ref);
 	if (index >= 0) {
@@ -425,6 +393,7 @@ bool LinkedList::remove(tlint position) {
 	}
 
 	boundCheck(position);
+	invalidateIterators();
 
 	seek0(position);
 	remove0();
@@ -441,6 +410,8 @@ bool LinkedList::removeLast() {
 		return false;
 	}
 
+	invalidateIterators();
+
 	seek0(mSize);
 	moveBackward();
 	remove0();
@@ -453,44 +424,36 @@ bool LinkedList::removeAll(Reference ref) {
 		return false;
 	}
 
-	switch (typeCheck(ref, Collection::type())) {
-	case 0:
+	if (ref.isNull()) {
 		return false;
-	case -1:
-		//cast an exception
-	default:
-		//do nothing
 	}
+
+	argumentTypeCheck(ref, Collection::type());
+	invalidateIterators();
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	if (collection->elementType() != mElementType) {
-		//cast an exception here
-		return false;
-	}
 
 	bool modified = false;
-	Iterator *iterator = collection->iterator();
+	Reference iteratorRef = collection->iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
 	while (iterator->hasNext()) {
 		Reference value = iterator->next();
-		tlint index = indexOf0(value);
-		if (index >= 0) {
-			seek0(index);
-			remove0();
-			modified = true;
-		}
+		modified = modified || remove(value);
 	}
 
 	return modified;
 }
 
 void LinkedList::clear() {
-	Reference current = ((LinkedListNode*) mHead.getEntity())->mNext;
+	invalidateIterators();
+
+	Reference current =
+		dynamic_cast<LinkedListNode*>(mHead.getEntity())->next();
 	while (!current.equals(mTail)) {
 		remove0();
 	}
 
 	mSize = 0;
-	mModified = true;
 }
 
 Reference LinkedList::get(tlint position) {
@@ -501,14 +464,13 @@ Reference LinkedList::get(tlint position) {
 }
 
 Reference LinkedList::set(tlint position, Reference ref) {
-	switch (typeCheck(ref, mElementType)) {
-	case -1:
-		//cast an exception
-	default:
-		//do nothing
+	if (ref.isNull()) {
+		return Reference();
 	}
 
+	argumentTypeCheck(ref, mElementType);
 	boundCheck(position);
+	invalidateIterators();
 
 	seek0(position);
 	return set0(ref);
@@ -534,10 +496,10 @@ Reference LinkedList::sublist(tlint fromIndex, tlint toIndex) {
 
 Reference LinkedList::toArray() {
 	Array *arr = new Array(mElementType, mSize);
-	Reference current = ((LinkedListNode*) mHead.getEntity())->mNext;
+	Reference current = (dynamic_cast<LinkedListNode*>(mHead.getEntity()))->next();
 	for (tlint index = 0; index < mSize; index++) {
 		arr->set(index,
-			dynamic_cast<LinkedListNode*>(current.getEntity())->mValue);
+			dynamic_cast<LinkedListNode*>(current.getEntity())->value());
 	}
 
 	return Reference(arr);
@@ -552,9 +514,7 @@ bool LinkedList::containsAll(Reference ref) {
 		return false;
 	}
 
-	if (!ref.getEntity()->instanceof(Collection::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Collection::type());
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
 
@@ -577,9 +537,7 @@ tlint LinkedList::indexOf(Reference ref) {
 		return -1;
 	}
 
-	if (!ref.getEntity()->instanceof(mElementType)) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, mElementType);
 
 	LinkedListNode *head = dynamic_cast<LinkedListNode*>(mHead.getEntity());
 	tlint index = 0;
@@ -602,9 +560,7 @@ tlint LinkedList::lastIndexOf(Reference ref) {
 		return -1;
 	}
 
-	if (!ref.getEntity()->instanceof(mElementType)) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, mElementType);
 
 	LinkedListNode *tail = dynamic_cast<LinkedListNode*>(mTail.getEntity());
 	tlint index = mSize - 1;
@@ -615,7 +571,7 @@ tlint LinkedList::lastIndexOf(Reference ref) {
 			return index;
 		}
 
-		index++;
+		index--;
 		current = n->previous();
 	}
 
@@ -636,8 +592,6 @@ type_t LinkedList::type() {
 
 LinkedList::LinkedListNode::LinkedListNode(Reference ref) {
 	mValue = ref;
-	mNext = Reference();
-	mPrevious = Reference();
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -678,10 +632,14 @@ LinkedList::LinkedListIterator::LinkedListIterator(Reference list,
 }
 
 bool LinkedList::LinkedListIterator::hasNext() {
+	checkValidation();
+
 	return !(mCurrentNode.isNull());
 }
 
 Reference LinkedList::LinkedListIterator::next() {
+	checkValidation();
+
 	if (mCurrentNode.isNull()) {
 		//cast an exception
 	}
@@ -702,10 +660,14 @@ Reference LinkedList::LinkedListIterator::next() {
 }
 
 bool LinkedList::LinkedListIterator::hasPrevious() {
+	checkValidation();
+
 	return !(mCurrentNode.isNull());
 }
 
 Reference LinkedList::LinkedListIterator::previous() {
+	checkValidation();
+
 	if (mCurrentNode.isNull()) {
 		//cast an exception
 	}
@@ -727,11 +689,12 @@ Reference LinkedList::LinkedListIterator::previous() {
 }
 
 void LinkedList::LinkedListIterator::remove() {
+	checkValidation();
+
 	if (mLastNode.isNull()) {
 		//cast an exception
 	}
 
-	List *list = dynamic_cast<List*>(mList.getEntity());
 	LinkedListNode *node = dynamic_cast<LinkedListNode*>(mLastNode.getEntity());
 
 	Reference pre = node->previous();

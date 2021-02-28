@@ -13,7 +13,7 @@
 namespace tl {
 namespace lang {
 
-class FloatArray: public NOArray {
+class FloatArray: public virtual NOArray {
 private:
 	static const type_t CLASS_SERIAL = 33;
 

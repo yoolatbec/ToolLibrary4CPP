@@ -12,6 +12,9 @@
 namespace tl {
 namespace utils {
 
+using lang::Array;
+using lang::Reference;
+
 TreeSet::TreeSet(type_t type) :
 		Set(type) {
 	// TODO Auto-generated constructor stub
@@ -30,7 +33,8 @@ bool TreeSet::add(Reference ref) {
 		return false;
 	}
 
-	typeCheck(ref, mElementType);
+	argumentTypeCheck(ref, mElementType);
+	invalidateIterators();
 
 	if (contains0(ref)) {
 		return false;
@@ -45,10 +49,10 @@ bool TreeSet::addAll(Reference ref) {
 		return false;
 	}
 
-	typeCheck(ref, Collection::type());
+	argumentTypeCheck(ref, Collection::type());
+	invalidateIterators();
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	typeCheck(collection->mElementType, mElementType);
 
 	Reference iteratorRef = collection->iterator();
 	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
@@ -56,10 +60,7 @@ bool TreeSet::addAll(Reference ref) {
 	bool result = false;
 	while (iterator->hasNext()) {
 		Reference element = iterator->next();
-		if (!contains0(element)) {
-			add0(element);
-			result = true;
-		}
+		result = result || add(element);
 	}
 
 	return result;
@@ -70,7 +71,7 @@ bool TreeSet::contains(Reference ref) {
 		return false;
 	}
 
-	typeCheck(ref, mElementType);
+	argumentTypeCheck(ref, mElementType);
 
 	return contains0(ref);
 }
@@ -80,10 +81,9 @@ bool TreeSet::containsAll(Reference ref) {
 		return false;
 	}
 
-	typeCheck(ref, Collection::type());
+	argumentTypeCheck(ref, Collection::type());
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	typeCheck(collection->mElementType, mElementType);
 
 	Reference iteratorRef = collection->iterator();
 	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
@@ -91,10 +91,7 @@ bool TreeSet::containsAll(Reference ref) {
 	bool result = true;
 	while (iterator->hasNext()) {
 		Reference element = iterator->next();
-		result = result && contains0(element);
-		if (!result) {
-			return result;
-		}
+		result = result && contains(element);
 	}
 
 	return result;
@@ -105,7 +102,8 @@ bool TreeSet::remove(Reference ref) {
 		return false;
 	}
 
-	typeCheck(ref, mElementType);
+	argumentTypeCheck(ref, mElementType);
+	invalidateIterators();
 
 	if (!contains0(ref)) {
 		return false;
@@ -120,12 +118,12 @@ bool TreeSet::removeAll(Reference ref) {
 		return false;
 	}
 
-	typeCheck(ref, Collection::type());
+	argumentTypeCheck(ref, Collection::type());
+	invalidateIterators();
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	typeCheck(collection->mElementType, mElementType);
 
-	if (collection->mSize == 0) {
+	if (collection->size() <= 0) {
 		return false;
 	}
 
@@ -134,7 +132,7 @@ bool TreeSet::removeAll(Reference ref) {
 			dynamic_cast<Iterator*>(collection->iterator().getEntity());
 	while (iterator->hasNext()) {
 		Reference element = iterator->next();
-		bool exist = contains0(element);
+		bool exist = contains(element);
 		if (exist) {
 			remove0(element);
 		}
@@ -269,41 +267,41 @@ Reference TreeSet::toArray() {
 }
 
 Reference TreeSet::iterator() {
-	return Reference(new TreeSetIterator(Reference(this, false)));
+	TreeMap* map = dynamic_cast<TreeMap*>(mMap.getEntity());
+	Reference keySetRef = map->keySet();
+	Set* keySet = dynamic_cast<Set*>(keySetRef.getEntity());
+	mIterator = keySet->iterator();
+	return mIterator;
+}
+
+void TreeSet::invalidateIterators(){
+	if(mIterator.isNull()){
+		return;
+	}
+
+	Iterator* iterator = dynamic_cast<Iterator*>(mIterator.getEntity());
+	iterator->invalidate();
 }
 
 void TreeSet::clear() {
+	invalidateIterators();
+
 	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
 	map->clear();
 
 	mSize = 0;
-	mModified = true;
-}
-
-void TreeSet::typeCheck(Reference ref, type_t type) {
-	if (!ref.getEntity()->instanceof(type)) {
-		//cast an exception
-	}
-}
-
-void TreeSet::typeCheck(type_t t1, type_t t2) {
-	if (t1 != t2) {
-		//cast an exception
-	}
 }
 
 void TreeSet::add0(Reference ref) {
 	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
 	map->put(ref, Reference());
 	mSize = map->size();
-	mModified = true;
 }
 
 void TreeSet::remove0(Reference ref) {
 	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
 	map->remove(ref);
 	mSize = map->size();
-	mModified = true;
 }
 
 bool TreeSet::contains0(Reference ref) {
@@ -321,16 +319,6 @@ type_t TreeSet::elementType() {
 
 type_t TreeSet::type() {
 	return CLASS_SERIAL;
-}
-
-TreeSet::TreeSetIterator::TreeSetIterator(Reference ref) {
-	if (!ref.instanceof(TreeSet::type())) {
-		//cast an exception here
-	}
-
-	mSet = ref;
-	TreeSet *set = dynamic_cast<TreeSet*>(mSet.getEntity());
-	mSetElements = new Array(set->elementType(), set->size());
 }
 
 } /* namespace utils */

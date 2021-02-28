@@ -19,7 +19,8 @@ using lang::Reference;
 class TreeMap: public virtual NavigableMap {
 private:
 	const static type_t CLASS_SERIAL = 54;
-	class TreeEntry: public Entry {
+	class TreeEntry: public virtual Map::Entry {
+		friend class TreeMap;
 	private:
 		hash_t genHashCode(type_t);
 
@@ -27,30 +28,12 @@ private:
 		const static tlint ALLOWED_IMBALANCE = 1;
 		Reference mParent;
 		Reference mLeft, mRight;
-		tlint mWeight;
+		hash_t mWeight;
 		tlint mHeight;
 	public:
 		TreeEntry(Reference, Reference, Reference = Reference());
-		static Reference add(Reference, Reference, Reference, Reference);
-		static Reference remove(Reference ref, Reference keyRef);
-		static Reference replace(Reference, Reference, Reference);
-		static bool containsKey(Reference ref, Reference keyRef);
-		static bool containsValue(Reference ref, Reference valueRef);
-		static Reference balance(Reference);
-		static tlint height(Reference);
-		static void clear(Reference);
-		static Reference minEntry(Reference);
-		static Reference maxEntry(Reference);
-		static Reference ceilingEntry(Reference ref, Reference keyRef);
-		static Reference floorEntry(Reference ref, Reference keyRef);
-		static Reference rightRotate(Reference);
-		static Reference leftRotate(Reference);
-		static Reference rightLeftRotate(Reference);
-		static Reference leftRightRotate(Reference);
-		static Reference getValue(Reference, Reference);
-		static Reference getEntry(Reference, Reference);
-		static Reference successor(Reference, Reference);
-		static Reference predecessor(Reference, Reference);
+		TreeEntry(const TreeEntry&) = delete;
+		TreeEntry& operator=(const TreeEntry&) = delete;
 		Reference getLeft();
 		Reference getRight();
 		Reference getParent();
@@ -64,14 +47,39 @@ private:
 		bool instanceof(type_t);
 	};
 
+	Reference add0(Reference, Reference, Reference, Reference);
+	Reference remove0(Reference ref, Reference keyRef);
+//	Reference replace0(Reference, Reference, Reference);
+	bool containsKey0(Reference ref, Reference keyRef);
+	bool containsValue0(Reference ref, Reference valueRef);
+	Reference balance0(Reference);
+	tlint height0(Reference);
+	void clear0(Reference);
+	Reference minEntry0(Reference);
+	Reference maxEntry0(Reference);
+	Reference ceilingEntry0(Reference ref, Reference keyRef);
+	Reference floorEntry0(Reference ref, Reference keyRef);
+	Reference rightRotate0(Reference);
+	Reference leftRotate0(Reference);
+	Reference rightLeftRotate0(Reference);
+	Reference leftRightRotate0(Reference);
+	Reference getValue0(Reference, Reference);
+	Reference getEntry0(Reference, Reference);
+	Reference successor0(Reference, Reference);
+	Reference predecessor0(Reference, Reference);
+
 	class EntrySetView: public virtual Set {
 	private:
 		const static type_t CLASS_SERIAL = 90;
 		Reference mMap;
 
-		void typeCheck(Reference, type_t);
+		Reference mIterator;
+
+		void invalidateIterators();
 	public:
 		EntrySetView(Reference);
+		EntrySetView(const EntrySetView&) = delete;
+		EntrySetView& operator=(const EntrySetView&) = delete;
 		bool contains(Reference);
 		bool containsAll(Reference);
 		void clear();
@@ -98,15 +106,17 @@ private:
 		bool instanceof(type_t);
 	};
 
-	class Values: public Collection {
+	class Values: public virtual Collection {
 	private:
 		const static type_t CLASS_SERIAL = 91;
 		Reference mMap;
 
-		void typeCheck(Reference, type_t);
-		void typeCheck(type_t, type_t);
+		Reference mIterator;
+		void invalidateIterators();
 	public:
-		Values(Reference);
+		Values(type_t, Reference);
+		Values(const Values&) = delete;
+		Values& operator=(const Values&) = delete;
 		virtual bool contains(Reference);
 		virtual bool containsAll(Reference);
 		virtual void clear();
@@ -131,6 +141,8 @@ private:
 		Reference mLastReturned;
 	public:
 		PrivateEntryIterator(Reference map);
+		PrivateEntryIterator(const PrivateEntryIterator&) = delete;
+		PrivateEntryIterator& operator=(const PrivateEntryIterator&) = delete;
 		Reference nextEntry();
 		Reference previousEntry();
 		virtual bool hasNext();
@@ -139,11 +151,13 @@ private:
 		bool instanceof(type_t);
 	};
 
-	class EntryIterator: public PrivateEntryIterator {
+	class EntryIterator: public virtual PrivateEntryIterator {
 	private:
 		const static type_t CLASS_SERIAL = 98;
 	public:
 		EntryIterator(Reference);
+		EntryIterator(const EntryIterator&) = delete;
+		EntryIterator& operator=(const EntryIterator&) = delete;
 		Reference next();
 		static type_t type();
 		bool instanceof(type_t);
@@ -154,17 +168,25 @@ private:
 		const static type_t CLASS_SERIAL = 99;
 	public:
 		ValueIterator(Reference);
+		ValueIterator(const ValueIterator&) = delete;
+		ValueIterator& operator=(const ValueIterator&) = delete;
 		Reference next();
 		static type_t type();
 		bool instanceof(type_t);
 	};
 
-	class KeySet: public NavigableSet {
+	class KeySet: public virtual NavigableSet {
 	private:
 		const static type_t CLASS_SERIAL = 92;
 		Reference mMap;
+
+		Reference mIterator;
+		Reference mDescendingIterator;
+		void invalidateIterators();
 	public:
 		KeySet(type_t, Reference);
+		KeySet(const KeySet&) = delete;
+		KeySet& operator=(const KeySet&) = delete;
 		virtual bool add(Reference);
 		virtual bool addAll(Reference);
 		virtual bool remove(Reference);
@@ -185,27 +207,32 @@ private:
 //			Reference toElement, bool toInclusive);
 //		virtual Reference subSet(Reference fromElement, Reference toElement);
 		virtual Reference iterator();
+		virtual Reference descendingIterator();
 		virtual tlint size();
 		virtual bool isEmpty();
 		static type_t type();
 		virtual bool instanceof(type_t);
 	};
 
-	class KeyIterator: public PrivateEntryIterator {
+	class KeyIterator: public virtual PrivateEntryIterator {
 	private:
 		const static type_t CLASS_SERIAL = 94;
 	public:
 		KeyIterator(Reference);
+		KeyIterator(const KeyIterator&) = delete;
+		KeyIterator& operator=(const KeyIterator&) = delete;
 		Reference next();
 		static type_t type();
 		bool instanceof(type_t);
 	};
 
-	class DescendingKeyIterator: public PrivateEntryIterator {
+	class DescendingKeyIterator: public virtual PrivateEntryIterator {
 	private:
 		const static type_t CLASS_SERIAL = 95;
 	public:
 		DescendingKeyIterator(Reference);
+		DescendingKeyIterator(const DescendingKeyIterator&) = delete;
+		DescendingKeyIterator& operator=(const DescendingKeyIterator&) = delete;
 		Reference next();
 		static type_t type();
 		bool instanceof(type_t);
@@ -216,12 +243,7 @@ private:
 	friend class Values;
 	friend class KeySet;
 
-	Reference mValues;
-	Reference mKeySet;
-
 	Reference mRootEntry;
-	void typeCheck(Reference, type_t);
-	void typeCheck(type_t, type_t);
 	Reference put0(Reference, Reference);
 //	bool inRange(Reference);
 //	bool toLow(Reference);
@@ -254,6 +276,7 @@ public:
 	Reference pollLastEntry();
 	bool containsKey(Reference);
 	bool containsValue(Reference);
+	bool containsEntry(Reference);
 	void clear();
 //	Reference subMap(Reference fromKey, bool fromInclusive, Reference toKey,
 //		bool toInclusive);

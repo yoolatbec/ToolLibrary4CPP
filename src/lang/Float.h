@@ -29,7 +29,7 @@ public:
 	static Reference valueOf(float);
 	static Reference valueOf(Reference);
 	tlint64 longValue();
-	tlint intValue()
+	tlint intValue();
 	short shortValue();
 	byte byteValue();
 	float floatValue();

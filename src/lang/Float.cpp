@@ -22,7 +22,7 @@ Float::~Float() {
 }
 
 hash_t Float::genHashCode(){
-	return CLASS_SERIAL << 32 + *((tlint*)(&mValue));
+	return (CLASS_SERIAL << 32) + *((tlint*)(&mValue));
 }
 
 } /* namespace lang */

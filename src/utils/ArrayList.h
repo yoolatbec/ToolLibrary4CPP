@@ -23,10 +23,14 @@ private:
 	 * the array containing elements
 	 */
 	Reference *mElements;
+	Reference mIterator;
+
+	void invalidateIterators();
 
 	class ArrayListIterator: virtual public ListIterator {
 	private:
 		const static type_t CLASS_SERIAL = 15;
+
 	protected:
 		Reference nextElement();
 		Reference previousElement();
@@ -86,14 +90,6 @@ private:
 	 * No bound check
 	 */
 	void remove0(tlint);
-
-	/*
-	 * Check whether the given object is an instance of the class whose
-	 * identifier is the given identifier
-	 * Return 0 if the given Reference instance refers to null
-	 * Return -1 if the given object is not an instance of the given class, 1 otherwise.
-	 */
-	tlint argumentCheck(Reference, type_t);
 
 	/*
 	 * Replace the element at the specified position with the given object.

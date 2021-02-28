@@ -18,7 +18,14 @@ Socket::Socket() {
 
 Socket::~Socket() {
 	// TODO Auto-generated destructor stub
+	if(mStatus != SOCKET_STATUS::CLOSED){
+		close(mSocketID);
+	}
+}
+
+void Socket::closeSocket(){
 	close(mSocketID);
+	mStatus = SOCKET_STATUS::CLOSED;
 }
 
 } /* namespace net */

@@ -13,13 +13,12 @@
 namespace tl {
 namespace utils {
 
-using lang::Array;
 using lang::Reference;
 
 class LinkedList: virtual public List {
 private:
 	const static type_t CLASS_SERIAL = 16;
-	class LinkedListNode: public Object {
+	class LinkedListNode: public virtual Object {
 	private:
 		const static type_t CLASS_SERIAL = 17;
 		Reference mPrevious;
@@ -54,6 +53,10 @@ private:
 	 */
 	tlint mCurrentIndex;
 
+	Reference mIterator;
+
+	void invalidateIterators();
+
 	class LinkedListIterator: public ListIterator {
 	private:
 		const static type_t CLASS_SERIAL = 18;
@@ -76,7 +79,6 @@ private:
 	friend class LinkedListIterator;
 
 private:
-	tlint typeCheck(Reference, type_t);
 	void boundCheck(tlint);
 	/*
 	 * Insert an element at the given position. After the insertion the
@@ -93,6 +95,9 @@ private:
 	 * No bound check.
 	 */
 	void remove0();
+	/*
+	 * will move the cursor
+	 */
 	tlint indexOf0(Reference);
 	tlint lastIndexOf0(Reference);
 
@@ -163,6 +168,9 @@ public:
 	void trim();
 	bool insert(tlint, Reference);
 	bool insertAll(tlint, Reference);
+	/*
+	 * won't move the cursor
+	 */
 	tlint indexOf(Reference);
 	tlint lastIndexOf(Reference);
 	/*

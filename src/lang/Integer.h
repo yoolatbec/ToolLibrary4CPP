@@ -43,7 +43,10 @@ public:
 	static tluint64 toUnsignedLong(tlint);
 	static tlint larger(tlint, tlint);
 	static tlint smaller(tlint, tlint);
+	static tlint parseInt(Reference);
 	static type_t type();
+	static tlint max(tlint, tlint);
+	static tlint min(tlint, tlint);
 	virtual bool instanceof(type_t);
 };
 

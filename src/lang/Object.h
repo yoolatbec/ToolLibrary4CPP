@@ -13,9 +13,8 @@
 namespace tl {
 namespace lang {
 
-class Reference;
-class String;
 
+class Reference;
 /**
  * Object is the base class of all classes defined in the library. It defined
  * basic behaviors of all classes in the library. By extending Object, a simple
@@ -56,8 +55,8 @@ public:
 	 * Each class adapting the design pattern of the library, except those for particular purpose, should mark its copy constructor
 	 * and default override of operator= method as delete, because they are no longer used.
 	 */
-	Object(const Object&) = delete;
-	virtual Object& operator=(const Object&) = delete;
+	Object(const Object&);
+	virtual Object& operator=(const Object&);
 	/*
 	 * Method equals() calls operator==() by default. It could be overrode for
 	 * other particular ways of comparison.
@@ -84,6 +83,7 @@ public:
 	 * and therefore the two classes are the same. Otherwise, the two clases are not the same.
 	 * The second method, type(), is a static method, which return the class identifier of the caller class.
 	 */
+	virtual void argumentTypeCheck(Reference, type_t);
 	virtual bool instanceof(type_t);
 	static type_t type();
 

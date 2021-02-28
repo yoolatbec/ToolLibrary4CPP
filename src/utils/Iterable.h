@@ -18,7 +18,7 @@ class Iterable: public virtual lang::Object {
 private:
 	const static type_t CLASS_SERIAL = 9;
 protected:
-	bool mModified;
+	virtual void invalidateIterators() = 0;
 public:
 	Iterable();
 	virtual ~Iterable();

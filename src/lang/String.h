@@ -18,6 +18,9 @@ class String : public Comparable{
 private:
 	const static type_t CLASS_SERIAL = 9;
 	char* mStr;
+	/*
+	 * terminator not included
+	 */
 	size_t mLength;
 	hash_t genHashCode();
 public:
@@ -29,12 +32,15 @@ public:
 	String& operator=(String) = delete;
 	~String();
 	Reference append(Reference);
+	Reference append(char);
 	Reference append(byte);
 	Reference append(tlint);
 	Reference append(tlint64);
 	Reference append(double);
 	tlint charAt(size_t);
 	tlint compareTo(Reference);
+	bool contains(Reference);
+	Reference replace(Reference, Reference);
 	Reference substring(size_t length);
 	Reference substring(size_t start, size_t length);
 	Reference split(byte);
@@ -49,6 +55,7 @@ public:
 	Reference valueOf(bool);
 	Reference valueOf(Reference);
 	const byte* bytes();
+	const char* toCharArray();
 	bool instanceof(type_t);
 	static type_t type();
 };

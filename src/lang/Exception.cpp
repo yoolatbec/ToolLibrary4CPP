@@ -10,9 +10,16 @@
 namespace tl {
 namespace lang {
 
+using lang::Reference;
+
 Exception::Exception() {
 	// TODO Auto-generated constructor stub
-	mHash &= CLASS_HASH;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+Exception::Exception(Reference ref) {
+
 }
 
 Exception::~Exception() {

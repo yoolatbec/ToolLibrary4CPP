@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include "Reference.h"
 #include "String.h"
+#include "IllegalArgumentTypeException.h"
 #include <cstdio>
 
 namespace tl {
@@ -18,6 +18,20 @@ Object::Object() {
 
 Object::~Object() {
 
+}
+
+Object& Object::operator =(const Object &other) {
+	return *this;
+}
+
+Object::Object(const Object &other) {
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+void Object::argumentTypeCheck(Reference ref, type_t type) {
+	if (!ref.getEntity()->instanceof(type)) {
+		throw IllegalArgumentTypeException();
+	}
 }
 
 bool Object::equals(Reference other) {
@@ -39,7 +53,7 @@ Reference Object::toString() {
 }
 
 bool Object::instanceof(type_t otherType) {
-	return CLASS_SERIAL == otherType;
+	return (CLASS_SERIAL == otherType);
 }
 
 hash_t Object::hashCode() {
