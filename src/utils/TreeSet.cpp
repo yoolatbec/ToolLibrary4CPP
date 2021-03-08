@@ -5,9 +5,10 @@
  *      Author: Yoolatbec
  */
 
-#include "TreeSet.h"
-#include "../lang/Array.h"
-#include "LinkedList.h"
+#include <lang/Array.h>
+
+#include <utils/LinkedList.h>
+#include <utils/TreeSet.h>
 
 namespace tl {
 namespace utils {

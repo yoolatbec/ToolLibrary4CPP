@@ -5,8 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include "mat_def.h"
-#include "../../lang/Float.h"
+#include <advanced/math/mat_def.h>
+
+#include <lang/Float.h>
 
 namespace tl {
 namespace advanced {

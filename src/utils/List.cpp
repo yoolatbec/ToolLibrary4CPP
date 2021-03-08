@@ -5,7 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include "List.h"
+#include <lang/IndexOutOfBoundsException.h>
+#include <utils/List.h>
 
 namespace tl {
 namespace utils {
@@ -30,6 +31,12 @@ List::~List() {
 
 type_t List::elementType() {
 	return mElementType;
+}
+
+void List::indexBoundCheck(tlint index){
+	if(index < 0 || index >= mSize){
+		throw IndexOutOfBoundsException();
+	}
 }
 
 bool List::instanceof(type_t type) {

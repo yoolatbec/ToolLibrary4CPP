@@ -5,9 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include "HashMap.h"
-#include "../lang/Array.h"
-#include "../lang/IntArray.h"
+#include <lang/Array.h>
+#include <lang/IntArray.h>
+#include <utils/HashMap.h>
 
 namespace tl {
 namespace utils {
@@ -50,7 +50,7 @@ Reference HashMap::computeIndices(Reference keyRef) {
 				% mCurrentCapacity[3]),
 			(tlint)(keyHashcode % mCurrentCapacity[4]) };
 
-	return Reference(new IntArray(5, indices));
+	return IntArray::newIntArray(TABLE_COUNT, indices);
 }
 
 Reference HashMap::findEntry(Reference keyRef) {

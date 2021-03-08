@@ -8,8 +8,8 @@
 #ifndef MATH_BIGINTEGER_H_
 #define MATH_BIGINTEGER_H_
 
-#include "../lang/Reference.h"
-#include "../lang/Number.h"
+#include <lang/Number.h>
+#include <lang/Reference.h>
 
 namespace tl {
 namespace math {

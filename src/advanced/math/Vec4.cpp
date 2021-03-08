@@ -5,8 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include "Vec4.h"
-#include "../../lang/String.h"
+#include <advanced/math/Vec4.h>
+#include <lang/String.h>
+
 #include <stdio.h>
 
 namespace tl {

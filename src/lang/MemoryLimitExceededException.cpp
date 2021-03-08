@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include "MemoryLimitExceededException.h"
+#include <lang/MemoryLimitExceededException.h>
 
 namespace tl {
 namespace lang {

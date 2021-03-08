@@ -5,11 +5,12 @@
  *      Author: yoolatbec
  */
 
-#include "Mat1x4.h"
-#include "Mat4x1.h"
-#include "Vec4.h"
-#include "Vec.h"
-#include "../../lang/String.h"
+#include <advanced/math/Mat1x4.h>
+#include <advanced/math/Mat4x1.h>
+#include <advanced/math/Vec.h>
+#include <advanced/math/Vec4.h>
+#include <lang/String.h>
+
 #include <string.h>
 #include <stdio.h>
 

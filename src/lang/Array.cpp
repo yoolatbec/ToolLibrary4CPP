@@ -5,8 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include "Array.h"
-#include "String.h"
+#include <lang/Array.h>
+#include <lang/IndexOutOfBoundsException.h>
+#include <lang/String.h>
 
 namespace tl {
 namespace lang {
@@ -28,24 +29,21 @@ Array::~Array() {
 	delete[] mElements;
 }
 
-Reference Array::get(tlint index) {
-	if (index < 0 || index >= mSize) {
-		//should cast an exception
+void Array::indexBoundCheck(tlint index){
+	if(index < 0 || index >= mSize){
+		throw IndexOutOfBoundsException();
 	}
+}
+
+Reference Array::get(tlint index) {
+	indexBoundCheck(index);
 
 	return mElements[index];
 }
 
 bool Array::set(tlint index, Reference ref) {
-	if (!ref.getEntity()->instanceof(mElementType)) {
-		return false;
-		//or cast an exception
-	}
-
-	if (index < 0 || index >= mSize) {
-		return false;
-		//or cast an exception
-	}
+	argumentTypeCheck(ref, mElementType);
+	indexBoundCheck(index);
 
 	mElements[index] = ref;
 	return true;
@@ -56,6 +54,7 @@ tlint Array::size() {
 }
 
 Reference Array::toString() {
+	//to edit
 	Reference rtval = Reference(new String());
 
 	for (int index = 0; index < mSize; index++) {

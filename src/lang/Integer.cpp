@@ -5,8 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include "Integer.h"
-#include "String.h"
+#include <lang/IllegalArgumentTypeException.h>
+#include <lang/Integer.h>
+#include <lang/String.h>
 #include <cstdio>
 
 namespace tl {
@@ -18,32 +19,12 @@ Integer::Integer(tlint value)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-Integer::Integer(Reference ref) {
-	if (ref.getEntity()->instanceof(String::type())) {
-		String *str = dynamic_cast<String*>(ref.getEntity());
-		char *characters = str->bytes();
-		int value;
-		if (sscanf(characters, "%d", &value) != 1) {
-			mValue = 0;
-		} else {
-			mValue = value;
-		}
-	} else if (ref.getEntity()->instanceof(Integer::type())) {
-		Integer *another = dynamic_cast<Integer*>(ref.getEntity());
-		mValue = another->mValue;
-	} else {
-		mValue = 0;
-	}
-
-	mHashCode = genHashCode(CLASS_SERIAL);
-}
-
 byte Integer::byteValue() {
-	return (byte) mValue;
+	return (byte)mValue;
 }
 
 short Integer::shortValue() {
-	return (short) mValue;
+	return (short)mValue;
 }
 
 tlint Integer::intValue() {
@@ -51,23 +32,24 @@ tlint Integer::intValue() {
 }
 
 tlint64 Integer::longValue() {
-	return (tlint64) mValue;
+	return (tlint64)mValue;
 }
 
 double Integer::doubleValue() {
-	return (double) mValue;
+	return (double)mValue;
 }
 
 float Integer::floatValue() {
-	return (float) mValue;
+	return (float)mValue;
 }
 
 tlint Integer::compareTo(Reference ref) {
-	if (ref.getEntity()->instanceof(Number::type())) {
-		Number *another = dynamic_cast<Number*>(ref.getEntity());
-		return another->intValue() = mValue;
-	}
-	return mValue;
+	dismissNull(ref);
+	argumentTypeCheck(ref, Integer::type());
+
+	Integer* i = dynamic_cast<Integer*>(ref.getEntity());
+
+	return mValue - i->intValue();
 }
 
 tlint Integer::getBitAt(tlint position) {
@@ -86,6 +68,39 @@ tlint Integer::larger(tlint a, tlint b) {
 
 tlint Integer::smaller(tlint a, tlint b) {
 	return a > b ? b : a;
+}
+
+Reference Integer::valueOf(tlint value){
+	return Reference(new Integer(value));
+}
+
+Reference Integer::valueOf(Reference ref){
+	return Reference(new Integer(parseInt(ref)));
+}
+
+tlint Integer::parseInt(Reference ref) {
+	if(ref.isNull()){
+		return 0;
+	}
+
+	if (ref.getEntity()->instanceof(String::type())) {
+		String *str = dynamic_cast<String*>(ref.getEntity());
+		const char *s = str->toCharArray();
+
+		tlint i;
+		if (sscanf(s, "%d", &i) == 0) {
+			//cast an exception
+		}
+
+		return i;
+	}
+
+	if (ref.getEntity()->instanceof(Number::type())) {
+		Number *num = dynamic_cast<Number*>(ref.getEntity());
+		return num->intValue();
+	}
+
+	throw IllegalArgumentTypeException();
 }
 
 Reference Integer::toString() {

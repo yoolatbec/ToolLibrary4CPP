@@ -5,11 +5,12 @@
  *      Author: yoolatbec
  */
 
-#include "Mat1x1.h"
-#include "../../lang/Math.h"
-#include "../../lang/String.h"
+#include <advanced/math/Mat1x1.h>
+#include <advanced/math/Vec.h>
+#include <lang/Math.h>
+#include <lang/String.h>
+
 #include <stdio.h>
-#include "Vec.h"
 
 namespace tl {
 namespace advanced {

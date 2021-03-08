@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include "UndefinedException.h"
-#include "String.h"
+#include <lang/String.h>
+#include <lang/UndefinedException.h>
 
 namespace tl {
 namespace lang {

@@ -5,7 +5,11 @@
  *      Author: yoolatbec
  */
 
-#include "vec_func.h"
+#include <advanced/math/vec_func.h>
+
+namespace tl {
+namespace advanced {
+namespace math {
 
 vec4 make_vec4(vec4 input) {
 	return input;
@@ -121,14 +125,6 @@ vec make_vec(vec input) {
 	return input;
 }
 
-vec2 to_homogeneous(vec input) {
-	vec2 v;
-	v.x = input.x;
-	v.y = 1;
-
-	return v;
-}
-
 vec3 to_homogeneous(vec2 input) {
 	vec3 v;
 	v.x = input.x;
@@ -148,3 +144,18 @@ vec4 to_homogeneous(vec3 input) {
 	return v;
 }
 
+vec2 to_cartesian(vec3 input) {
+	return {
+		input.x / input.z, input.y / input.z
+	};
+}
+
+vec3 to_cartesian(vec4 input){
+	return {
+		input.x / input.w, input.y / input.w, input.z / input.w
+	};
+}
+
+}
+}
+}

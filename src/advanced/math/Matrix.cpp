@@ -5,8 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include "Matrix.h"
-#include "../../lang/Array.h"
+#include <advanced/math/Matrix.h>
+
+#include <lang/Array.h>
 
 namespace tl {
 namespace advanced {

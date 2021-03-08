@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include "Condition.h"
+#include <thread/Condition.h>
 
 namespace tl {
 namespace thread {

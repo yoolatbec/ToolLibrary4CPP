@@ -5,10 +5,10 @@
  *      Author: yoolatbec
  */
 
-#include "TreeMap.h"
-#include "../lang/Integer.h"
-#include "../lang/String.h"
-#include "../lang/Array.h"
+#include <lang/Array.h>
+#include <lang/Integer.h>
+#include <lang/String.h>
+#include <utils/TreeMap.h>
 
 namespace tl {
 namespace utils {
@@ -123,10 +123,10 @@ Reference TreeMap::rightRotate0(Reference ref) {
 	left->setParent(parent);
 
 	root->setHeight(
-		lang::Integer::max(TreeMap::height0(root->getLeft()),
+		lang::Integer::larger(TreeMap::height0(root->getLeft()),
 			TreeMap::height0(root->getRight())) + 1);
 	left->setHeight(
-		lang::Integer::max(TreeMap::height0(left->getLeft()),
+		lang::Integer::larger(TreeMap::height0(left->getLeft()),
 			TreeMap::height0(left->getRight())) + 1);
 
 	return leftRef;
@@ -151,10 +151,10 @@ Reference TreeMap::leftRotate0(Reference ref) {
 	right->setParent(parent);
 
 	root->setHeight(
-		lang::Integer::max(TreeMap::height0(root->getLeft()),
+		lang::Integer::larger(TreeMap::height0(root->getLeft()),
 			TreeMap::height0(root->getRight())) + 1);
 	right->setHeight(
-		lang::Integer::max(TreeMap::height0(right->getLeft()),
+		lang::Integer::larger(TreeMap::height0(right->getLeft()),
 			TreeMap::height0(right->getRight())) + 1);
 
 	return rightRef;
@@ -209,7 +209,7 @@ Reference TreeMap::balance0(Reference ref) {
 	left = entry->getLeft();
 	right = entry->getRight();
 
-	entry->mHeight = lang::Integer::max(TreeMap::height0(left),
+	entry->mHeight = lang::Integer::larger(TreeMap::height0(left),
 		TreeMap::height0(right)) + 1;
 	return ref;
 }

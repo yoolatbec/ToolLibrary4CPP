@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include "AbstractMatrix.h"
+#include <advanced/math/AbstractMatrix.h>
 
 namespace tl {
 namespace advanced {

@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include "SquareMatrix.h"
+#include <advanced/math/SquareMatrix.h>
 
 namespace tl {
 namespace advanced {

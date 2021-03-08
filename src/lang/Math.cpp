@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include "Math.h"
+#include <lang/Math.h>
 #include <math.h>
 
 namespace tl {

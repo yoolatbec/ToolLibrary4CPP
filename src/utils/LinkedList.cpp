@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include "LinkedList.h"
-#include "../lang/Array.h"
+#include <lang/Array.h>
+#include <utils/LinkedList.h>
 
 namespace tl {
 namespace utils {

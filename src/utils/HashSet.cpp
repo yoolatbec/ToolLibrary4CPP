@@ -5,8 +5,8 @@
  *      Author: Yoolatbec
  */
 
-#include "HashSet.h"
-#include "../lang/Array.h"
+#include <lang/Array.h>
+#include <utils/HashSet.h>
 
 namespace tl {
 namespace utils {

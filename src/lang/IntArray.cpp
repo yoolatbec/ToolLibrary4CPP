@@ -5,25 +5,37 @@
  *      Author: yoolatbec
  */
 
-#include "IntArray.h"
-#include "String.h"
+#include <lang/IndexOutOfBoundsException.h>
+#include <lang/IntArray.h>
+#include <lang/String.h>
+#include <lang/UnacceptableArgumentException.h>
 #include <cstring>
+#include <cstdio>
 
 namespace tl {
 namespace lang {
 
-IntArray::IntArray(tlint size, tlint* initValues)
-		: NOArray(size) {
+IntArray::IntArray(tlint size, tlint *initValues)
+	: NOArray(size) {
 	// TODO Auto-generated constructor stub
-	mElements = new int[mSize];
+	mElements = new tlint[mSize];
 
-	if(initValues != nullptr){
-		for(tlint index = 0; index < mElements; index++){
-			mElements[index] = initValues[index];
-		}
-	} else {
-		memset(mElements, 0, mSize * sizeof(tlint));
+	for(tlint i = 0; i < mSize; i++){
+		mElements[i] = initValues[i];
 	}
+
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+IntArray::IntArray(tlint size, tlint initValue)
+	: NOArray(size) {
+	mElements = new tlint[mSize];
+
+	for (tlint i = 0; i < mSize; i++) {
+		mElements[i] = initValue;
+	}
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 IntArray::~IntArray() {
@@ -31,37 +43,58 @@ IntArray::~IntArray() {
 	delete[] mElements;
 }
 
-Reference IntArray::newIntArray(tlint size, tlint* initValues){
-	parameterCheck(size);
+Reference IntArray::newIntArray(tlint size, tlint *initValues) {
 
 	return Reference(new IntArray(size, initValues));
 }
 
-tlint IntArray::get(tlint index){
-	boundCheck(index);
+Reference IntArray::newIntArray(tlint size) {
+	initParameterCheck(size);
+
+	return Reference(new IntArray(size, DEFAULT_INIT_VALUE));
+}
+
+tlint IntArray::get(tlint index) {
+	indexBoundCheck(index);
 
 	return mElements[index];
 }
 
-void IntArray::set(tlint index, tlint value){
-	boundCheck(index);
+void IntArray::set(tlint index, tlint value) {
+	indexBoundCheck(index);
 
 	mElements[index] = value;
 }
 
-Reference IntArray::toString(){
+Reference IntArray::toString() {
+	char *str = new char[DEFAULT_WIDTH_FOR_EACH_BIT * size()];
 
+	str[0] = '\0';
+	str[1] = '[';
+
+	for (tlint index = 0; index < size(); index++) {
+		sprintf(str + strlen(str), "%d ", mElements[index]);
+	}
+
+	tlint index = strlen(str);
+	str[index] = ']';
+	str[index + 1] = '\0';
+
+	Reference rtval = Reference(new String(str));
+	delete[] str;
+
+	return rtval;
 }
 
-Reference IntArray::clone(){
+Reference IntArray::clone() {
 	return Reference(new IntArray(mSize, mElements));
 }
 
-type_t IntArray::type(){
+type_t IntArray::type() {
 	return CLASS_SERIAL;
 }
 
-bool IntArray::instanceof(type_t type){
+bool IntArray::instanceof(type_t type) {
 	return (CLASS_SERIAL == type) || NOArray::instanceof(type);
 }
 

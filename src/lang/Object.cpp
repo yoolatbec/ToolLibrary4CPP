@@ -5,8 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include "String.h"
-#include "IllegalArgumentTypeException.h"
+#include <lang/IllegalArgumentTypeException.h>
+#include <lang/NullPointerException.h>
+#include <lang/String.h>
 #include <cstdio>
 
 namespace tl {
@@ -31,6 +32,12 @@ Object::Object(const Object &other) {
 void Object::argumentTypeCheck(Reference ref, type_t type) {
 	if (!ref.getEntity()->instanceof(type)) {
 		throw IllegalArgumentTypeException();
+	}
+}
+
+void Object::dismissNull(Reference ref){
+	if(ref.isNull()){
+		throw NullPointerException();
 	}
 }
 

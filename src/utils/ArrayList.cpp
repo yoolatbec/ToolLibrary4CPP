@@ -5,10 +5,10 @@
  *      Author: yoolatbec
  */
 
-#include "ArrayList.h"
-#include "../lang/Array.h"
-#include "../lang/UnacceptableArgumentException.h"
-#include "../lang/MemoryLimitExceededException.h"
+#include <lang/Array.h>
+#include <lang/MemoryLimitExceededException.h>
+#include <lang/UnacceptableArgumentException.h>
+#include <utils/ArrayList.h>
 
 namespace tl {
 namespace utils {
@@ -228,16 +228,13 @@ bool ArrayList::insertAll(tlint position, Reference ref) {
 		return false;
 	}
 
-	argumentTypeCheck(ref, mElementType);
+	argumentTypeCheck(ref, Collection::type());
+	indexBoundCheck(position);
 
 	invalidateIterators();
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
 
-	if (position < 0 || position > mSize) {
-		//cast an exception
-		throw UnacceptableArgumentException();
-	}
 
 	tlint size = collection->size();
 	while (mCapacity <= size + mSize) {

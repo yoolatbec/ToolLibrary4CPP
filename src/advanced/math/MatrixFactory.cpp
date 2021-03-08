@@ -5,15 +5,22 @@
  *      Author: yoolatbec
  */
 
-#include "MatrixFactory.h"
-#include "MatrixType.h"
-#include "VectorType.h"
+#include <advanced/math/MatrixFactory.h>
+#include <advanced/math/MatrixType.h>
+#include <advanced/math/VectorType.h>
+
+#include <lang/IllegalArgumentTypeException.h>
+#include <lang/UnacceptableArgumentException.h>
+#include <lang/UndefinedException.h>
 
 namespace tl {
 namespace advanced {
 namespace math {
 
 using lang::Reference;
+using lang::IllegalArgumentTypeException;
+using lang::UnacceptableArgumentException;
+using lang::UndefinedException;
 
 MatrixFactory::MatrixFactory() {
 	// TODO Auto-generated constructor stub
@@ -36,10 +43,8 @@ float MatrixFactory::dot_vec(vec v, vec u) {
 }
 
 float MatrixFactory::dot(Reference v, Reference u) {
-	if (!v.getEntity()->instanceof(Vector::type())
-		|| !u.getEntity()->instanceof(Vector::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(v, Vector::type());
+	argumentTypeCheck(u, Vector::type());
 
 	Vector *vector_v = dynamic_cast<Vector*>(v.getEntity());
 	Vector *vector_u = dynamic_cast<Vector*>(u.getEntity());
@@ -48,30 +53,10 @@ float MatrixFactory::dot(Reference v, Reference u) {
 		//cast an exception
 	}
 
-	float product;
-	switch (vector_v->vectorType()) {
-	case VECTOR_1:
-		Vec *v1 = vector_v;
-		Vec *u1 = vector_u;
-		product = dot_vec(v1->values(), u1->values());
-		break;
-	case VECTOR_2:
-		Vec2 *v2 = vector_v;
-		Vec2 *u2 = vector_u;
-		product = dot_vec2(v2->values(), u2->values());
-		break;
-	case VECTOR_3:
-		Vec3 *v3 = vector_v;
-		Vec3 *u3 = vector_u;
-		product = dot_vec3(v3->values(), u3->values());
-		break;
-	case VECTOR_4:
-		Vec4 *v4 = vector_v;
-		Vec4 *u4 = vector_u;
-		product = dot_vec4(v4->values(), u4->values());
-		break;
-	default:
-		//cast an exception
+	float product = 0;
+	for (tlint index = vector_v->minIndex(); index <= vector_v->maxIndex();
+		index++) {
+		product += (vector_v->get(index) * vector_u->get(index));
 	}
 
 	return product;
@@ -156,9 +141,7 @@ vec MatrixFactory::scale0(vec v, float a) {
 }
 
 Reference MatrixFactory::scale(Reference ref, float a) {
-	if (!ref.getEntity()->instanceof(AbstractMatrix::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, AbstractMatrix::type());
 
 	if (ref.getEntity()->instanceof(Matrix::type())) {
 		return matrixScale(ref, a);
@@ -189,6 +172,43 @@ Reference MatrixFactory::vectorScale(Reference ref, float a) {
 	}
 
 	return ref;
+}
+
+Reference MatrixFactory::cross(Reference v, Reference u) {
+	argumentTypeCheck(v, Vector::type());
+	argumentTypeCheck(u, Vector::type());
+
+	if (v.getEntity()->instanceof(Vec3::type())
+		&& u.getEntity()->instanceof(Vec3::type())) {
+		Vec3 *v1 = dynamic_cast<Vec3*>(v.getEntity());
+		Vec3 *u1 = dynamic_cast<Vec3*>(u.getEntity());
+
+		vec3 v2 = v1->values();
+		vec3 u2 = u1->values();
+
+		vec3 result = cross_vec3(v2, u2);
+		return Reference(new Vec3(result));
+	}
+
+	if (v.getEntity()->instanceof(Vec4::type())
+		&& u.getEntity()->instanceof(Vec4::type())) {
+		Vec4 *v1 = dynamic_cast<Vec4*>(v.getEntity());
+		Vec4 *u1 = dynamic_cast<Vec4*>(u.getEntity());
+
+		vec4 v2 = v1->values();
+		vec4 u2 = u1->values();
+
+		vec3 result = cross_vec3(to_cartesian(v2), to_cartesian(u2));
+
+		return Reference(new Vec3(result));
+	}
+
+	throw UndefinedException();
+}
+
+vec3 MatrixFactory::cross_vec3(vec3 v, vec3 u) {
+	return {v.y * u.z - v.z * u.y, -(v.x * u.z - v.z * u.x), v.x
+		* u.y - v.y * u.x};
 }
 
 Reference MatrixFactory::newMatrix(tlint i, tlint j) {
@@ -271,6 +291,7 @@ Reference MatrixFactory::newVector(tlint i) {
 		break;
 	default:
 		//cast an exception
+		throw UnacceptableArgumentException();
 	}
 
 	return ref;
@@ -293,17 +314,38 @@ Reference MatrixFactory::newVector(VECTOR_TYPE type) {
 		break;
 	default:
 		//cast an exception
+		throw UnacceptableArgumentException();
 	}
 
 	return ref;
 }
 
 Reference MatrixFactory::multiply(Reference m1, Reference m2) {
-	if (!(m1.getEntity()->instanceof(AbstractMatrix::type())
-		&& m2.getEntity()->instanceof(AbstractMatrix::type()))) {
-		//cast an exception
+	argumentTypeCheck(m1, AbstractMatrix::type());
+	argumentTypeCheck(m2, AbstractMatrix::type());
+
+	if (m1.getEntity()->instanceof(Vector::type())) {
+		if (m2.getEntity()->instanceof(Vector::type())) {
+			return Reference(new Vec(dot(m1, m2)));
+		}
+
+		if (m2.getEntity()->instanceof(Matrix::type())) {
+			return vmMultiply(m1, m2);
+		}
 	}
 
+	if (m1.getEntity()->instanceof(Matrix::type())) {
+		if (m2.getEntity()->instanceof(Vector::type())) {
+			return mvMultiply(m1, m2);
+		}
+
+		if (m2.getEntity()->instanceof(Matrix::type())) {
+			return mmMultiply(m1, m2);
+		}
+	}
+
+	//cast an exception
+	throw UndefinedException();
 }
 
 type_t MatrixFactory::type() {

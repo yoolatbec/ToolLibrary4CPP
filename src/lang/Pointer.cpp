@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include "Pointer.h"
+#include <lang/Pointer.h>
 
 namespace tl {
 namespace lang {
@@ -18,6 +18,7 @@ Pointer::Pointer(void *ptr)
 
 Pointer::~Pointer() {
 	// TODO Auto-generated destructor stub
+
 }
 
 void* Pointer::get(){

@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include "Reference.h"
+#include <lang/Reference.h>
 
 namespace tl {
 namespace lang {
@@ -102,7 +102,7 @@ bool Reference::equals(Reference another) const {
 		return false;
 	}
 
-	return mEntity->mHashCode == another.mEntity->mHashCode;
+	return mEntity->hashCode() == another.mEntity->hashCode();
 }
 
 bool Reference::isNull() const {

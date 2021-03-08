@@ -5,22 +5,27 @@
  *      Author: yoolatbec
  */
 
-#include "Byte.h"
-#include "String.h"
+#include <lang/Byte.h>
+#include <lang/IllegalArgumentTypeException.h>
+#include <lang/String.h>
 #include <stdio.h>
 
 namespace tl {
 namespace lang {
 
-Byte::Byte(byte value) {
+Byte::Byte(byte value)
+	: mValue(value) {
 	// TODO Auto-generated constructor stub
-	mValue = value;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Byte::~Byte() {
 	// TODO Auto-generated destructor stub
+}
+
+hash_t Byte::genHashCode(type_t type) {
+	return (type << 32) | mValue;
 }
 
 tlint Byte::intValue() {
@@ -54,16 +59,48 @@ Reference Byte::toString() {
 }
 
 tlint Byte::compareTo(Reference ref) {
-	if (ref.isNull()) {
-		return mValue;
-	}
-
-	if (!ref.getEntity()->instanceof(Number::type())) {
-		//cast an exception
-	}
+	dismissNull(ref);
+	argumentTypeCheck(ref, Byte::type());
 
 	Number *n = dynamic_cast<Number*>(ref.getEntity());
 	return mValue - n->byteValue();
+}
+
+byte Byte::parseByte(Reference ref) {
+	if(ref.isNull()){
+		return 0;
+	}
+
+	if (ref.getEntity()->instanceof(String::type())) {
+		String *str = dynamic_cast<String*>(ref.getEntity());
+		const char *s = str->toCharArray();
+
+		tlint v;
+		if (sscanf(s, "%d", &v) == 0) {
+			//cast an exception
+		}
+
+		return (byte)v;
+	}
+
+	if (ref.getEntity()->instanceof(Number::type())) {
+		Number *num = dynamic_cast<Number*>(ref.getEntity());
+		return num->byteValue();
+	}
+
+	throw IllegalArgumentTypeException();
+}
+
+Reference Byte::valueOf(byte value) {
+	return Reference(new Byte(value));
+}
+
+Reference Byte::valueOf(Reference ref) {
+	return valueOf(parseByte(ref));
+}
+
+tlint Byte::compare(byte b1, byte b2) {
+	return b1 - b2;
 }
 
 type_t Byte::type() {

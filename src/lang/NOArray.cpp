@@ -5,7 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include "NOArray.h"
+#include <lang/IndexOutOfBoundsException.h>
+#include <lang/NOArray.h>
 
 namespace tl {
 namespace lang {
@@ -18,7 +19,13 @@ tlint NOArray::size() {
 	return mSize;
 }
 
-static type_t NOArray::type() {
+void NOArray::indexBoundCheck(tlint i){
+	if(i < 0 || i > mSize){
+		throw IndexOutOfBoundsException();
+	}
+}
+
+type_t NOArray::type() {
 	return CLASS_SERIAL;
 }
 

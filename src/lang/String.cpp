@@ -5,22 +5,28 @@
  *      Author: yoolatbec
  */
 
-#include "String.h"
 #include <cstdio>
 #include <cstring>
+#include <ctype.h>
+#include <lang/IndexOutOfBoundsException.h>
+#include <lang/NullPointerException.h>
+#include <lang/String.h>
+#include <lang/UnacceptableArgumentException.h>
+#include <utils/KMPMachine.h>
 
-#include "../utils/ArrayList.h"
-
-using tl::utils::ArrayList;
+#include <utils/ArrayList.h>
 
 namespace tl {
 namespace lang {
+
+using utils::ArrayList;
+using utils::KMPMachine;
 
 String::String() {
 	// TODO Auto-generated ructor stub
 	mStr = nullptr;
 	mLength = 0;
-	mHashCode = genHashCode();
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 String::String(const char *str) {
@@ -28,42 +34,31 @@ String::String(const char *str) {
 	mStr = new char[mLength + 1];
 	mStr[mLength] = '\0';
 	strncpy(mStr, str, mLength);
-	mHashCode = genHashCode();
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-String::String(size_t length, char c) {
+String::String(tlint length, char c) {
 	mLength = length;
 	mStr = new char[mLength + 1];
 	mStr[mLength] = '\0';
 	memset(mStr, c, mLength);
-	mHashCode = genHashCode();
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 String::String(Reference ref) {
 	// TODO Auto-generated ructor stub
 	if (ref.isNull()) {
-		mStr = nullptr;
 		mLength = 0;
+		mStr = nullptr;
 	} else {
-		String *other = ref.getEntity()->toString();
-		const char *str = other->toCharArray();
-		mLength = other->mLength;
-		mStr = new byte[mLength + 1];
-		strncpy(mStr, str, mLength);
-		mStr[mLength] = '\0';
+		ref = ref.getEntity()->toString();
+		String *str = dynamic_cast<String*>(ref.getEntity());
+		mLength = str->length();
+		mStr = new char[mLength + 1];
+		strncpy(mStr, str->toCharArray(), mLength + 1);
 	}
 
-//	if (ref.getEntity()->instanceof(String::type())) {
-//		String *other = dynamic_cast<String*>(ref.getEntity());
-//		mLength = other->mLength;
-//		mStr = new char[mLength + 1];
-//		mStr[mLength] = '\0';
-//		strncpy(mStr, other->mStr, mLength);
-//	} else {
-//
-//	}
-
-	mHashCode = genHashCode();
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 String::~String() {
@@ -81,15 +76,6 @@ Reference String::append(char c) {
 	return Reference(r_value);
 }
 
-Reference String::append(byte c) {
-	char *str = new char[mLength + 4];
-	strncpy(str, mStr, mLength);
-	sprintf(str + mLength, "%d", c);
-	String *r_value = new String(str);
-	delete[] str;
-	return Reference(r_value);
-}
-
 Reference String::append(Reference ref) {
 	if (ref.isNull()) {
 		return Reference(new String(mStr));
@@ -97,7 +83,7 @@ Reference String::append(Reference ref) {
 
 	String *r_value;
 	String *ref_str =
-			dynamic_cast<String*>(ref.getEntity()->toString().getEntity());
+		dynamic_cast<String*>(ref.getEntity()->toString().getEntity());
 	char *str = new char[mLength + ref_str->mLength + 1];
 	strncpy(str, mStr, mLength);
 	strncpy(str + mLength, ref_str->toCharArray(), ref_str->mLength);
@@ -144,6 +130,16 @@ Reference String::append(tlint i) {
 
 }
 
+Reference String::append(tlint64 i) {
+	char *str = new char[mLength + 32];
+	strncpy(str, mStr, mLength);
+	sprintf(str = mLength, "%lld", i);
+	String *rtval = new String(str);
+	delete[] str;
+
+	return Reference(rtval);
+}
+
 Reference String::append(double d) {
 //	byte doubleValue[64];
 //	doubleValue[63] = '\0';
@@ -158,28 +154,65 @@ Reference String::append(double d) {
 
 	char *str = new char[mLength + 32];
 	strncpy(str, mStr, mLength);
-	sprintf(str + mLength, "%f", d);
+	sprintf(str + mLength, "%g", d);
 	String *r_value = new String(str);
 	delete[] str;
 	return Reference(r_value);
 }
 
-tlint String::charAt(size_t position) {
+tlint String::charAt(tlint position) {
 	if (position < 0 || position >= mLength) {
-		return -1;
+		throw IndexOutOfBoundsException();
 	}
 
 	return mStr[position];
 }
 
-Reference String::substring(size_t length) {
-	if (length <= 0) {
-		//cast an exception
-		return new String("");
-	}
+tlint String::compareTo(Reference ref) {
+	dismissNull(ref);
 
-	if (length > mLength) {
-		length = mLength;
+	argumentTypeCheck(ref, String::type());
+
+	String *str = dynamic_cast<String*>(ref.getEntity());
+	return strcmp(mStr, str->toCharArray());
+}
+
+bool String::contains(Reference ref) {
+	Reference machine = KMPMachine::newInstance(ref);
+	KMPMachine *m = dynamic_cast<KMPMachine*>(machine.getEntity());
+
+	return m->match(Reference(this, false)) != -1;
+}
+
+tlint String::indexOf(Reference ref, tlint offset) {
+	Reference machine = KMPMachine::newInstance(ref);
+	KMPMachine *m = dynamic_cast<KMPMachine*>(machine.getEntity());
+
+	return m->match(Reference(this, false), offset);
+}
+
+tlint String::lastIndexOf(Reference ref, tlint offset) {
+	Reference machine = KMPMachine::newInstance(ref);
+	KMPMachine *m = dynamic_cast<KMPMachine*>(machine.getEntity());
+
+	return m->matchLast(Reference(this, false), offset);
+}
+
+tlint String::length() {
+	return mLength;
+}
+
+Reference String::replace(Reference src, Reference target) {
+
+}
+
+Reference String::replace(char src, char target) {
+
+}
+
+Reference String::substring(tlint length) {
+	if (length <= 0 || length > mLength) {
+		throw UnacceptableArgumentException();
 	}
 
 	char *str = new char[length + 1];
@@ -191,18 +224,14 @@ Reference String::substring(size_t length) {
 	return Reference(r_value);
 }
 
-Reference String::substring(size_t start, size_t length) {
-	if (start < 0) {
+Reference String::substring(tlint start, tlint length) {
+	if (start < 0 || start + length >= mLength) {
 		//cast an exception
-		start = 0;
-	}
-
-	if (start + length >= mLength) {
-		length = mLength - start - 1;
+		throw IndexOutOfBoundsException();
 	}
 
 	if (length <= 0) {
-		return new String("");
+		throw UnacceptableArgumentException();
 	}
 
 	char *str = new char[length + 1];
@@ -214,21 +243,9 @@ Reference String::substring(size_t start, size_t length) {
 	return Reference(r_value);
 }
 
-const byte* String::bytes() {
-	return mStr;
-}
-
-tlint String::compareTo(Reference ref) {
-	if (ref.getEntity()->instanceof(String::type())) {
-		String *other = dynamic_cast<String*>(ref.getEntity());
-		return strcmp(other->mStr, mStr);
-	}
-
-	return 0;
-}
-
-Reference String::split(byte b) {
-	ArrayList *list = new ArrayList(String::type());
+Reference String::split(char b) {
+	Reference ref = Reference(new ArrayList(String::type()));
+	ArrayList *list = dynamic_cast<ArrayList*>(ref.getEntity());
 
 	char token[2]
 		{ 0 };
@@ -243,15 +260,11 @@ Reference String::split(byte b) {
 }
 
 Reference String::split(Reference ref) {
-	if (ref.isNull()) {
-		return new ArrayList(String::type());
-	}
+	dismissNull(ref);
+	argumentTypeCheck(ref, String::type());
 
-	if (!ref.getEntity()->instanceof(String::type())) {
-		return new ArrayList(String::type());
-	}
-
-	ArrayList *list = new ArrayList(String::type());
+	Reference listRef = Reference(new ArrayList(String::type()));
+	ArrayList *list = dynamic_cast<ArrayList*>(listRef.getEntity());
 
 	char *token = dynamic_cast<String*>(ref.getEntity())->mStr;
 	char *str = strtok(mStr, token);
@@ -263,29 +276,46 @@ Reference String::split(Reference ref) {
 	return list->toArray();
 }
 
+Reference String::toLowerCase() {
+	char *str = new char[mLength + 1];
+	for (tlint index = 0; index < mLength; index++) {
+		str[index] = tolower(mStr[index]);
+	}
+
+	str[mLength] = '\0';
+
+	String *rtval = new String(str);
+	delete[] str;
+	return Reference(rtval);
+}
+
+Reference String::toUpperCase() {
+
+}
+
 const char* String::toCharArray() {
 	return mStr;
+}
+
+Reference String::toString() {
+	return Reference(this, false);
 }
 
 bool String::instanceof(type_t type) {
 	return (CLASS_SERIAL == type) || Comparable::instanceof(type);
 }
 
-hash_t String::genHashCode() {
+hash_t String::genHashCode(type_t type) {
 	hash_t hash = 5381;
 	for (tlint index = 0; index < mLength; index++) {
 		hash = ((hash << 5) + hash) + mStr[index];
 	}
 
-	return (hash ^ (hash >> 32)) | CLASS_SERIAL << 32;
+	return (hash ^ (hash >> 32)) | (type << 32);
 }
 
 type_t String::type() {
 	return CLASS_SERIAL;
-}
-
-Reference String::toString() {
-	return Reference(this);
 }
 
 } /* namespace lang */
