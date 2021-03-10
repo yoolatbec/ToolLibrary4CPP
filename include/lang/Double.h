@@ -8,6 +8,7 @@
 #ifndef INCLUDE_LANG_DOUBLE_H_
 #define INCLUDE_LANG_DOUBLE_H_
 
+#include <float.h>
 #include <lang/Number.h>
 
 namespace tl {
@@ -23,6 +24,11 @@ private:
 
 	hash_t genHashCode(type_t);
 public:
+	const static tlint SIZE_IN_BYTES = sizeof(double);
+	const static tlint SIZE_IN_BITS = sizeof(double) * 8;
+	constexpr const static double MAX_VALUE = (DBL_MAX);
+	constexpr const static double MIN_VALUE = (DBL_MIN);
+
 	virtual ~Double();
 	Double(const Double &other) = delete;
 	Double& operator=(const Double &other) = delete;

@@ -20,7 +20,7 @@ tlint NOArray::size() {
 }
 
 void NOArray::indexBoundCheck(tlint i){
-	if(i < 0 || i > mSize){
+	if(i < 0 || i >= mSize){
 		throw IndexOutOfBoundsException();
 	}
 }

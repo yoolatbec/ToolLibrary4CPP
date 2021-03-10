@@ -17,9 +17,9 @@ class FloatArray: public virtual NOArray {
 private:
 	static const type_t CLASS_SERIAL = 33;
 	const static tlint RESERVED_WIDTH_FOR_EACH_BIT = 20;
-	constexpr const static float DEFAULT_INIT_VALUE = 0;
+	constexpr const static float DEFAULT_VALUE = 0;
 
-	float* mElements;
+	float *mElements;
 
 	/*
 	 * For the sake of parameter check, make the constructor private.
@@ -33,9 +33,8 @@ public:
 	virtual ~FloatArray();
 	FloatArray(const FloatArray &other) = delete;
 	FloatArray& operator=(const FloatArray &other) = delete;
-	static Reference newFloatArray(tlint = NOArray::DEFAULT_SIZE);
-	static Reference newFloatArray(tlint, float*);
-	static Reference newFloatArray(tlint, float);
+	static Reference newInstance(tlint, float*);
+	static Reference newInstance(tlint = NOArray::DEFAULT_SIZE, float = DEFAULT_VALUE);
 	Reference clone();
 	float get(tlint);
 	void set(tlint, float);

@@ -22,26 +22,27 @@ namespace lang {
 using utils::ArrayList;
 using utils::KMPMachine;
 
-String::String() {
+String::String()
+	: CharSequence(0) {
 	// TODO Auto-generated ructor stub
-	mStr = nullptr;
+	mSequence = nullptr;
 	mLength = 0;
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-String::String(const char *str) {
-	mLength = strlen(str);
-	mStr = new char[mLength + 1];
-	mStr[mLength] = '\0';
-	strncpy(mStr, str, mLength);
+String::String(const char *str)
+	: CharSequence(strlen(str)) {
+	mSequence = new char[mLength + 1];
+	mSequence[mLength] = '\0';
+	strncpy(mSequence, str, mLength);
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-String::String(tlint length, char c) {
-	mLength = length;
-	mStr = new char[mLength + 1];
-	mStr[mLength] = '\0';
-	memset(mStr, c, mLength);
+String::String(tlint length, char c)
+	: CharSequence(length) {
+	mSequence = new char[mLength + 1];
+	mSequence[mLength] = '\0';
+	memset(mSequence, c, mLength);
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
@@ -49,13 +50,15 @@ String::String(Reference ref) {
 	// TODO Auto-generated ructor stub
 	if (ref.isNull()) {
 		mLength = 0;
-		mStr = nullptr;
+		mSequence = nullptr;
 	} else {
+		argumentTypeCheck(ref, Object::type());
+
 		ref = ref.getEntity()->toString();
 		String *str = dynamic_cast<String*>(ref.getEntity());
 		mLength = str->length();
-		mStr = new char[mLength + 1];
-		strncpy(mStr, str->toCharArray(), mLength + 1);
+		mSequence = new char[mLength + 1];
+		strncpy(mSequence, str->toCharArray(), mLength + 1);
 	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -63,12 +66,11 @@ String::String(Reference ref) {
 
 String::~String() {
 	// TODO Auto-generated destructor stub
-	delete[] mStr;
 }
 
 Reference String::append(char c) {
 	char *str = new char[mLength + 2];
-	strncpy(str, mStr, mLength);
+	strncpy(str, mSequence, mLength);
 	str[mLength] = c;
 	str[mLength + 1] = '\0';
 	String *r_value = new String(str);
@@ -78,14 +80,14 @@ Reference String::append(char c) {
 
 Reference String::append(Reference ref) {
 	if (ref.isNull()) {
-		return Reference(new String(mStr));
+		return Reference(new String(mSequence));
 	}
 
 	String *r_value;
 	String *ref_str =
 		dynamic_cast<String*>(ref.getEntity()->toString().getEntity());
 	char *str = new char[mLength + ref_str->mLength + 1];
-	strncpy(str, mStr, mLength);
+	strncpy(str, mSequence, mLength);
 	strncpy(str + mLength, ref_str->toCharArray(), ref_str->mLength);
 	str[mLength + ref_str->mLength] = '\0';
 	r_value = new String(str);
@@ -93,8 +95,8 @@ Reference String::append(Reference ref) {
 //	if (ref.instanceof(String::type())) {
 //		String *other = dynamic_cast<String*>(ref.getEntity());
 //		char *str = new char[mLength + other->mLength + 1];
-//		strncpy(str, mStr, mLength);
-//		strncpy(str + mLength, other->mStr, other->mLength);
+//		strncpy(str, mSequence, mLength);
+//		strncpy(str + mLength, other->mSequence, other->mLength);
 //		str[mLength + other->mLength] = '\0';
 //		r_value = new String(str);
 //		delete[] str;
@@ -114,7 +116,7 @@ Reference String::append(tlint i) {
 //	ivalue[31] = '\0';
 //	sprintf(ivalue, "%d", i);
 //	byte *str = new byte[mLength + strlen(ivalue) + 1];
-//	strncpy(str, mStr, mLength);
+//	strncpy(str, mSequence, mLength);
 //	strncpy(str + mLength, ivalue, strlen(ivalue));
 //	str[mLength + strlen(ivalue)] = '\0';
 //	String *r_value = new String(str);
@@ -122,7 +124,7 @@ Reference String::append(tlint i) {
 //	return Reference(r_value);
 
 	char *str = new char[mLength + 32];
-	strncpy(str, mStr, mLength);
+	strncpy(str, mSequence, mLength);
 	sprintf(str + mLength, "%d", i);
 	String *r_value = new String(str);
 	delete[] str;
@@ -132,8 +134,8 @@ Reference String::append(tlint i) {
 
 Reference String::append(tlint64 i) {
 	char *str = new char[mLength + 32];
-	strncpy(str, mStr, mLength);
-	sprintf(str = mLength, "%lld", i);
+	strncpy(str, mSequence, mLength);
+	sprintf(str + mLength, "%lld", i);
 	String *rtval = new String(str);
 	delete[] str;
 
@@ -145,7 +147,7 @@ Reference String::append(double d) {
 //	doubleValue[63] = '\0';
 //	sprintf(doubleValue, "%lf", d);
 //	byte *str = new byte[mLength + strlen(doubleValue) + 1];
-//	strncpy(str, mStr, mLength);
+//	strncpy(str, mSequence, mLength);
 //	strncpy(str + mLength, doubleValue, strlen(doubleValue));
 //	str[mLength + strlen(doubleValue)] = '\0';
 //	String *r_value = new String(str);
@@ -153,19 +155,11 @@ Reference String::append(double d) {
 //	return Reference(r_value);
 
 	char *str = new char[mLength + 32];
-	strncpy(str, mStr, mLength);
+	strncpy(str, mSequence, mLength);
 	sprintf(str + mLength, "%g", d);
 	String *r_value = new String(str);
 	delete[] str;
 	return Reference(r_value);
-}
-
-tlint String::charAt(tlint position) {
-	if (position < 0 || position >= mLength) {
-		throw IndexOutOfBoundsException();
-	}
-
-	return mStr[position];
 }
 
 tlint String::compareTo(Reference ref) {
@@ -174,7 +168,7 @@ tlint String::compareTo(Reference ref) {
 	argumentTypeCheck(ref, String::type());
 
 	String *str = dynamic_cast<String*>(ref.getEntity());
-	return strcmp(mStr, str->toCharArray());
+	return strcmp(mSequence, str->toCharArray());
 }
 
 bool String::contains(Reference ref) {
@@ -197,17 +191,26 @@ tlint String::lastIndexOf(Reference ref, tlint offset) {
 
 	return m->matchLast(Reference(this, false), offset);
 }
-
-tlint String::length() {
-	return mLength;
-}
-
-Reference String::replace(Reference src, Reference target) {
-
-}
+//
+//Reference String::replace(Reference src, Reference target) {
+//
+//}
 
 Reference String::replace(char src, char target) {
+	char *str = new char[mLength + 1];
+	for (tlint index = 0; index < mLength; index++) {
+		str[index] = mSequence[index];
+		if (str[index] == src) {
+			str[index] = target;
+		}
+	}
 
+	str[mLength] = '\0';
+
+	String *rtval = new String(str);
+	delete[] str;
+
+	return Reference(rtval);
 }
 
 Reference String::substring(tlint length) {
@@ -216,7 +219,7 @@ Reference String::substring(tlint length) {
 	}
 
 	char *str = new char[length + 1];
-	strncpy(str, mStr, length);
+	strncpy(str, mSequence, length);
 	str[length] = '\0';
 
 	String *r_value = new String(str);
@@ -235,7 +238,7 @@ Reference String::substring(tlint start, tlint length) {
 	}
 
 	char *str = new char[length + 1];
-	strncpy(str, mStr + start, length);
+	strncpy(str, mSequence + start, length);
 	str[length] = '\0';
 
 	String *r_value = new String(str);
@@ -250,7 +253,7 @@ Reference String::split(char b) {
 	char token[2]
 		{ 0 };
 	token[0] = b;
-	char *str = strtok(mStr, token);
+	char *str = strtok(mSequence, token);
 	while (str != nullptr) {
 		list->add(Reference(new String(str)));
 		str = strtok(nullptr, token);
@@ -266,8 +269,8 @@ Reference String::split(Reference ref) {
 	Reference listRef = Reference(new ArrayList(String::type()));
 	ArrayList *list = dynamic_cast<ArrayList*>(listRef.getEntity());
 
-	char *token = dynamic_cast<String*>(ref.getEntity())->mStr;
-	char *str = strtok(mStr, token);
+	char *token = dynamic_cast<String*>(ref.getEntity())->mSequence;
+	char *str = strtok(mSequence, token);
 	while (str != nullptr) {
 		list->add(Reference(new String(str)));
 		str = strtok(nullptr, token);
@@ -279,7 +282,7 @@ Reference String::split(Reference ref) {
 Reference String::toLowerCase() {
 	char *str = new char[mLength + 1];
 	for (tlint index = 0; index < mLength; index++) {
-		str[index] = tolower(mStr[index]);
+		str[index] = tolower(mSequence[index]);
 	}
 
 	str[mLength] = '\0';
@@ -290,11 +293,17 @@ Reference String::toLowerCase() {
 }
 
 Reference String::toUpperCase() {
+	char *str = new char[mLength + 1];
+	for (tlint index = 0; index < mLength; index++) {
+		str[index] = toupper(mSequence[index]);
+	}
 
-}
+	str[mLength] = '\0';
 
-const char* String::toCharArray() {
-	return mStr;
+	String *rtval = new String(str);
+	delete[] str;
+
+	return Reference(rtval);
 }
 
 Reference String::toString() {
@@ -308,7 +317,7 @@ bool String::instanceof(type_t type) {
 hash_t String::genHashCode(type_t type) {
 	hash_t hash = 5381;
 	for (tlint index = 0; index < mLength; index++) {
-		hash = ((hash << 5) + hash) + mStr[index];
+		hash = ((hash << 5) + hash) + mSequence[index];
 	}
 
 	return (hash ^ (hash >> 32)) | (type << 32);

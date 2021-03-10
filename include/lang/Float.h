@@ -9,6 +9,7 @@
 #define INCLUDE_LANG_FLOAT_H_
 
 #include <lang/Number.h>
+#include <float.h>
 
 namespace tl {
 namespace lang {
@@ -23,8 +24,8 @@ private:
 public:
 	const static tlint SIZE_IN_BYTES = sizeof(float);
 	const static tlint SIZE_IN_BITS = sizeof(float) * 8;
-	constexpr const static float MAX_VALUE;
-	constexpr const static float MIN_VALUE;
+	constexpr const static float MAX_VALUE = (FLT_MAX);
+	constexpr const static float MIN_VALUE = (FLT_MIN);
 
 	virtual ~Float();
 	Float(const Float &other) = delete;

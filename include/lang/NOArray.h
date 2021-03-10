@@ -17,7 +17,7 @@ namespace lang {
 /*
  * NOArray means Array of Non-object.
  */
-class NOArray: public Cloneable {
+class NOArray: public virtual Cloneable {
 private:
 	static const tlint MAX_SIZE = Integer::MAX_VALUE;
 	static const type_t CLASS_SERIAL = 32;

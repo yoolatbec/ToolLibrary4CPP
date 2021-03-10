@@ -11,6 +11,8 @@
 namespace tl {
 namespace utils {
 
+using lang::IndexOutOfBoundsException;
+
 List::List(type_t element_type)
 		:Collection(element_type) {
 	mCapacity = DEFAULT_CAPACITY;

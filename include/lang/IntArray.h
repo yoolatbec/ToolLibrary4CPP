@@ -16,8 +16,8 @@ namespace lang {
 class IntArray: public virtual NOArray {
 private:
 	static const type_t CLASS_SERIAL = 7;
-	static const tlint DEFAULT_INIT_VALUE = 0;
-	static const tlint DEFAULT_WIDTH_FOR_EACH_BIT = 12;
+	static const tlint DEFAULT_VALUE = 0;
+	static const tlint DEFAULT_WIDTH_FOR_EACH_ELEMENT = 12;
 
 	tlint* mElements;
 
@@ -29,9 +29,8 @@ public:
 	virtual ~IntArray();
 	IntArray(const IntArray &other) = delete;
 	IntArray& operator=(const IntArray &other) = delete;
-	static Reference newIntArray(tlint, tlint*);
-	static Reference newIntArray(tlint, tlint);
-	static Reference newIntArray(tlint = NOArray::DEFAULT_SIZE);
+	static Reference newInstance(tlint, tlint*);
+	static Reference newInstance(tlint = NOArray::DEFAULT_SIZE, tlint = DEFAULT_VALUE);
 	tlint get(tlint);
 	void set(tlint, tlint);
 	Reference clone();

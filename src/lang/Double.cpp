@@ -27,7 +27,7 @@ hash_t Double::genHashCode(type_t type) {
 	double *tmp = new double;
 	*tmp = mValue;
 
-	tlint64 i = *(tlint64)tmp;
+	tlint64 i = *(tlint64*)tmp;
 	delete tmp;
 
 	return ((i >> 32) ^ i) | (type << 32);
@@ -96,14 +96,14 @@ tlint Double::compareTo(Reference ref){
 
 Reference Double::toString() {
 	char str[20];
-	sprintf(str, "%ld", mValue);
+	sprintf(str, "%lf", mValue);
 
 	return Reference(new String(str));
 }
 
 Reference Double::toString(double d){
 	char str[20];
-	sprintf(str, "%ld", d);
+	sprintf(str, "%lf", d);
 
 	return Reference(new String(str));
 }

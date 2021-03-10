@@ -50,7 +50,7 @@ Reference HashMap::computeIndices(Reference keyRef) {
 				% mCurrentCapacity[3]),
 			(tlint)(keyHashcode % mCurrentCapacity[4]) };
 
-	return IntArray::newIntArray(TABLE_COUNT, indices);
+	return IntArray::newInstance(TABLE_COUNT, indices);
 }
 
 Reference HashMap::findEntry(Reference keyRef) {

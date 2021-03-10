@@ -44,19 +44,17 @@ void FloatArray::initParameterCheck(tlint i) {
 	}
 }
 
-Reference FloatArray::newFloatArray(tlint size) {
+Reference FloatArray::newInstance(tlint size, float *initValues) {
 	initParameterCheck(size);
 
-	return Reference(new FloatArray(size, DEFAULT_INIT_VALUE));
-}
-
-Reference FloatArray::newFloatArray(tlint size, float *initValues) {
-	initParameterCheck(size);
+	if(initValues == nullptr){
+		return Reference(new FloatArray(size, DEFAULT_VALUE));
+	}
 
 	return Reference(new FloatArray(size, initValues));
 }
 
-Reference FloatArray::newFloatArray(tlint size, float value) {
+Reference FloatArray::newInstance(tlint size, float value) {
 	initParameterCheck(size);
 
 	return Reference(new FloatArray(size, value));
@@ -79,7 +77,7 @@ Reference FloatArray::clone() {
 }
 
 Reference FloatArray::toString() {
-	char *str = new char[size() * RESERVED_WIDTH_FOR_EACH_BIT];
+	char *str = new char[mSize * RESERVED_WIDTH_FOR_EACH_BIT + 3];
 	str[0] = '[';
 	str[1] = '\0';
 

@@ -28,6 +28,7 @@ public:
 	Boolean& operator=(const Boolean &other) = delete;
 	bool value();
 	Reference valueOf(bool);
+	Reference toString();
 	static type_t type();
 	bool instanceof(type_t);
 };

@@ -6,6 +6,7 @@
  */
 
 #include <lang/Boolean.h>
+#include <lang/String.h>
 
 namespace tl {
 namespace lang {
@@ -33,6 +34,10 @@ Reference Boolean::valueOf(bool value){
 	} else {
 		return falseValue;
 	}
+}
+
+Reference Boolean::toString(){
+	return mValue ? Reference(new String("true")) : Reference(new String("false"));
 }
 
 type_t Boolean::type(){

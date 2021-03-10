@@ -85,14 +85,11 @@ tlint KMPMachine::match(Reference ref, tlint offset) {
 
 tlint KMPMachine::match0(Reference ref, tlint offset) {
 	String *str = dynamic_cast<String*>(ref.getEntity());
-	String *pattern = dynamic_cast<String*>(mPattern.getEntity());
 
 	tlint textLength = str->length();
 	if (offset >= mLength) {
 		throw IndexOutOfBoundsException();
 	}
-
-	tlint patternLength = pattern->length();
 
 	tlint current = 0;
 	for (tlint i = offset; i < textLength; i++) {

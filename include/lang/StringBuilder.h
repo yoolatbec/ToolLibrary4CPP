@@ -8,12 +8,13 @@
 #ifndef INCLUDE_LANG_STRINGBUILDER_H_
 #define INCLUDE_LANG_STRINGBUILDER_H_
 
+#include <lang/CharSequence.h>
 #include <lang/Object.h>
 
 namespace tl {
 namespace lang {
 
-class StringBuilder: public Object {
+class StringBuilder: public virtual Object, public virtual CharSequence {
 public:
 	StringBuilder();
 	virtual ~StringBuilder();
@@ -26,20 +27,16 @@ public:
 	Reference append(tlint64);
 	Reference append(bool);
 	Reference append(const char*, tlint);
-	char charAt(tlint);
 	Reference insert(tlint, Reference);
 	Reference insert(tlint, char);
 	Reference insert(tlint, tlint);
 	Reference insert(tlint, double);
 	Reference insert(tlint, tlint64);
 	Reference insert(tlint, const char*, tlint);
-	tlint length();
 	Reference replace(Reference, Reference);
 	Reference replace(char, char);
 	Reference reverse();
 	void setCharAt(tlint, char);
-	Reference toString();
-	const char* toCharArray();
 	Reference substring();
 	Reference substring(tlint, tlint);
 	static type_t type();

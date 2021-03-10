@@ -43,15 +43,9 @@ IntArray::~IntArray() {
 	delete[] mElements;
 }
 
-Reference IntArray::newIntArray(tlint size, tlint *initValues) {
+Reference IntArray::newInstance(tlint size, tlint *initValues) {
 
 	return Reference(new IntArray(size, initValues));
-}
-
-Reference IntArray::newIntArray(tlint size) {
-	initParameterCheck(size);
-
-	return Reference(new IntArray(size, DEFAULT_INIT_VALUE));
 }
 
 tlint IntArray::get(tlint index) {
@@ -67,7 +61,7 @@ void IntArray::set(tlint index, tlint value) {
 }
 
 Reference IntArray::toString() {
-	char *str = new char[DEFAULT_WIDTH_FOR_EACH_BIT * size()];
+	char *str = new char[DEFAULT_WIDTH_FOR_EACH_ELEMENT * mSize + 3];
 
 	str[0] = '\0';
 	str[1] = '[';
