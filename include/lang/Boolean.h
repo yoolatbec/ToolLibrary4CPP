@@ -19,6 +19,9 @@ private:
 	static Reference trueValue;
 	static Reference falseValue;
 
+	static Reference trueStringValue;
+	static Reference falseStringValue;
+
 	const bool mValue;
 
 	Boolean(bool = false);
@@ -29,6 +32,7 @@ public:
 	bool value();
 	Reference valueOf(bool);
 	Reference toString();
+	static Reference toString(bool);
 	static type_t type();
 	bool instanceof(type_t);
 };

@@ -19,9 +19,10 @@ class String : public virtual Comparable, public virtual CharSequence{
 private:
 	const static type_t CLASS_SERIAL = 9;
 
-	hash_t genHashCode(type_t);
-public:
+	static Reference sBlankString;
+
 	String();
+public:
 	explicit String(const char*);
 	String(tlint, char);
 	String(Reference);
@@ -46,6 +47,7 @@ public:
 	Reference toUpperCase();
 	Reference toLowerCase();
 	Reference toString();
+	static Reference blank();
 	bool instanceof(type_t);
 	static type_t type();
 };

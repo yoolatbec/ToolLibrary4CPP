@@ -15,29 +15,35 @@ namespace tl {
 namespace lang {
 
 class StringBuilder: public virtual Object, public virtual CharSequence {
+private:
+	const static type_t CLASS_SERIAL = 23;
+
 public:
 	StringBuilder();
 	virtual ~StringBuilder();
 	StringBuilder(const StringBuilder &other) = delete;
 	StringBuilder& operator=(const StringBuilder &other) = delete;
-	Reference append(Reference);
-	Reference append(char);
-	Reference append(tlint);
-	Reference append(double);
-	Reference append(tlint64);
-	Reference append(bool);
-	Reference append(const char*, tlint);
-	Reference insert(tlint, Reference);
-	Reference insert(tlint, char);
-	Reference insert(tlint, tlint);
-	Reference insert(tlint, double);
-	Reference insert(tlint, tlint64);
-	Reference insert(tlint, const char*, tlint);
-	Reference replace(Reference, Reference);
-	Reference replace(char, char);
-	Reference reverse();
+	void append(Reference);
+	void append(char);
+	void append(tlint);
+	void append(double);
+	void append(tlint64);
+	void append(bool);
+	void append(const char*, tlint);
+	void insert(tlint, Reference);
+	void insert(tlint, char);
+	void insert(tlint, bool);
+	void insert(tlint, tlint);
+	void insert(tlint, double);
+	void insert(tlint, tlint64);
+	void insert(tlint, const char*, tlint);
+//	void replace(Reference, Reference);
+	void replace(char, char);
+	void reverse();
 	void setCharAt(tlint, char);
-	Reference substring();
+	/*
+	 *begin inclusive, end exclusive
+	 */
 	Reference substring(tlint, tlint);
 	static type_t type();
 	bool instanceof(type_t);

@@ -26,8 +26,10 @@ protected:
 	tlint mLength;
 	char *mSequence;
 
+
+	hash_t genHashCode(type_t);
+
 	void indexBoundCheck(tlint);
-	CharSequence();
 	CharSequence(tlint);
 public:
 	virtual ~CharSequence();
