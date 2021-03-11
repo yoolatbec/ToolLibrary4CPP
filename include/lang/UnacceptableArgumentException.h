@@ -14,8 +14,14 @@ namespace tl {
 namespace lang {
 
 class UnacceptableArgumentException: public virtual Exception {
+private:
+	const static type_t CLASS_SERIAL = 96;
+	constexpr const static char *DEFAULT_MESSAGE =
+		"UnacceptableArgumentException:";
+	static Reference sDefaultMessage;
 public:
 	UnacceptableArgumentException();
+	UnacceptableArgumentException(const char*);
 	virtual ~UnacceptableArgumentException();
 	static type_t type();
 	bool instanceof(type_t);

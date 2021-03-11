@@ -96,7 +96,7 @@ tlint Double::compareTo(Reference ref){
 
 Reference Double::toString() {
 	char str[20];
-	sprintf(str, "%lf", mValue);
+	sprintf(str, "%g", mValue);
 
 	return Reference(new String(str));
 }

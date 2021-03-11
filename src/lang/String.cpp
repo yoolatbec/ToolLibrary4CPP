@@ -22,11 +22,12 @@ namespace lang {
 using utils::ArrayList;
 using utils::KMPMachine;
 
+Reference String::sBlankString = Reference(new String());
+
 String::String()
 	: CharSequence(0) {
 	// TODO Auto-generated ructor stub
 	mSequence = nullptr;
-	mLength = 0;
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
@@ -46,7 +47,8 @@ String::String(tlint length, char c)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-String::String(Reference ref) {
+String::String(Reference ref)
+	: CharSequence(0) {
 	// TODO Auto-generated ructor stub
 	if (ref.isNull()) {
 		mLength = 0;
@@ -160,6 +162,10 @@ Reference String::append(double d) {
 	String *r_value = new String(str);
 	delete[] str;
 	return Reference(r_value);
+}
+
+Reference String::blank(){
+	return sBlankString;
 }
 
 tlint String::compareTo(Reference ref) {
@@ -311,16 +317,8 @@ Reference String::toString() {
 }
 
 bool String::instanceof(type_t type) {
-	return (CLASS_SERIAL == type) || Comparable::instanceof(type);
-}
-
-hash_t String::genHashCode(type_t type) {
-	hash_t hash = 5381;
-	for (tlint index = 0; index < mLength; index++) {
-		hash = ((hash << 5) + hash) + mSequence[index];
-	}
-
-	return (hash ^ (hash >> 32)) | (type << 32);
+	return (CLASS_SERIAL == type) || Comparable::instanceof(type)
+		|| CharSequence::instanceof(type);
 }
 
 type_t String::type() {

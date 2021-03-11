@@ -65,8 +65,20 @@ tlint Short::compareTo(Reference ref) {
 	return mValue - s->shortValue();
 }
 
+Reference Short::toString(short value) {
+	char str[6];
+	sprintf(str, "%d", value);
+	return Reference(new String(str));
+}
+
+Reference Short::toString() {
+	char str[6];
+	sprintf(str, "%d", mValue);
+	return Reference(new String(str));
+}
+
 short Short::parseShort(Reference ref) {
-	if(ref.isNull()){
+	if (ref.isNull()) {
 		return 0;
 	}
 

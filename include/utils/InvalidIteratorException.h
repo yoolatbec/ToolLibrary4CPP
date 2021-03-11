@@ -18,11 +18,14 @@ using lang::Reference;
 class InvalidIteratorException: public virtual lang::Exception {
 private:
 	const static type_t CLASS_SERIAL = 600;
+	const constexpr static char *DEFAULT_MESSAGE = "InvalidIteratorException:";
+	static Reference sDefaultMessage;
 public:
 	InvalidIteratorException();
-	InvalidIteratorException(Reference);
-	InvalidIteratorException(const InvalidIteratorException&);
+	InvalidIteratorException(const char*);
 	virtual ~InvalidIteratorException();
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace utils */

@@ -14,9 +14,16 @@ namespace tl {
 namespace lang {
 
 class NullPointerException: public virtual Exception {
+private:
+	const static type_t CLASS_SERIAL = 67;
+	constexpr const static char *DEFAULT_MESSAGE = "NullPointerException:";
+	static Reference sDefaultMessage;
 public:
 	NullPointerException();
+	NullPointerException(const char*);
 	virtual ~NullPointerException();
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace lang */

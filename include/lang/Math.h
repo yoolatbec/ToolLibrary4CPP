@@ -13,7 +13,7 @@
 namespace tl {
 namespace lang {
 
-class Math:public Object {
+class Math: public Object {
 private:
 	const static type_t CLASS_SERIAL = 556;
 	Math();
@@ -21,7 +21,7 @@ private:
 	Math& operator=(const Math &other) = delete;
 	bool instanceof(type_t);
 public:
-	static double power(double, double);
+	static double pow(double, double);
 	static double abs(double);
 	static double cos(double);
 	static double sin(double);
@@ -31,6 +31,13 @@ public:
 	static double atan(double);
 	static double log(double);
 	static double log2(double);
+	static double log10(double);
+	static double sqrt(double);
+	static double floor(double);
+	static double ceil(double);
+	static double greater(double, double);
+	static double exp(double);
+	static double less(double, double);
 	static type_t type();
 };
 

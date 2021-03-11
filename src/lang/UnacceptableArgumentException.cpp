@@ -6,12 +6,26 @@
  */
 
 #include <lang/UnacceptableArgumentException.h>
+#include <lang/String.h>
 
 namespace tl {
 namespace lang {
 
+Reference UnacceptableArgumentException::sDefaultMessage = Reference(
+	new String(DEFAULT_MESSAGE));
+
 UnacceptableArgumentException::UnacceptableArgumentException() {
 	// TODO Auto-generated constructor stub
+	mMessage = sDefaultMessage;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+UnacceptableArgumentException::UnacceptableArgumentException(const char *msg) {
+	msg = concatMessage(DEFAULT_MESSAGE, msg);
+	mMessage = Reference(new String(msg));
+	delete[] msg;
+
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 

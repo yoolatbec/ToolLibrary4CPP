@@ -14,9 +14,17 @@ namespace tl {
 namespace lang {
 
 class MemoryLimitExceededException: public Exception {
+private:
+	const static type_t CLASS_SERIAL = 77;
+	constexpr const static char *DEFAULT_MESSAGE =
+		"MemoryLimitExceededException:";
+	static Reference sDefaultMessage;
 public:
 	MemoryLimitExceededException();
+	MemoryLimitExceededException(const char*);
 	virtual ~MemoryLimitExceededException();
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace lang */

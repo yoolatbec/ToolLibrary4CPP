@@ -19,7 +19,7 @@ struct vec4 {
 	float w;
 };
 
-struct alignas(16) vec3 {
+struct alignas(sizeof(vec4)) vec3 {
 	float x;
 	float y;
 	float z;

@@ -5,10 +5,11 @@
  *      Author: yoolatbec
  */
 
+#include <advanced/math/IncompatibleMatrixTypeException.h>
 #include <advanced/math/MatrixFactory.h>
 #include <advanced/math/MatrixType.h>
 #include <advanced/math/VectorType.h>
-
+#include <lang/Math.h>
 #include <lang/IllegalArgumentTypeException.h>
 #include <lang/UnacceptableArgumentException.h>
 #include <lang/UndefinedException.h>
@@ -43,6 +44,8 @@ float MatrixFactory::dot_vec(vec v, vec u) {
 }
 
 float MatrixFactory::dot(Reference v, Reference u) {
+	dismissNull(v);
+	dismissNull(u);
 	argumentTypeCheck(v, Vector::type());
 	argumentTypeCheck(u, Vector::type());
 
@@ -50,7 +53,7 @@ float MatrixFactory::dot(Reference v, Reference u) {
 	Vector *vector_u = dynamic_cast<Vector*>(u.getEntity());
 
 	if (vector_v->vectorType() != vector_u->vectorType()) {
-		//cast an exception
+		throw UnacceptableArgumentException();
 	}
 
 	float product = 0;
@@ -90,31 +93,6 @@ vec MatrixFactory::add0(vec v, vec u) {
 	return make_vec(w);
 }
 
-vec4 MatrixFactory::negate0(vec4 v) {
-	vec4 u;
-	u.x = -v.x;
-	u.y = -v.y;
-	u.z = -v.z;
-	u.w = -v.w;
-
-	return u;
-}
-
-vec3 MatrixFactory::negate0(vec3 v) {
-	vec4 u = negate0(make_vec4(v));
-	return make_vec3(u);
-}
-
-vec2 MatrixFactory::negate0(vec2 v) {
-	vec4 u = negate0(make_vec4(v));
-	return make_vec2(u);
-}
-
-vec MatrixFactory::negate0(vec v) {
-	vec4 u = negate0(make_vec4(v));
-	return make_vec(u);
-}
-
 vec4 MatrixFactory::scale0(vec4 v, float a) {
 	vec4 u;
 	u.x = v.x * a;
@@ -141,28 +119,29 @@ vec MatrixFactory::scale0(vec v, float a) {
 }
 
 Reference MatrixFactory::scale(Reference ref, float a) {
+	dismissNull(ref);
 	argumentTypeCheck(ref, AbstractMatrix::type());
 
 	if (ref.getEntity()->instanceof(Matrix::type())) {
-		return matrixScale(ref, a);
+		return mScale0(ref, a);
 	} else {
-		return vectorScale(ref, a);
+		return vScale0(ref, a);
 	}
 }
 
-Reference MatrixFactory::matrixScale(Reference ref, float a) {
+Reference MatrixFactory::mScale0(Reference ref, float a) {
 	Matrix *m = dynamic_cast<Matrix*>(ref.getEntity());
 	Reference r = newMatrix(m->matrixType());
 	Matrix *n = dynamic_cast<Matrix*>(r.getEntity());
 
 	for (tlint index = m->minRowIndex(); index <= m->maxRowIndex(); index++) {
-		n->setRow(index, vectorScale(m->getRow(index), a));
+		n->setRow(index, vScale0(m->getRow(index), a));
 	}
 
 	return r;
 }
 
-Reference MatrixFactory::vectorScale(Reference ref, float a) {
+Reference MatrixFactory::vScale0(Reference ref, float a) {
 	Vector *v = dynamic_cast<Vector*>(ref.getEntity());
 	ref = newVector(v->vectorType());
 	Vector *u = dynamic_cast<Vector*>(ref.getEntity());
@@ -175,6 +154,8 @@ Reference MatrixFactory::vectorScale(Reference ref, float a) {
 }
 
 Reference MatrixFactory::cross(Reference v, Reference u) {
+	dismissNull(v);
+	dismissNull(u);
 	argumentTypeCheck(v, Vector::type());
 	argumentTypeCheck(u, Vector::type());
 
@@ -321,6 +302,8 @@ Reference MatrixFactory::newVector(VECTOR_TYPE type) {
 }
 
 Reference MatrixFactory::multiply(Reference m1, Reference m2) {
+	dismissNull(m1);
+	dismissNull(m2);
 	argumentTypeCheck(m1, AbstractMatrix::type());
 	argumentTypeCheck(m2, AbstractMatrix::type());
 
@@ -330,22 +313,197 @@ Reference MatrixFactory::multiply(Reference m1, Reference m2) {
 		}
 
 		if (m2.getEntity()->instanceof(Matrix::type())) {
-			return vmMultiply(m1, m2);
+			return vmMultiply0(m1, m2);
 		}
 	}
 
 	if (m1.getEntity()->instanceof(Matrix::type())) {
 		if (m2.getEntity()->instanceof(Vector::type())) {
-			return mvMultiply(m1, m2);
+			return mvMultiply0(m1, m2);
 		}
 
 		if (m2.getEntity()->instanceof(Matrix::type())) {
-			return mmMultiply(m1, m2);
+			return mmMultiply0(m1, m2);
 		}
 	}
 
 	//cast an exception
 	throw UndefinedException();
+}
+
+Reference MatrixFactory::mmMultiply0(Reference m, Reference n) {
+	Matrix *m0 = dynamic_cast<Matrix*>(m.getEntity());
+	Matrix *n0 = dynamic_cast<Matrix*>(n.getEntity());
+
+	if (m0->maxColumnIndex() != n0->maxRowIndex()) {
+		throw IncompatibleMatrixTypeException();
+	}
+
+	Reference result = newMatrix(m0->maxRowIndex(), n0->maxColumnIndex());
+	Matrix *r = dynamic_cast<Matrix*>(result.getEntity());
+	for (tlint row = m0->minRowIndex(); row <= m0->maxRowIndex(); row++) {
+		for (tlint col = n0->minColumnIndex(); col <= n0->maxColumnIndex();
+			col++) {
+			r->set(row, col, dot(m0->getRow(row), n0->getColumn(col)));
+		}
+	}
+
+	return result;
+}
+
+Reference MatrixFactory::mvMultiply0(Reference m, Reference v) {
+	Matrix *m0 = dynamic_cast<Matrix*>(m.getEntity());
+	Vector *v0 = dynamic_cast<Vector*>(v.getEntity());
+
+	if (m0->maxColumnIndex() != v0->maxIndex()) {
+		throw IncompatibleMatrixTypeException();
+	}
+
+	Reference result = newVector(m0->maxRowIndex());
+	Vector *r = dynamic_cast<Vector*>(result.getEntity());
+	for (tlint index = m0->minRowIndex(); index <= m0->maxRowIndex(); index++) {
+		r->set(index, dot(m0->getRow(index), v));
+	}
+
+	return result;
+}
+
+Reference MatrixFactory::vmMultiply0(Reference v, Reference m) {
+	Vector *v0 = dynamic_cast<Vector*>(v.getEntity());
+	Matrix *m0 = dynamic_cast<Matrix*>(m.getEntity());
+
+	if (v0->maxIndex() != m0->maxColumnIndex()) {
+		throw IncompatibleMatrixTypeException();
+	}
+
+	Reference result = newVector(m0->maxColumnIndex());
+	Vector *r = dynamic_cast<Vector*>(result.getEntity());
+
+	for (tlint index = r->minIndex(); index <= r->maxIndex(); index++) {
+		r->set(index, dot(m0->getColumn(index), v));
+	}
+
+	return result;
+}
+
+Reference MatrixFactory::add(Reference m1, Reference m2) {
+	dismissNull(m1);
+	dismissNull(m2);
+	argumentTypeCheck(m1, AbstractMatrix::type());
+	argumentTypeCheck(m2, AbstractMatrix::type());
+
+	if (m1.getEntity()->instanceof(Matrix::type())
+		&& m2.getEntity()->instanceof(Matrix::type())) {
+		return mAdd0(m1, m2);
+	}
+
+	if (m1.getEntity()->instanceof(Vector::type())
+		&& m2.getEntity()->instanceof(Vector::type())) {
+		return vAdd0(m1, m2);
+	}
+
+	throw UnacceptableArgumentException();
+}
+
+Reference MatrixFactory::vAdd0(Reference v, Reference u) {
+	Vector *v0 = dynamic_cast<Vector*>(v.getEntity());
+	Vector *u0 = dynamic_cast<Vector*>(u.getEntity());
+
+	if (v0->vectorType() != u0->vectorType()) {
+		throw IncompatibleMatrixTypeException();
+	}
+
+	Reference result = newVector(v0->vectorType());
+	Vector *r = dynamic_cast<Vector*>(result.getEntity());
+	for (tlint index = v0->minIndex(); index <= v0->maxIndex(); index++) {
+		r->set(index, v0->get(index) + u0->get(index));
+	}
+
+	return result;
+}
+
+Reference MatrixFactory::mAdd0(Reference m, Reference n) {
+	Matrix *m0 = dynamic_cast<Matrix*>(m.getEntity());
+	Matrix *n0 = dynamic_cast<Matrix*>(n.getEntity());
+
+	if (m0->matrixType() != n0->matrixType()) {
+		throw IncompatibleMatrixTypeException();
+	}
+
+	Reference result = newMatrix(m0->matrixType());
+	Matrix *r = dynamic_cast<Matrix*>(result.getEntity());
+
+	for (tlint row = m0->minRowIndex(); row <= m0->maxRowIndex(); row++) {
+		r->setRow(row, vAdd0(m0->getRow(row), n0->getRow(row)));
+	}
+
+	return result;
+}
+
+Reference MatrixFactory::minus(Reference m1, Reference m2) {
+	dismissNull(m1);
+	dismissNull(m2);
+	argumentTypeCheck(m1, AbstractMatrix::type());
+	argumentTypeCheck(m2, AbstractMatrix::type());
+
+	if (m1.getEntity()->instanceof(Matrix::type())
+		&& m2.getEntity()->instanceof(Matrix::type())) {
+		return mMinus0(m1, m2);
+	}
+
+	if (m1.getEntity()->instanceof(Vector::type())
+		&& m2.getEntity()->instanceof(Vector::type())) {
+		return vMinus0(m1, m2);
+	}
+
+	throw UnacceptableArgumentException();
+}
+
+Reference MatrixFactory::vMinus0(Reference v, Reference u) {
+	Vector *v0 = dynamic_cast<Vector*>(v.getEntity());
+	Vector *u0 = dynamic_cast<Vector*>(u.getEntity());
+
+	if (v0->vectorType() != u0->vectorType()) {
+		throw IncompatibleMatrixTypeException();
+	}
+
+	Reference result = newVector(v0->vectorType());
+	Vector *r = dynamic_cast<Vector*>(result.getEntity());
+	for (tlint index = r->minIndex(); index <= r->maxIndex(); index++) {
+		r->set(index, v0->get(index) - u0->get(index));
+	}
+
+	return result;
+}
+
+Reference MatrixFactory::mMinus0(Reference m, Reference n) {
+	Matrix *m0 = dynamic_cast<Matrix*>(m.getEntity());
+	Matrix *n0 = dynamic_cast<Matrix*>(n.getEntity());
+
+	if (m0->matrixType() != n0->matrixType()) {
+		throw IncompatibleMatrixTypeException();
+	}
+
+	Reference result = newMatrix(m0->matrixType());
+	Matrix *r = dynamic_cast<Matrix*>(result.getEntity());
+	for (tlint index = r->minRowIndex(); index <= r->maxRowIndex(); index++) {
+		r->setRow(index, vMinus0(m0->getRow(index), n0->getRow(index)));
+	}
+
+	return result;
+}
+
+Reference MatrixFactory::normalize(Reference m) {
+	dismissNull(m);
+	argumentTypeCheck(m, Vector::type());
+
+	Vector *v = dynamic_cast<Vector*>(m.getEntity());
+	float mod = 0;
+	for (tlint index = v->minIndex(); index <= v->maxIndex(); index++) {
+		mod += (v->get(index) * v->get(index));
+	}
+	mod = lang::Math::sqrt(mod);
+	return scale(m, 1.0 / mod);
 }
 
 type_t MatrixFactory::type() {

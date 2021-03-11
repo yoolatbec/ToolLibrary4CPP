@@ -18,10 +18,16 @@ using lang::Reference;
 class Exception: public virtual Object {
 private:
 	const static type_t CLASS_SERIAL = 10;
+	constexpr const static char *DEFAULT_MESSAGE = "Exception:";
+	static Reference sDefaultMessage;
+protected:
 	Reference mMessage;
+
+	const char* concatMessage(const char*, const char*);
+
 public:
 	Exception();
-	explicit Exception(Reference);
+	explicit Exception(const char *msg);
 	virtual ~Exception();
 	Reference message();
 	static type_t type();

@@ -20,31 +20,38 @@ Boolean::Boolean(bool value)
 Reference Boolean::trueValue = Reference(new Boolean(true));
 Reference Boolean::falseValue = Reference(new Boolean(false));
 
+Reference Boolean::trueStringValue = Reference(new String("true"));
+Reference Boolean::falseStringValue = Reference(new String("false"));
+
 Boolean::~Boolean() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Boolean::value(){
+bool Boolean::value() {
 	return mValue;
 }
 
-Reference Boolean::valueOf(bool value){
-	if(value){
+Reference Boolean::valueOf(bool value) {
+	if (value) {
 		return trueValue;
 	} else {
 		return falseValue;
 	}
 }
 
-Reference Boolean::toString(){
-	return mValue ? Reference(new String("true")) : Reference(new String("false"));
+Reference Boolean::toString(bool value) {
+	return value ? trueStringValue : falseStringValue;
 }
 
-type_t Boolean::type(){
+Reference Boolean::toString() {
+	return mValue ? trueStringValue : falseStringValue;
+}
+
+type_t Boolean::type() {
 	return CLASS_SERIAL;
 }
 
-bool Boolean::instanceof(type_t type){
+bool Boolean::instanceof(type_t type) {
 	return (CLASS_SERIAL == type) || Object::instanceof(type);
 }
 

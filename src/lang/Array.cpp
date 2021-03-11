@@ -8,6 +8,7 @@
 #include <lang/Array.h>
 #include <lang/IndexOutOfBoundsException.h>
 #include <lang/String.h>
+#include <lang/StringBuilder.h>
 
 namespace tl {
 namespace lang {
@@ -29,8 +30,8 @@ Array::~Array() {
 	delete[] mElements;
 }
 
-void Array::indexBoundCheck(tlint index){
-	if(index < 0 || index >= mSize){
+void Array::indexBoundCheck(tlint index) {
+	if (index < 0 || index >= mSize) {
 		throw IndexOutOfBoundsException();
 	}
 }
@@ -54,20 +55,23 @@ tlint Array::size() {
 }
 
 Reference Array::toString() {
-	//to edit
-	Reference rtval = Reference(new String());
+	Reference ref = Reference(new StringBuilder());
+	StringBuilder *builder = dynamic_cast<StringBuilder*>(ref.getEntity());
 
-	for (int index = 0; index < mSize; index++) {
+	builder->append('[');
+
+	for (tlint index = 0; index < mSize; index++) {
 		if (mElements[index].isNull()) {
 			continue;
 		}
 
-		String *str = dynamic_cast<String*>(rtval.getEntity());
-		rtval= str->append(
-			dynamic_cast<Object*>(mElements[index].getEntity())->toString());
+		Object *obj = dynamic_cast<Object*>(mElements[index].getEntity());
+		builder->append(obj->toString());
+		builder->append(' ');
 	}
 
-	return rtval;
+	builder->append(']');
+	return builder->toString();
 }
 
 type_t Array::type() {
