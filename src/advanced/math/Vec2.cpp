@@ -5,15 +5,16 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Vec2.h>
-#include <lang/String.h>
-
 #include <stdio.h>
+#include <tl/advanced/math/Vec2.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
 namespace math {
 
+using lang::IndexOutOfBoundsException;
 using lang::String;
 
 Vec2::Vec2(float x, float y) {
@@ -45,6 +46,7 @@ float Vec2::get(tlint index) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return value;
@@ -76,6 +78,7 @@ void Vec2::set(tlint index, float v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 }
 
@@ -87,7 +90,7 @@ tlint Vec2::minIndex() {
 	return MIN_INDEX;
 }
 
-static type_t Vec2::type() {
+type_t Vec2::type() {
 	return CLASS_SERIAL;
 }
 
@@ -97,7 +100,7 @@ bool Vec2::instanceof(type_t type) {
 
 Reference Vec2::toString() {
 	char str[60];
-	sprintf(str, "[%f, %f]");
+	sprintf(str, "[%f, %f]", mValue.x, mValue.y);
 	return Reference(new String(str));
 }
 

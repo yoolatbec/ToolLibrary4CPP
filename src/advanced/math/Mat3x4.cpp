@@ -5,22 +5,22 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Mat3x4.h>
-#include <advanced/math/Mat4x3.h>
-#include <advanced/math/Vec3.h>
-#include <advanced/math/Vec4.h>
-#include <lang/String.h>
-
 #include <stdio.h>
 #include <string.h>
+#include <tl/advanced/math/Mat3x4.h>
+#include <tl/advanced/math/Mat4x3.h>
+#include <tl/advanced/math/Vec3.h>
+#include <tl/advanced/math/Vec4.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
 namespace math {
 
-using lang::Math;
 using lang::String;
 using lang::Reference;
+using lang::IndexOutOfBoundsException;
 
 Mat3x4::Mat3x4() {
 	// TODO Auto-generated constructor stub
@@ -55,6 +55,7 @@ vec4 Mat3x4::getRow0(tlint i) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return v;
@@ -85,6 +86,7 @@ vec3 Mat3x4::getColumn0(tlint j) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return v;
@@ -108,6 +110,7 @@ float Mat3x4::get(tlint i, tlint j) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return value;
@@ -153,6 +156,7 @@ void Mat3x4::set(tlint i, tlint j, float value) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	setRow(i, v);
@@ -171,15 +175,14 @@ void Mat3x4::setRow(tlint i, vec4 v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat3x4::setRow(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec4::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec4::type());
 
 	Vec4 *v = dynamic_cast<Vec4*>(ref.getEntity());
 	setRow(i, v->values());
@@ -209,15 +212,14 @@ void Mat3x4::setColumn(tlint j, vec3 v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat3x4::setColumn(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec3::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec3::type());
 
 	Vec3 *v = dynamic_cast<Vec3*>(ref.getEntity());
 	setColumn(i, v->values());
@@ -253,11 +255,11 @@ Reference Mat3x4::transpose() {
 
 Reference Mat3x4::toString() {
 	char str[200];
-	sprintf(str, "[%f, %f, %f, %f\n", mValue.r0.x, mValue.r0.y, mValue.r0.z);
+	sprintf(str, "[%f, %f, %f, %f\n", mValue.r0.x, mValue.r0.y, mValue.r0.z, mValue.r0.w);
 	sprintf(str + strlen(str), " %f, %f, %f, %f\n", mValue.r1.x, mValue.r1.y,
-		mValue.r1.z);
+		mValue.r1.z, mValue.r1.w);
 	sprintf(str + strlen(str), " %f, %f, %f, %f]", mValue.r2.x, mValue.r2.y,
-		mValue.r2.z);
+		mValue.r2.z, mValue.r2.w);
 	return Reference(new String(str));
 }
 

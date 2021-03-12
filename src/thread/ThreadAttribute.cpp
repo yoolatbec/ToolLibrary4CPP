@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include <thread/ThreadAttribute.h>
+#include <tl/thread/ThreadAttribute.h>
 
 namespace tl {
 namespace thread {

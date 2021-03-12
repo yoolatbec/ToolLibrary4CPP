@@ -5,16 +5,17 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Vec3.h>
-#include <lang/String.h>
-
 #include <stdio.h>
+#include <tl/advanced/math/Vec3.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
 namespace math {
 
 using lang::String;
+using lang::IndexOutOfBoundsException;
 
 Vec3::Vec3(float x, float y, float z) {
 	// TODO Auto-generated constructor stub
@@ -49,6 +50,7 @@ float Vec3::get(tlint index) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return value;
@@ -83,12 +85,13 @@ void Vec3::set(tlint index, float v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 }
 
 Reference Vec3::toString() {
 	char str[60];
-	sprintf(str, "[%f, %f, %f]");
+	sprintf(str, "[%f, %f, %f]", mValue.x, mValue.y, mValue.z);
 	return Reference(new String(str));
 }
 

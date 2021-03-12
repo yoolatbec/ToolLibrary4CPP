@@ -5,14 +5,14 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Mat2x3.h>
-#include <advanced/math/Mat3x2.h>
-#include <advanced/math/Vec2.h>
-#include <advanced/math/Vec3.h>
-#include <lang/String.h>
-
 #include <string.h>
 #include <stdio.h>
+#include <tl/advanced/math/Mat2x3.h>
+#include <tl/advanced/math/Mat3x2.h>
+#include <tl/advanced/math/Vec2.h>
+#include <tl/advanced/math/Vec3.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
@@ -20,6 +20,7 @@ namespace math {
 
 using lang::Reference;
 using lang::String;
+using lang::IndexOutOfBoundsException;
 
 Mat3x2::Mat3x2() {
 	// TODO Auto-generated constructor stub
@@ -54,6 +55,7 @@ vec2 Mat3x2::getRow0(tlint i) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return v;
@@ -74,6 +76,7 @@ vec3 Mat3x2::getColumn0(tlint i) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return v;
@@ -116,6 +119,7 @@ float Mat3x2::get(tlint i, tlint j) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return value;
@@ -132,6 +136,7 @@ void Mat3x2::set(tlint i, tlint j, float value) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	setRow(i, v);
@@ -148,15 +153,15 @@ void Mat3x2::setRow(tlint i, vec2 v) {
 	case 2:
 		mValue.r2 = v;
 		break;
+	default:
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat3x2::setRow(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec2::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec2::type());
 
 	Vec2 *v = dynamic_cast<Vec2*>(ref.getEntity());
 	setRow(i, v->values());
@@ -174,15 +179,15 @@ void Mat3x2::setColumn(tlint i, vec3 v) {
 		mValue.r1.y = v.y;
 		mValue.r2.y = v.z;
 		break;
+	default:
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat3x2::setColumn(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec3::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec3::type());
 
 	Vec3 *v = dynamic_cast<Vec3*>(ref.getEntity());
 	setColumn(i, v->values());

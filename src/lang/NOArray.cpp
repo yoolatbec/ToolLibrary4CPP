@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include <lang/IndexOutOfBoundsException.h>
-#include <lang/NOArray.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/NOArray.h>
 
 namespace tl {
 namespace lang {

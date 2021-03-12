@@ -5,9 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include <lang/Array.h>
-#include <lang/IntArray.h>
-#include <utils/HashMap.h>
+#include <tl/lang/Array.h>
+#include <tl/lang/IntArray.h>
+#include <tl/utils/HashMap.h>
 
 namespace tl {
 namespace utils {

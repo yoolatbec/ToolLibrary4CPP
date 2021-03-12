@@ -5,10 +5,10 @@
  *      Author: yoolatbec
  */
 
-#include <lang/Array.h>
-#include <lang/MemoryLimitExceededException.h>
-#include <lang/UnacceptableArgumentException.h>
-#include <utils/ArrayList.h>
+#include <tl/lang/Array.h>
+#include <tl/lang/MemoryLimitExceededException.h>
+#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/utils/ArrayList.h>
 
 namespace tl {
 namespace utils {

@@ -5,10 +5,10 @@
  *      Author: yoolatbec
  */
 
-#include <lang/IndexOutOfBoundsException.h>
-#include <lang/String.h>
-#include <lang/UnacceptableArgumentException.h>
-#include <utils/KMPMachine.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
+#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/utils/KMPMachine.h>
 #include <cstring>
 
 namespace tl {

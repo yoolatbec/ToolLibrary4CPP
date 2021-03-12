@@ -5,15 +5,15 @@
  *      Author: yoolatbec
  */
 
-#include <lang/StringBuilder.h>
-#include <lang/String.h>
+#include <tl/lang/Boolean.h>
+#include <tl/lang/Double.h>
+#include <tl/lang/Integer.h>
+#include <tl/lang/Long.h>
+#include <tl/lang/String.h>
+#include <tl/lang/StringBuilder.h>
+#include <tl/lang/UnacceptableArgumentException.h>
 #include <cstdio>
 #include <cstring>
-#include <lang/Boolean.h>
-#include <lang/Integer.h>
-#include <lang/Long.h>
-#include <lang/Double.h>
-#include <lang/UnacceptableArgumentException.h>
 
 namespace tl {
 namespace lang {

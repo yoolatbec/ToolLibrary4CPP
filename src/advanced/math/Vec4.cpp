@@ -5,16 +5,17 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Vec4.h>
-#include <lang/String.h>
-
 #include <stdio.h>
+#include <tl/advanced/math/Vec4.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
 namespace math {
 
 using lang::String;
+using lang::IndexOutOfBoundsException;
 
 Vec4::Vec4(float x, float y, float z, float w) {
 	// TODO Auto-generated constructor stub
@@ -53,6 +54,7 @@ float Vec4::get(tlint index) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return value;
@@ -78,6 +80,7 @@ void Vec4::set(tlint index, float value) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 }
 
@@ -99,7 +102,7 @@ tlint Vec4::minIndex() {
 
 Reference Vec4::toString() {
 	char str[60];
-	sprintf(str, "[%f, %f, %f, %f]");
+	sprintf(str, "[%f, %f, %f, %f]", mValue.x, mValue.y, mValue.z, mValue.w);
 	return Reference(new String(str));
 }
 

@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include <lang/NullPointerException.h>
-#include <lang/String.h>
+#include <tl/lang/NullPointerException.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace lang {

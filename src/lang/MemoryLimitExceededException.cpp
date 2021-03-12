@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include <lang/MemoryLimitExceededException.h>
-#include <lang/String.h>
+#include <tl/lang/MemoryLimitExceededException.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace lang {

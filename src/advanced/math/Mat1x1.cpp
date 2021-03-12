@@ -5,12 +5,12 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Mat1x1.h>
-#include <advanced/math/Vec.h>
-#include <lang/Math.h>
-#include <lang/String.h>
-
 #include <stdio.h>
+#include <tl/advanced/math/Mat1x1.h>
+#include <tl/advanced/math/Vec.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/Math.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
@@ -19,6 +19,7 @@ namespace math {
 using lang::Reference;
 using lang::Math;
 using lang::String;
+using lang::IndexOutOfBoundsException;
 
 Mat1x1::Mat1x1() {
 	// TODO Auto-generated constructor stub
@@ -40,6 +41,18 @@ Mat1x1::~Mat1x1() {
 	// TODO Auto-generated destructor stub
 }
 
+void Mat1x1::rowIndexCheck(tlint r) {
+	if (r < MIN_ROW_INDEX || r > MAX_ROW_INDEX) {
+		throw IndexOutOfBoundsException();
+	}
+}
+
+void Mat1x1::columnIndexCheck(tlint c) {
+	if (c < MIN_COLUMN_INDEX || c > MAX_ROW_INDEX) {
+		throw IndexOutOfBoundsException();
+	}
+}
+
 double Mat1x1::computeDeterminant() {
 	return mValue.r0.x;
 }
@@ -56,7 +69,9 @@ void Mat1x1::update() {
 	if (invertible()) {
 		mInverse = inverse0();
 	} else {
-		mInverse = { { 0 } };
+		mInverse =
+			{
+				{ 0 } };
 	}
 }
 
@@ -73,71 +88,57 @@ Reference Mat1x1::transpose() {
 }
 
 void Mat1x1::set(tlint i, tlint j, float value) {
-	if (i != MAX_ROW_INDEX || j != MAX_COLUMN_INDEX) {
-		//cast an exception
-	}
+	rowIndexCheck(i);
+	columnIndexCheck(j);
 
 	mValue.r0.x = value;
 	update();
 }
 
 void Mat1x1::setRow(tlint i, vec v) {
-	if (i != MAX_ROW_INDEX) {
-		//cast an exception
-	}
+	rowIndexCheck(i);
 
 	mValue.r0 = v;
 	update();
 }
 
 void Mat1x1::setRow(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec::type());
 
 	Vec *v = dynamic_cast<Vec*>(ref.getEntity());
 	setRow(i, v->values());
 }
 
 void Mat1x1::setColumn(tlint j, vec v) {
-	if (j != MAX_COLUMN_INDEX) {
-		//cast an exception
-	}
+	columnIndexCheck(j);
 
 	mValue.r0 = v;
 	update();
 }
 
 void Mat1x1::setColumn(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec::type());
 
 	Vec *v = dynamic_cast<Vec*>(ref.getEntity());
 	setColumn(i, v->values());
 }
 
 float Mat1x1::get(tlint i, tlint j) {
-	if (i != MAX_ROW_INDEX || j != MAX_COLUMN_INDEX) {
-		//cast an exception
-	}
+	rowIndexCheck(i);
+	columnIndexCheck(j);
 
 	return mValue.r0.x;
 }
 
 Reference Mat1x1::getRow(tlint i) {
-	if (i != MAX_ROW_INDEX) {
-		//cast an exception
-	}
+	rowIndexCheck(i);
 
 	vec v = mValue.r0;
 	return Reference(new Vec(v));
 }
 
 Reference Mat1x1::getColumn(tlint j) {
-	if (j != MAX_COLUMN_INDEX) {
-		//cast an exception
-	}
+	columnIndexCheck(j);
 
 	vec v = mValue.r0;
 	return Reference(new Vec(v));

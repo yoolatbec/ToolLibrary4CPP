@@ -5,11 +5,11 @@
  *      Author: yoolatbec
  */
 
-#include <lang/IllegalArgumentTypeException.h>
-#include <lang/IndexOutOfBoundsException.h>
-#include <lang/Short.h>
-#include <lang/String.h>
-#include <lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentTypeException.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/Short.h>
+#include <tl/lang/String.h>
+#include <tl/lang/UnacceptableArgumentException.h>
 #include <cstdio>
 
 namespace tl {

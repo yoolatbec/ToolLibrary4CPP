@@ -5,9 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include <lang/IllegalArgumentTypeException.h>
-#include <lang/Integer.h>
-#include <lang/String.h>
+#include <tl/lang/IllegalArgumentTypeException.h>
+#include <tl/lang/Integer.h>
+#include <tl/lang/String.h>
 #include <cstdio>
 
 namespace tl {

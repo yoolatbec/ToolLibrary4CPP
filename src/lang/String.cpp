@@ -8,13 +8,13 @@
 #include <cstdio>
 #include <cstring>
 #include <ctype.h>
-#include <lang/IndexOutOfBoundsException.h>
-#include <lang/NullPointerException.h>
-#include <lang/String.h>
-#include <lang/UnacceptableArgumentException.h>
-#include <utils/KMPMachine.h>
-
 #include <utils/ArrayList.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/NullPointerException.h>
+#include <tl/lang/String.h>
+#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/utils/ArrayList.h>
+#include <tl/utils/KMPMachine.h>
 
 namespace tl {
 namespace lang {

@@ -5,13 +5,13 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Mat4x4.h>
-#include <advanced/math/Vec4.h>
-#include <lang/Math.h>
-#include <lang/String.h>
-
 #include <stdio.h>
 #include <string.h>
+#include <tl/advanced/math/Mat4x4.h>
+#include <tl/advanced/math/Vec4.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/Math.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
@@ -20,6 +20,7 @@ namespace math {
 using lang::Reference;
 using lang::String;
 using lang::Math;
+using lang::IndexOutOfBoundsException;
 
 Mat4x4::Mat4x4() {
 	// TODO Auto-generated constructor stub
@@ -170,11 +171,12 @@ void Mat4x4::update() {
 	if (invertible()) {
 		mInverse = inverse0();
 	} else {
-		mInverse = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, {
-			0,
-			0,
-			0,
-			0 } };
+		mInverse =
+			{
+				{ 0, 0, 0, 0 },
+					{ 0, 0, 0, 0 },
+					{ 0, 0, 0, 0 },
+					{ 0, 0, 0, 0 } };
 	}
 }
 
@@ -195,6 +197,7 @@ vec4 Mat4x4::getRow0(tlint i) {
 		break;
 	default:
 		//case an exception
+		throw IndexOutOfBoundsException();
 		break;
 	}
 
@@ -230,6 +233,7 @@ vec4 Mat4x4::getColumn0(tlint j) {
 		break;
 	default:
 		//cast an exception;
+		throw IndexOutOfBoundsException();
 	}
 
 	return v;
@@ -241,19 +245,20 @@ float Mat4x4::get(tlint i, tlint j) {
 	float value;
 	switch (j) {
 	case 0:
-		j = r.x;
+		value = r.x;
 		break;
 	case 1:
-		j = r.y;
+		value = r.y;
 		break;
 	case 2:
-		j = r.z;
+		value = r.z;
 		break;
 	case 3:
-		j = r.w;
+		value = r.w;
 		break;
 	default:
 		//case an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return value;
@@ -293,15 +298,14 @@ void Mat4x4::set(tlint i, tlint j, float value) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	setRow(i, v);
 }
 
 void Mat4x4::setRow(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec4::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec4::type());
 
 	Vec4 *v = dynamic_cast<Vec4*>(ref.getEntity());
 	setRow(i, v->values());
@@ -323,6 +327,7 @@ void Mat4x4::setRow(tlint i, vec4 v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
@@ -356,15 +361,14 @@ void Mat4x4::setColumn(tlint j, vec4 u) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat4x4::setColumn(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec4::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec4::type());
 
 	Vec4 *v = dynamic_cast<Vec4*>(ref.getEntity());
 	setColumn(i, v->values());

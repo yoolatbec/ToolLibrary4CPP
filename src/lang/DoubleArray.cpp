@@ -5,11 +5,11 @@
  *      Author: yoolatbec
  */
 
-#include <lang/DoubleArray.h>
+#include <tl/lang/DoubleArray.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
+#include <tl/lang/UnacceptableArgumentException.h>
 #include <cstring>
-#include <lang/IndexOutOfBoundsException.h>
-#include <lang/UnacceptableArgumentException.h>
-#include <lang/String.h>
 #include <cstdio>
 
 namespace tl {

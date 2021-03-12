@@ -5,10 +5,10 @@
  *      Author: yoolatbec
  */
 
-#include <lang/Array.h>
-#include <lang/IndexOutOfBoundsException.h>
-#include <lang/String.h>
-#include <lang/StringBuilder.h>
+#include <tl/lang/Array.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
+#include <tl/lang/StringBuilder.h>
 
 namespace tl {
 namespace lang {

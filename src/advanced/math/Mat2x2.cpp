@@ -5,12 +5,13 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Mat2x2.h>
-#include <advanced/math/Vec2.h>
-#include <lang/Math.h>
-#include <lang/String.h>
 #include <stdio.h>
 #include <string.h>
+#include <tl/advanced/math/Mat2x2.h>
+#include <tl/advanced/math/Vec2.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/Math.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
@@ -18,6 +19,7 @@ namespace math {
 
 using lang::String;
 using lang::Math;
+using lang::IndexOutOfBoundsException;
 
 Mat2x2::Mat2x2() {
 	// TODO Auto-generated constructor stub
@@ -51,6 +53,7 @@ vec2 Mat2x2::getRow0(tlint i) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return v;
@@ -69,6 +72,7 @@ vec2 Mat2x2::getColumn0(tlint i) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return v;
@@ -117,6 +121,7 @@ void Mat2x2::set(tlint i, tlint j, float value) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	setRow(i, v);
@@ -132,15 +137,14 @@ void Mat2x2::setRow(tlint i, vec2 v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat2x2::setRow(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec2::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec2::type());
 
 	Vec2 *v = dynamic_cast<Vec2*>(ref.getEntity());
 	setRow(i, v->values());
@@ -158,15 +162,14 @@ void Mat2x2::setColumn(tlint i, vec2 v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat2x2::setColumn(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec2::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec2::type());
 
 	Vec2 *v = dynamic_cast<Vec2*>(ref.getEntity());
 	setColumn(i, v->values());
@@ -183,7 +186,8 @@ float Mat2x2::get(tlint i, tlint j) {
 		value = v.y;
 		break;
 	default:
-		//cast an exceptoin
+		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return value;

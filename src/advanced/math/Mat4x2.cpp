@@ -5,14 +5,14 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Mat2x4.h>
-#include <advanced/math/Mat4x2.h>
-#include <advanced/math/Vec2.h>
-#include <advanced/math/Vec4.h>
-#include <lang/String.h>
-
 #include <stdio.h>
 #include <string.h>
+#include <tl/advanced/math/Mat2x4.h>
+#include <tl/advanced/math/Mat4x2.h>
+#include <tl/advanced/math/Vec2.h>
+#include <tl/advanced/math/Vec4.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
@@ -20,6 +20,7 @@ namespace math {
 
 using lang::Reference;
 using lang::String;
+using lang::IndexOutOfBoundsException;
 
 Mat4x2::Mat4x2() {
 	// TODO Auto-generated constructor stub
@@ -61,6 +62,24 @@ Reference Mat4x2::getColumn(tlint i) {
 	return Reference(new Vec4(v));
 }
 
+float Mat4x2::get(tlint i, tlint j) {
+	vec2 v = getRow0(i);
+
+	float value;
+	switch (j) {
+	case 0:
+		value = v.x;
+		break;
+	case 1:
+		value = v.y;
+		break;
+	default:
+		throw IndexOutOfBoundsException();
+	}
+
+	return value;
+}
+
 void Mat4x2::set(tlint i, tlint j, float value) {
 	vec2 v = getRow0(i);
 	switch (j) {
@@ -72,6 +91,7 @@ void Mat4x2::set(tlint i, tlint j, float value) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	setRow(i, v);
@@ -93,15 +113,14 @@ void Mat4x2::setRow(tlint i, vec2 v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat4x2::setRow(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec2::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec2::type());
 
 	Vec2 *v = dynamic_cast<Vec2*>(ref.getEntity());
 	setRow(i, v->values());
@@ -123,15 +142,14 @@ void Mat4x2::setColumn(tlint i, vec4 v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat4x2::setColumn(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec4::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec4::type());
 
 	Vec4 *v = dynamic_cast<Vec4*>(ref.getEntity());
 	setColumn(i, v->values());

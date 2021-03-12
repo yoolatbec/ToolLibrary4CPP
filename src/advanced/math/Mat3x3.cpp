@@ -5,13 +5,13 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Mat3x3.h>
-#include <advanced/math/Vec3.h>
-#include <lang/Math.h>
-#include <lang/String.h>
-
 #include <stdio.h>
 #include <string.h>
+#include <tl/advanced/math/Mat3x3.h>
+#include <tl/advanced/math/Vec3.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/Math.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
@@ -20,6 +20,7 @@ namespace math {
 using lang::Reference;
 using lang::Math;
 using lang::String;
+using lang::IndexOutOfBoundsException;
 
 Mat3x3::Mat3x3() {
 	// TODO Auto-generated constructor stub
@@ -56,6 +57,7 @@ vec3 Mat3x3::getRow0(tlint i) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return v;
@@ -81,6 +83,7 @@ vec3 Mat3x3::getColumn0(tlint j) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return v;
@@ -134,7 +137,11 @@ void Mat3x3::update() {
 	if (invertible()) {
 		mInverse = inverse0();
 	} else {
-		mInverse = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
+		mInverse =
+			{
+				{ 0, 0, 0 },
+					{ 0, 0, 0 },
+					{ 0, 0, 0 } };
 	}
 }
 
@@ -165,6 +172,7 @@ float Mat3x3::get(tlint i, tlint j) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	return value;
@@ -196,6 +204,7 @@ void Mat3x3::set(tlint i, tlint j, float value) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	setRow(i, v);
@@ -214,15 +223,14 @@ void Mat3x3::setRow(tlint i, vec3 v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat3x3::setRow(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec3::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec3::type());
 
 	Vec3 *v = dynamic_cast<Vec3*>(ref.getEntity());
 	setRow(i, v->values());
@@ -247,15 +255,14 @@ void Mat3x3::setColumn(tlint j, vec3 v) {
 		break;
 	default:
 		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
 
 	update();
 }
 
 void Mat3x3::setColumn(tlint i, Reference ref) {
-	if (!ref.getEntity()->instanceof(Vec3::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Vec3::type());
 
 	Vec3 *v = dynamic_cast<Vec3*>(ref.getEntity());
 	setColumn(i, v->values());

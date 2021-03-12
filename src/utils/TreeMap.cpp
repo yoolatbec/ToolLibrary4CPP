@@ -5,16 +5,19 @@
  *      Author: yoolatbec
  */
 
-#include <lang/Array.h>
-#include <lang/Integer.h>
-#include <lang/String.h>
-#include <utils/TreeMap.h>
+#include <tl/lang/Array.h>
+#include <tl/lang/Integer.h>
+#include <tl/lang/String.h>
+#include <tl/lang/UnsupportedOperationException.h>
+#include <tl/utils/NoSuchElementException.h>
+#include <tl/utils/TreeMap.h>
 
 namespace tl {
 namespace utils {
 
 using lang::String;
 using lang::Array;
+using lang::UnsupportedOperationException;
 
 TreeMap::TreeMap(type_t keyType, type_t valueType)
 	: NavigableMap(keyType, valueType) {
@@ -31,8 +34,7 @@ TreeMap::~TreeMap() {
 }
 
 hash_t TreeMap::TreeEntry::genHashCode(type_t type) {
-	hash_t keyHash =
-		mKey.isNull() ? 0 : dynamic_cast<Object*>(mKey.getEntity())->hashCode();
+	hash_t keyHash = dynamic_cast<Object*>(mKey.getEntity())->hashCode();
 	hash_t valueHash =
 		mValue.isNull() ?
 			0 : dynamic_cast<Object*>(mValue.getEntity())->hashCode();
@@ -57,7 +59,7 @@ bool TreeMap::containsValue0(Reference ref, Reference value) {
 	}
 
 	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
-	if (entry->mValue.equals(value)) {
+	if (entry->value().equals(value)) {
 		return true;
 	}
 
@@ -66,21 +68,17 @@ bool TreeMap::containsValue0(Reference ref, Reference value) {
 }
 
 Reference TreeMap::getEntry0(Reference ref, Reference key) {
-	if (ref.isNull()) {
-		return Reference();
-	}
-
 	if (key.isNull()) {
 		return Reference();
 	}
 
 	while (!ref.isNull()) {
 		TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
-		if (entry->mWeight
+		if (entry->getWeight()
 			== dynamic_cast<Object*>(key.getEntity())->hashCode()) {
 			break;
 		}
-		if (entry->mWeight
+		if (entry->getWeight()
 			< dynamic_cast<Object*>(key.getEntity())->hashCode()) {
 			ref = entry->getRight();
 		} else {
@@ -101,7 +99,7 @@ tlint TreeMap::height0(Reference ref) {
 	}
 
 	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
-	return entry->mHeight;
+	return entry->getHeight();
 }
 
 Reference TreeMap::rightRotate0(Reference ref) {
@@ -162,17 +160,17 @@ Reference TreeMap::leftRotate0(Reference ref) {
 
 Reference TreeMap::rightLeftRotate0(Reference ref) {
 	TreeEntry *parentEntry = dynamic_cast<TreeEntry*>(ref.getEntity());
-	Reference right = parentEntry->mRight;
+	Reference right = parentEntry->getRight();
 
-	parentEntry->mRight = TreeMap::rightRotate0(right);
+	parentEntry->setRight(TreeMap::rightRotate0(right));
 	return TreeMap::leftRotate0(ref);
 }
 
 Reference TreeMap::leftRightRotate0(Reference ref) {
 	TreeEntry *parentEntry = dynamic_cast<TreeEntry*>(ref.getEntity());
-	Reference left = parentEntry->mLeft;
+	Reference left = parentEntry->getLeft();
 
-	parentEntry->mLeft = TreeMap::leftRotate0(left);
+	parentEntry->setLeft(TreeMap::leftRotate0(left));
 	return TreeMap::rightRotate0(ref);
 }
 
@@ -189,16 +187,16 @@ Reference TreeMap::balance0(Reference ref) {
 
 	if (TreeMap::height0(left) - TreeMap::height0(right)
 		> TreeEntry::ALLOWED_IMBALANCE) {
-		if (TreeMap::height0(leftEntry->mLeft)
-			>= TreeMap::height0(leftEntry->mRight)) {
+		if (TreeMap::height0(leftEntry->getLeft())
+			>= TreeMap::height0(leftEntry->getRight())) {
 			ref = TreeMap::rightRotate0(ref);
 		} else {
 			ref = TreeMap::leftRightRotate0(ref);
 		}
 	} else if (TreeMap::height0(right) - TreeMap::height0(left)
 		> TreeEntry::ALLOWED_IMBALANCE) {
-		if (TreeMap::height0(rightEntry->mRight)
-			>= TreeMap::height0(rightEntry->mLeft)) {
+		if (TreeMap::height0(rightEntry->getRight())
+			>= TreeMap::height0(rightEntry->getLeft())) {
 			ref = TreeMap::leftRotate0(ref);
 		} else {
 			ref = TreeMap::rightLeftRotate0(ref);
@@ -209,8 +207,8 @@ Reference TreeMap::balance0(Reference ref) {
 	left = entry->getLeft();
 	right = entry->getRight();
 
-	entry->mHeight = lang::Integer::larger(TreeMap::height0(left),
-		TreeMap::height0(right)) + 1;
+	entry->setHeight(lang::Integer::larger(TreeMap::height0(left),
+		TreeMap::height0(right)) + 1);
 	return ref;
 }
 
@@ -223,12 +221,14 @@ Reference TreeMap::add0(Reference ref, Reference keyRef, Reference valueRef,
 	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
 	Reference key = entry->value();
 	if (key.equals(keyRef)) {
-		entry->mValue = valueRef;
+		entry->setValue(valueRef);
 	} else if (dynamic_cast<Object*>(keyRef.getEntity())->hashCode()
-		> entry->mWeight) {
-		TreeMap::add0(entry->getRight(), keyRef, valueRef, ref);
+		> entry->getWeight()) {
+		entry->getRight() = TreeMap::add0(entry->getRight(), keyRef, valueRef,
+			ref);
 	} else {
-		TreeMap::add0(entry->getLeft(), keyRef, valueRef, ref);
+		entry->getLeft() = TreeMap::add0(entry->getLeft(), keyRef, valueRef,
+			ref);
 	}
 
 	return TreeMap::balance0(ref);
@@ -241,7 +241,7 @@ Reference TreeMap::remove0(Reference ref, Reference keyRef) {
 
 	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
 
-	if (entry->mKey.equals(keyRef)) {
+	if (entry->key().equals(keyRef)) {
 		Reference parent = entry->getParent();
 		if (!entry->getLeft().isNull() && !entry->getRight().isNull()) {
 			TreeEntry *minEntry = dynamic_cast<TreeEntry*>(TreeMap::minEntry0(
@@ -271,7 +271,7 @@ Reference TreeMap::remove0(Reference ref, Reference keyRef) {
 				entry->setParent(parent);
 			}
 		}
-	} else if (entry->mWeight
+	} else if (entry->getWeight()
 		< dynamic_cast<Object*>(keyRef.getEntity())->hashCode()) {
 		entry->getRight() = TreeMap::remove0(entry->getRight(), keyRef);
 	} else {
@@ -280,25 +280,8 @@ Reference TreeMap::remove0(Reference ref, Reference keyRef) {
 
 	return TreeMap::balance0(ref);
 }
-//
-//Reference TreeMap::replace0(Reference root, Reference keyRef,
-//	Reference valueRef) {
-//	Reference entryRef = getEntry0(root, keyRef);
-//	if (!entryRef.isNull()) {
-//		TreeEntry *entry = dynamic_cast<TreeEntry*>(entryRef.getEntity());
-//		Reference oldValue = entry->value();
-//		entry->setValue(valueRef);
-//		return oldValue;
-//	} else {
-//		return Reference();
-//	}
-//}
 
 Reference TreeMap::getValue0(Reference root, Reference keyRef) {
-	if (root.isNull()) {
-		return Reference();
-	}
-
 	Reference entryRef = TreeMap::getEntry0(root, keyRef);
 	if (!entryRef.isNull()) {
 		TreeEntry *entry = dynamic_cast<TreeEntry*>(entryRef.getEntity());
@@ -358,10 +341,10 @@ Reference TreeMap::floorEntry0(Reference ref, Reference keyRef) {
 
 	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
 
-	if (entry->mWeight
+	if (entry->getWeight()
 		== dynamic_cast<Object*>(keyRef.getEntity())->hashCode()) {
 		return ref;
-	} else if (entry->mWeight
+	} else if (entry->getWeight()
 		> dynamic_cast<Object*>(keyRef.getEntity())->hashCode()) {
 		if (entry->getLeft().isNull()) {
 			return Reference();
@@ -385,10 +368,10 @@ Reference TreeMap::ceilingEntry0(Reference ref, Reference keyRef) {
 
 	TreeEntry *entry = dynamic_cast<TreeEntry*>(ref.getEntity());
 
-	if (entry->mWeight
+	if (entry->getWeight()
 		== dynamic_cast<Object*>(keyRef.getEntity())->hashCode()) {
 		return ref;
-	} else if (entry->mWeight
+	} else if (entry->getWeight()
 		< dynamic_cast<Object*>(keyRef.getEntity())->hashCode()) {
 		if (entry->getRight().isNull()) {
 			return Reference();
@@ -436,10 +419,12 @@ void TreeMap::TreeEntry::setHeight(tlint height) {
 	mHeight = height;
 }
 
+hash_t TreeMap::TreeEntry::getWeight() {
+	return mWeight;
+}
+
 Reference TreeMap::TreeEntry::toString() {
-	Reference keyStr =
-		mKey.isNull() ?
-			Reference(new String("null")) : mKey.getEntity()->toString();
+	Reference keyStr = mKey.getEntity()->toString();
 	Reference valueStr =
 		mValue.isNull() ?
 			Reference(new String("null")) : mValue.getEntity()->toString();
@@ -523,9 +508,7 @@ bool TreeMap::TreeEntry::instanceof(type_t type) {
 }
 
 Reference TreeMap::get(Reference key) {
-	if (key.isNull()) {
-		return Reference();
-	}
+	dismissNull(key);
 
 	argumentTypeCheck(key, mKeyType);
 
@@ -533,9 +516,7 @@ Reference TreeMap::get(Reference key) {
 }
 
 Reference TreeMap::put(Reference key, Reference value) {
-	if (key.isNull()) {
-		return Reference();
-	}
+	dismissNull(key);
 
 	argumentTypeCheck(key, mKeyType);
 	if (!value.isNull()) {
@@ -553,14 +534,12 @@ Reference TreeMap::put0(Reference key, Reference value) {
 		return oldValue;
 	} else {
 		mSize++;
-		return value;
+		return Reference();
 	}
 }
 
 Reference TreeMap::remove(Reference key) {
-	if (key.isNull()) {
-		return Reference();
-	}
+	dismissNull(key);
 
 	argumentTypeCheck(key, mKeyType);
 
@@ -615,9 +594,7 @@ Reference TreeMap::lastKey() {
 }
 
 Reference TreeMap::floorKey(Reference keyRef) {
-	if (keyRef.isNull()) {
-		return Reference();
-	}
+	dismissNull(keyRef);
 
 	argumentTypeCheck(keyRef, mKeyType);
 
@@ -635,9 +612,7 @@ Reference TreeMap::floorKey(Reference keyRef) {
 }
 
 Reference TreeMap::floorEntry(Reference keyRef) {
-	if (mRootEntry.isNull()) {
-		return Reference();
-	}
+	dismissNull(keyRef);
 
 	argumentTypeCheck(keyRef, mKeyType);
 
@@ -649,9 +624,7 @@ Reference TreeMap::floorEntry(Reference keyRef) {
 }
 
 Reference TreeMap::ceilingEntry(Reference keyRef) {
-	if (keyRef.isNull()) {
-		return Reference();
-	}
+	dismissNull(keyRef);
 
 	argumentTypeCheck(keyRef, mKeyType);
 
@@ -663,9 +636,7 @@ Reference TreeMap::ceilingEntry(Reference keyRef) {
 }
 
 Reference TreeMap::ceilingKey(Reference keyRef) {
-	if (keyRef.isNull()) {
-		return Reference();
-	}
+	dismissNull(keyRef);
 
 	argumentTypeCheck(keyRef, mKeyType);
 
@@ -683,9 +654,7 @@ Reference TreeMap::ceilingKey(Reference keyRef) {
 }
 
 Reference TreeMap::lowerEntry(Reference keyRef) {
-	if (keyRef.isNull()) {
-		return Reference();
-	}
+	dismissNull(keyRef);
 
 	argumentTypeCheck(keyRef, mKeyType);
 
@@ -697,9 +666,7 @@ Reference TreeMap::lowerEntry(Reference keyRef) {
 }
 
 Reference TreeMap::lowerKey(Reference keyRef) {
-	if (keyRef.isNull()) {
-		return Reference();
-	}
+	dismissNull(keyRef);
 
 	argumentTypeCheck(keyRef, mKeyType);
 
@@ -723,9 +690,7 @@ Reference TreeMap::lowerKey(Reference keyRef) {
 }
 
 Reference TreeMap::higherEntry(Reference keyRef) {
-	if (keyRef.isNull()) {
-		return Reference();
-	}
+	dismissNull(keyRef);
 
 	argumentTypeCheck(keyRef, mKeyType);
 
@@ -737,9 +702,7 @@ Reference TreeMap::higherEntry(Reference keyRef) {
 }
 
 Reference TreeMap::higherKey(Reference keyRef) {
-	if (keyRef.isNull()) {
-		return Reference();
-	}
+	dismissNull(keyRef);
 
 	argumentTypeCheck(keyRef, mKeyType);
 
@@ -790,9 +753,7 @@ Reference TreeMap::pollLastEntry() {
 }
 
 Reference TreeMap::putIfAbsent(Reference key, Reference value) {
-	if (key.isNull()) {
-		return Reference();
-	}
+	dismissNull(key);
 
 	argumentTypeCheck(key, mKeyType);
 	if (!value.isNull()) {
@@ -829,24 +790,8 @@ void TreeMap::putAll(Reference ref) {
 	}
 }
 
-//Reference TreeMap::replace(Reference key, Reference value) {
-//	if (key.isNull()) {
-//		return Reference();
-//	}
-//
-//	argumentTypeCheck(key, mKeyType);
-//
-//	if (!value.isNull()) {
-//		argumentTypeCheck(value, mValueType);
-//	}
-//
-//	return replace0(mRootEntry, key, value);
-//}
-
 bool TreeMap::containsKey(Reference key) {
-	if (key.isNull()) {
-		return false;
-	}
+	dismissNull(key);
 
 	argumentTypeCheck(key, mKeyType);
 
@@ -953,12 +898,12 @@ bool TreeMap::Values::containsAll(Reference ref) {
 
 bool TreeMap::Values::add(Reference ref) {
 	//cast NotSupportedOperationException
-	return false;
+	throw UnsupportedOperationException();
 }
 
 bool TreeMap::Values::addAll(Reference ref) {
 	//cast NotSupportedOperationException
-	return false;
+	throw UnsupportedOperationException();
 }
 
 Reference TreeMap::Values::toArray() {
@@ -996,40 +941,11 @@ bool TreeMap::Values::isEmpty() {
 	return map->size() == 0;
 }
 bool TreeMap::Values::remove(Reference ref) {
-	TreeMap *map = dynamic_cast<TreeMap*>(mMap.getEntity());
-	Reference entryRef = map->firstEntry();
-	while (!entryRef.isNull()) {
-		TreeEntry *entry = dynamic_cast<TreeEntry*>(entryRef.getEntity());
-		if (entry->value().equals(ref)) {
-			map->remove(entry->key());
-			return true;
-		}
-		entryRef = map->successor0(map->mRootEntry, entry->key());
-	}
-	return false;
+	throw UnsupportedOperationException();
 }
 
 bool TreeMap::Values::removeAll(Reference ref) {
-	if (ref.isNull()) {
-		return false;
-	}
-
-	argumentTypeCheck(ref, Collection::type());
-
-	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
-	Reference iteratorRef = iterator();
-	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
-
-	bool modified = false;
-	while (iterator->hasNext()) {
-		Reference element = iterator->next();
-		if (collection->contains(element)) {
-			iterator->remove();
-			modified = true;
-		}
-	}
-
-	return modified;
+	throw UnsupportedOperationException();
 }
 
 Reference TreeMap::Values::iterator() {
@@ -1262,6 +1178,7 @@ Reference TreeMap::PrivateEntryIterator::nextEntry() {
 	Reference e = mNext;
 	if (e.isNull()) {
 		//cast NoSuchElementException
+		throw NoSuchElementException();
 	}
 
 	TreeEntry *entry = dynamic_cast<TreeEntry*>(e.getEntity());
@@ -1276,6 +1193,7 @@ Reference TreeMap::PrivateEntryIterator::previousEntry() {
 	Reference e = mNext;
 	if (e.isNull()) {
 		//cast NoSuchElementException
+		throw NoSuchElementException();
 	}
 
 	TreeEntry *entry = dynamic_cast<TreeEntry*>(e.getEntity());
@@ -1288,7 +1206,7 @@ Reference TreeMap::PrivateEntryIterator::previousEntry() {
 
 void TreeMap::PrivateEntryIterator::remove() {
 	if (mLastReturned.isNull()) {
-		//cast an exception
+		throw NoSuchElementException();
 	}
 
 	TreeEntry *lastReturned =
@@ -1412,9 +1330,7 @@ bool TreeMap::KeySet::removeAll(Reference ref) {
 		return false;
 	}
 
-	if (!ref.getEntity()->instanceof(Collection::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Collection::type());
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
 	Reference iteratorRef = collection->iterator();
@@ -1440,9 +1356,7 @@ bool TreeMap::KeySet::containsAll(Reference ref) {
 		return false;
 	}
 
-	if (!ref.getEntity()->instanceof(Collection::type())) {
-		//cast an exception
-	}
+	argumentTypeCheck(ref, Collection::type());
 
 	Collection *collection = dynamic_cast<Collection*>(ref.getEntity());
 	Reference iteratorRef = collection->iterator();

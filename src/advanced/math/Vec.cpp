@@ -5,16 +5,17 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/Vec.h>
-#include <lang/String.h>
-
 #include <stdio.h>
+#include <tl/advanced/math/Vec.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace advanced {
 namespace math {
 
 using lang::String;
+using lang::IndexOutOfBoundsException;
 
 Vec::Vec(float x) {
 	// TODO Auto-generated constructor stub
@@ -56,7 +57,7 @@ void Vec::set(tlint index, float v) {
 		break;
 	default:
 		//cast an exception
-		break;
+		throw IndexOutOfBoundsException();
 	}
 }
 
@@ -68,7 +69,7 @@ float Vec::get(tlint index) {
 		break;
 	default:
 		//cast an exception
-		break;
+		throw IndexOutOfBoundsException();
 	}
 
 	return value;
@@ -92,7 +93,7 @@ bool Vec::instanceof(type_t type) {
 
 Reference Vec::toString() {
 	char str[60];
-	sprintf(str, "[%f]");
+	sprintf(str, "[%f]", mValue.x);
 	return Reference(new String(str));
 }
 

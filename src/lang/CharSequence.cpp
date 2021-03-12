@@ -5,9 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include <lang/CharSequence.h>
-#include <lang/IndexOutOfBoundsException.h>
-#include <lang/String.h>
+#include <tl/lang/CharSequence.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/String.h>
 
 namespace tl {
 namespace lang {

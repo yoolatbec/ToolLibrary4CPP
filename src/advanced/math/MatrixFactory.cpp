@@ -5,14 +5,14 @@
  *      Author: yoolatbec
  */
 
-#include <advanced/math/IncompatibleMatrixTypeException.h>
-#include <advanced/math/MatrixFactory.h>
-#include <advanced/math/MatrixType.h>
-#include <advanced/math/VectorType.h>
-#include <lang/Math.h>
-#include <lang/IllegalArgumentTypeException.h>
-#include <lang/UnacceptableArgumentException.h>
-#include <lang/UndefinedException.h>
+#include <tl/advanced/math/IncompatibleMatrixTypeException.h>
+#include <tl/advanced/math/MatrixFactory.h>
+#include <tl/advanced/math/MatrixType.h>
+#include <tl/advanced/math/VectorType.h>
+#include <tl/lang/IllegalArgumentTypeException.h>
+#include <tl/lang/Math.h>
+#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/UndefinedException.h>
 
 namespace tl {
 namespace advanced {
@@ -250,6 +250,7 @@ Reference MatrixFactory::newMatrix(MATRIX_TYPE type) {
 		break;
 	default:
 		// cast an exception
+		throw UnacceptableArgumentException();
 	}
 
 	return ref;

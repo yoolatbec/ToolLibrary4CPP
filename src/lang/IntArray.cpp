@@ -5,10 +5,10 @@
  *      Author: yoolatbec
  */
 
-#include <lang/IndexOutOfBoundsException.h>
-#include <lang/IntArray.h>
-#include <lang/String.h>
-#include <lang/UnacceptableArgumentException.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/lang/IntArray.h>
+#include <tl/lang/String.h>
+#include <tl/lang/UnacceptableArgumentException.h>
 #include <cstring>
 #include <cstdio>
 
