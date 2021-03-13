@@ -3,14 +3,11 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
-CPP_SRCS += \
-../examination.cpp 
+CPP_SRCS += 
 
-OBJS += \
-./examination.o 
+OBJS += 
 
-CPP_DEPS += \
-./examination.d 
+CPP_DEPS += 
 
 
 # Each subdirectory must supply rules for building sources it contributes

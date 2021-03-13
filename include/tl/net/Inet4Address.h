@@ -14,11 +14,19 @@ namespace tl {
 namespace net {
 
 class Inet4Address: public virtual InetAddress {
-public:
+private:
+	const static type_t CLASS_SERIAL = 262;
 	Inet4Address();
+public:
 	virtual ~Inet4Address();
 	Inet4Address(const Inet4Address &other) = delete;
 	Inet4Address& operator=(const Inet4Address &other) = delete;
+	static Reference newInstance(const char*);
+	static Reference newInstance(Reference);
+	static Reference newInstance(const byte*, short);
+	Reference toString();
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace net */

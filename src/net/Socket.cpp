@@ -21,5 +21,13 @@ Socket::~Socket() {
 	close(mSocketID);
 }
 
+type_t Socket::type() {
+	return CLASS_SERIAL;
+}
+
+bool Socket::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Object::instanceof(type);
+}
+
 } /* namespace net */
 } /* namespace tl */

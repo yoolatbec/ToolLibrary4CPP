@@ -17,18 +17,30 @@ namespace thread {
 using lang::Reference;
 
 class Thread: public virtual lang::Runnable {
+private:
+	const static type_t CLASS_SERIAL = 40;
 protected:
 	pthread_t mThread;
 	Reference mTarget;
+	Reference mName;
+	Reference mAttribute;
+
 public:
-	Thread();
-	Thread(Reference);
+	Thread(Reference target);
 	Thread(Reference, Reference);
+	Thread(Reference target, Reference attribute, Reference name);
 	virtual ~Thread();
 	Thread(const Thread &other) = delete;
 	Thread& operator=(const Thread &other) = delete;
-	virtual void run();
-	void start();
+	void run();
+	bool isRunning();
+	void setName(Reference);
+	void setName(const char*);
+	void setAttribute(Reference);
+	void join();
+	void detach();
+	void yield();
+	void sleep(tlint, tlint);
 	static type_t type();
 	bool instanceof(type_t);
 };

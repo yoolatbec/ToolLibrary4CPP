@@ -1,31 +1,31 @@
 /*
- * InetAddress.cpp
+ * Throwable.cpp
  *
- *  Created on: Feb 21, 2021
+ *  Created on: Mar 12, 2021
  *      Author: yoolatbec
  */
 
-#include <tl/net/InetAddress.h>
+#include <tl/lang/Throwable.h>
 
 namespace tl {
-namespace net {
+namespace lang {
 
-InetAddress::InetAddress() {
+Throwable::Throwable() {
 	// TODO Auto-generated constructor stub
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-InetAddress::~InetAddress() {
+Throwable::~Throwable() {
 	// TODO Auto-generated destructor stub
 }
 
-type_t InetAddress::type() {
+type_t Throwable::type() {
 	return CLASS_SERIAL;
 }
 
-bool InetAddress::instanceof(type_t type) {
+bool Throwable::instanceof(type_t type) {
 	return (CLASS_SERIAL == type) || Object::instanceof(type);
 }
 
-} /* namespace net */
+} /* namespace lang */
 } /* namespace tl */

@@ -9,13 +9,12 @@
 #define INCLUDE_LANG_EXCEPTION_H_
 
 #include <tl/lang/Reference.h>
+#include <tl/lang/Throwable.h>
 
 namespace tl {
 namespace lang {
 
-using lang::Reference;
-
-class Exception: public virtual Object {
+class Exception: public virtual Throwable {
 private:
 	const static type_t CLASS_SERIAL = 10;
 	constexpr const static char *DEFAULT_MESSAGE = "Exception:";

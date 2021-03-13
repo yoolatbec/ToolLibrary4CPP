@@ -11,6 +11,7 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <tl/net/TCPServer.h>
+#include "UnableToOpenSocketException.h"
 
 namespace tl {
 namespace net {
@@ -20,6 +21,7 @@ TCPServer::TCPServer() {
 	mSocketID = socket(AF_INET, SOCK_STREAM, 0);
 	if(mSocketID < 0){
 		//cast an exception
+		throw UnableToOpenSocketException();
 	}
 }
 

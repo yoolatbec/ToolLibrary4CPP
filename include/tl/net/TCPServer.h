@@ -21,6 +21,7 @@ public:
 	virtual ~TCPServer();
 	TCPServer(const TCPServer &other) = delete;
 	TCPServer& operator=(const TCPServer &other) = delete;
+
 };
 
 } /* namespace net */

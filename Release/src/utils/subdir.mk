@@ -13,11 +13,13 @@ CPP_SRCS += \
 ../src/utils/InvalidIteratorException.cpp \
 ../src/utils/Iterable.cpp \
 ../src/utils/Iterator.cpp \
+../src/utils/KMPMachine.cpp \
 ../src/utils/LinkedList.cpp \
 ../src/utils/List.cpp \
 ../src/utils/Map.cpp \
 ../src/utils/NavigableMap.cpp \
 ../src/utils/NavigableSet.cpp \
+../src/utils/NoSuchElementException.cpp \
 ../src/utils/Set.cpp \
 ../src/utils/SortedMap.cpp \
 ../src/utils/SortedSet.cpp \
@@ -34,11 +36,13 @@ OBJS += \
 ./src/utils/InvalidIteratorException.o \
 ./src/utils/Iterable.o \
 ./src/utils/Iterator.o \
+./src/utils/KMPMachine.o \
 ./src/utils/LinkedList.o \
 ./src/utils/List.o \
 ./src/utils/Map.o \
 ./src/utils/NavigableMap.o \
 ./src/utils/NavigableSet.o \
+./src/utils/NoSuchElementException.o \
 ./src/utils/Set.o \
 ./src/utils/SortedMap.o \
 ./src/utils/SortedSet.o \
@@ -55,11 +59,13 @@ CPP_DEPS += \
 ./src/utils/InvalidIteratorException.d \
 ./src/utils/Iterable.d \
 ./src/utils/Iterator.d \
+./src/utils/KMPMachine.d \
 ./src/utils/LinkedList.d \
 ./src/utils/List.d \
 ./src/utils/Map.d \
 ./src/utils/NavigableMap.d \
 ./src/utils/NavigableSet.d \
+./src/utils/NoSuchElementException.d \
 ./src/utils/Set.d \
 ./src/utils/SortedMap.d \
 ./src/utils/SortedSet.d \
@@ -71,7 +77,7 @@ CPP_DEPS += \
 src/utils/%.o: ../src/utils/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -O3 -Wall -c -fmessage-length=0 -fPIC -pthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	g++ -I"/home/yoolatbec/workspace/cpp/ToolLibrary/include" -O3 -Wall -c -fmessage-length=0 -fPIC -pthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

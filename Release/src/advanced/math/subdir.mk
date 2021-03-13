@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/advanced/math/AbstractMatrix.cpp \
+../src/advanced/math/IncompatibleMatrixTypeException.cpp \
 ../src/advanced/math/Mat1x1.cpp \
 ../src/advanced/math/Mat1x2.cpp \
 ../src/advanced/math/Mat1x3.cpp \
@@ -34,6 +35,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./src/advanced/math/AbstractMatrix.o \
+./src/advanced/math/IncompatibleMatrixTypeException.o \
 ./src/advanced/math/Mat1x1.o \
 ./src/advanced/math/Mat1x2.o \
 ./src/advanced/math/Mat1x3.o \
@@ -63,6 +65,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./src/advanced/math/AbstractMatrix.d \
+./src/advanced/math/IncompatibleMatrixTypeException.d \
 ./src/advanced/math/Mat1x1.d \
 ./src/advanced/math/Mat1x2.d \
 ./src/advanced/math/Mat1x3.d \
@@ -95,7 +98,7 @@ CPP_DEPS += \
 src/advanced/math/%.o: ../src/advanced/math/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -O3 -Wall -c -fmessage-length=0 -fPIC -pthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	g++ -I"/home/yoolatbec/workspace/cpp/ToolLibrary/include" -O3 -Wall -c -fmessage-length=0 -fPIC -pthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

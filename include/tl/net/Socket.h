@@ -26,8 +26,9 @@ public:
 	Socket();
 	virtual ~Socket();
 	Socket(const Socket &other) = delete;
-
 	Socket& operator=(const Socket &other) = delete;
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace net */
