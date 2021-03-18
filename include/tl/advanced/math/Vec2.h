@@ -18,7 +18,7 @@ class Vec2: public virtual Vector {
 private:
 	const static type_t CLASS_SERIAL = 100;
 	const static tlint COMPONENT_COUNT = 2;
-	const static VECTOR_TYPE VECTOR_TYPE_VALUE = VECTOR_2;
+	const static VectorType VECTOR_TYPE_VALUE = VECTOR_2;
 	const static tlint MAX_INDEX = 1;
 	const static tlint MIN_INDEX = 0;
 	vec2 mValue;
@@ -31,7 +31,7 @@ public:
 	float get(tlint);
 	tlint size();
 	vec2 values();
-	VECTOR_TYPE vectorType();
+	VectorType vectorType();
 	void set(tlint, float);
 	void set(vec2);
 	Reference toString();

@@ -15,7 +15,7 @@ namespace tl {
 namespace advanced {
 namespace math {
 
-enum VECTOR_TYPE {
+enum VectorType {
 	VECTOR_1, VECTOR_2, VECTOR_3, VECTOR_4
 };
 
@@ -34,7 +34,7 @@ public:
 	virtual void set(tlint, float) = 0;
 	virtual tlint maxIndex() = 0;
 	virtual tlint minIndex() = 0;
-	virtual VECTOR_TYPE vectorType() = 0;
+	virtual VectorType vectorType() = 0;
 	static type_t type();
 	bool instanceof(type_t);
 };

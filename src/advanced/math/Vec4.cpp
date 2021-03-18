@@ -88,7 +88,7 @@ vec4 Vec4::values() {
 	return mValue;
 }
 
-VECTOR_TYPE Vec4::vectorType() {
+VectorType Vec4::vectorType() {
 	return VECTOR_TYPE_VALUE;
 }
 

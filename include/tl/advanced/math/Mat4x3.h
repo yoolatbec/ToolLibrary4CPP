@@ -17,7 +17,7 @@ namespace math {
 class Mat4x3: public virtual Matrix {
 private:
 	const static type_t CLASS_SERIAL = 122;
-	const static MATRIX_TYPE MATRIX_ARRANGEMENT = MATRIX_4X3;
+	const static MatrixType MATRIX_ARRANGEMENT = MATRIX_4X3;
 	const static tlint MAX_ROW_INDEX = 3;
 	const static tlint MIN_ROW_INDEX = 0;
 	const static tlint MAX_COLUMN_INDEX = 2;
@@ -54,7 +54,7 @@ public:
 	tlint minRowIndex();
 	tlint maxColumnIndex();
 	tlint minColumnIndex();
-	MATRIX_TYPE matrixType();
+	MatrixType matrixType();
 	Reference toString();
 	Reference transpose();
 	static type_t type();

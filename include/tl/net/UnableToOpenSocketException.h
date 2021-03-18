@@ -5,17 +5,17 @@
  *      Author: yoolatbec
  */
 
-#ifndef NET_UNABLETOOPENSOCKETEXCEPTION_H_
-#define NET_UNABLETOOPENSOCKETEXCEPTION_H_
+#ifndef TL_NET_UNABLETOOPENSOCKETEXCEPTION_H_
+#define TL_NET_UNABLETOOPENSOCKETEXCEPTION_H_
 
-#include "NetworkException.h"
+#include <tl/net/SocketException.h>
 
 namespace tl {
 namespace net {
 
 using lang::Reference;
 
-class UnableToOpenSocketException: public virtual NetworkException {
+class UnableToOpenSocketException: public virtual SocketException {
 private:
 	const static type_t CLASS_SERIAL = 261;
 	const static constexpr char *DEFAULT_MESSAGE =
@@ -32,4 +32,4 @@ public:
 } /* namespace net */
 } /* namespace tl */
 
-#endif /* NET_UNABLETOOPENSOCKETEXCEPTION_H_ */
+#endif /* TL_NET_UNABLETOOPENSOCKETEXCEPTION_H_ */

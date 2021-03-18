@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#ifndef NET_NETWORKEXCEPTION_H_
-#define NET_NETWORKEXCEPTION_H_
+#ifndef TL_NET_NETWORKEXCEPTION_H_
+#define TL_NET_NETWORKEXCEPTION_H_
 
 #include <tl/lang/Exception.h>
 
@@ -31,4 +31,4 @@ public:
 } /* namespace net */
 } /* namespace tl */
 
-#endif /* NET_NETWORKEXCEPTION_H_ */
+#endif /* TL_NET_NETWORKEXCEPTION_H_ */

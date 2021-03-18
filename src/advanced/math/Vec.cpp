@@ -42,7 +42,7 @@ vec Vec::values() {
 	return mValue;
 }
 
-VECTOR_TYPE Vec::vectorType() {
+VectorType Vec::vectorType() {
 	return VECTOR_TYPE_VALUE;
 }
 

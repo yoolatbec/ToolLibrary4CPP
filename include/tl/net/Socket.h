@@ -22,8 +22,9 @@ private:
 protected:
 	tlint mSocketID;
 
-public:
 	Socket();
+	Socket(tlint);
+public:
 	virtual ~Socket();
 	Socket(const Socket &other) = delete;
 	Socket& operator=(const Socket &other) = delete;

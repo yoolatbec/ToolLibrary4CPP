@@ -11,19 +11,28 @@
 #include <pthread.h>
 #include <tl/lang/Reference.h>
 
+
 namespace tl {
 namespace thread {
+
+using lang::Reference;
 
 class Mutex: public lang::Object {
 private:
 	const static type_t CLASS_SERIAL = 70;
-protected:
+
 	pthread_mutex_t mMutex;
+	Mutex(Reference);
+	void makeConsistent();
 public:
-	Mutex();
 	virtual ~Mutex();
 	Mutex(const Mutex &other) = delete;
 	Mutex& operator=(const Mutex &other) = delete;
+	Reference newInstance(Reference);
+	void lock();
+	void tryLock();
+	void unlock();
+
 };
 
 } /* namespace thread */

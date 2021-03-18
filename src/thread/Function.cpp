@@ -6,8 +6,8 @@
  */
 
 #include "Function.h"
-#include "FailedToExecuteException.h"
 #include <tl/lang/Pointer.h>
+#include <tl/thread/FailedToExecuteException.h>
 
 namespace tl {
 namespace thread {

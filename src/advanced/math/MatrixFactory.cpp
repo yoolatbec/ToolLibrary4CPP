@@ -193,11 +193,11 @@ vec3 MatrixFactory::cross_vec3(vec3 v, vec3 u) {
 }
 
 Reference MatrixFactory::newMatrix(tlint i, tlint j) {
-	MATRIX_TYPE type = MATRIX_MAP[i][j];
+	MatrixType type = MATRIX_MAP[i][j];
 	return MatrixFactory::newMatrix(type);
 }
 
-Reference MatrixFactory::newMatrix(MATRIX_TYPE type) {
+Reference MatrixFactory::newMatrix(MatrixType type) {
 	Reference ref;
 	switch (type) {
 	case MATRIX_1X1:
@@ -279,7 +279,7 @@ Reference MatrixFactory::newVector(tlint i) {
 	return ref;
 }
 
-Reference MatrixFactory::newVector(VECTOR_TYPE type) {
+Reference MatrixFactory::newVector(VectorType type) {
 	Reference ref;
 	switch (type) {
 	case VECTOR_1:

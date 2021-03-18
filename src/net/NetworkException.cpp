@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include "NetworkException.h"
 #include <tl/lang/String.h>
+#include <tl/net/NetworkException.h>
 
 namespace tl {
 namespace net {

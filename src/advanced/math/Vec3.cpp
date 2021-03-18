@@ -64,7 +64,7 @@ vec3 Vec3::values() {
 	return mValue;
 }
 
-VECTOR_TYPE Vec3::vectorType() {
+VectorType Vec3::vectorType() {
 	return VECTOR_TYPE_VALUE;
 }
 

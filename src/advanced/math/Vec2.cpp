@@ -56,7 +56,7 @@ vec2 Vec2::values() {
 	return mValue;
 }
 
-VECTOR_TYPE Vec2::vectorType() {
+VectorType Vec2::vectorType() {
 	return VECTOR_TYPE_VALUE;
 }
 

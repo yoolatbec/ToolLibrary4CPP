@@ -16,12 +16,24 @@ namespace net {
 class TCPServer: public virtual Socket {
 private:
 	const static type_t CLASS_SERIAL = 250;
+	const static  tlint DEFAULT_BUFFER_SIZE = 4096;
+
+	Reference mInetAddress;
+
+	byte* mBuffer;
+
+	void openSocket();
 public:
 	TCPServer();
+	TCPServer(tlint);
 	virtual ~TCPServer();
 	TCPServer(const TCPServer &other) = delete;
 	TCPServer& operator=(const TCPServer &other) = delete;
-
+	void bind(Reference);
+	void listen(tlint);
+	Reference accept();
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace net */

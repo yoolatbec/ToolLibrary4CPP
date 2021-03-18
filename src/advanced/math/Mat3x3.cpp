@@ -294,7 +294,7 @@ tlint Mat3x3::minColumnIndex() {
 	return MIN_COLUMN_INDEX;
 }
 
-MATRIX_TYPE Mat3x3::matrixType() {
+MatrixType Mat3x3::matrixType() {
 	return MATRIX_ARRANGEMENT;
 }
 

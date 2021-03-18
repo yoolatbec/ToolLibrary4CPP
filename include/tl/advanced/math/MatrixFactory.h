@@ -22,7 +22,7 @@ class MatrixFactory: public lang::Object {
 private:
 	const static type_t CLASS_SERIAL = 129;
 
-	constexpr const static MATRIX_TYPE MATRIX_MAP[4][4] =
+	constexpr const static MatrixType MATRIX_MAP[4][4] =
 		{
 			{ MATRIX_1X1, MATRIX_1X2, MATRIX_1X3, MATRIX_1X4 },
 				{ MATRIX_2X1, MATRIX_2X2, MATRIX_2X3, MATRIX_2X4 },
@@ -60,10 +60,10 @@ private:
 	static Reference mMinus0(Reference, Reference);
 
 	static Reference newMatrix(tlint, tlint);
-	static Reference newMatrix(MATRIX_TYPE);
+	static Reference newMatrix(MatrixType);
 
 	static Reference newVector(tlint);
-	static Reference newVector(VECTOR_TYPE);
+	static Reference newVector(VectorType);
 public:
 	MatrixFactory(const MatrixFactory &other) = delete;
 	MatrixFactory& operator=(const MatrixFactory &other) = delete;

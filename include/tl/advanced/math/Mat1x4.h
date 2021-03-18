@@ -17,7 +17,7 @@ namespace math {
 class Mat1x4: public virtual Matrix {
 private:
 	const static type_t CLASS_SERIAL = 137;
-	const static MATRIX_TYPE MATRIX_ARRANGEMENT = MATRIX_1X4;
+	const static MatrixType MATRIX_ARRANGEMENT = MATRIX_1X4;
 	const static tlint MAX_ROW_INDEX = 0;
 	const static tlint MIN_ROW_INDEX = 0;
 	const static tlint MAX_COLUMN_INDEX = 3;
@@ -55,7 +55,7 @@ public:
 	tlint minRowIndex();
 	tlint maxColumnIndex();
 	tlint minColumnIndex();
-	MATRIX_TYPE matrixType();
+	MatrixType matrixType();
 	static type_t type();
 	bool instanceof(type_t);
 };

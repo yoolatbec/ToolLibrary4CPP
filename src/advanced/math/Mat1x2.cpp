@@ -192,7 +192,7 @@ tlint Mat1x2::minColumnIndex() {
 	return MIN_COLUMN_INDEX;
 }
 
-MATRIX_TYPE Mat1x2::matrixType() {
+MatrixType Mat1x2::matrixType() {
 	return MATRIX_ARRANGEMENT;
 }
 

@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include "IllegalOperationException.h"
 #include <tl/lang/String.h>
+#include <tl/thread/IllegalOperationException.h>
 
 namespace tl {
 namespace thread {

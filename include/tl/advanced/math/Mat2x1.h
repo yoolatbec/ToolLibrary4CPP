@@ -17,7 +17,7 @@ namespace math {
 class Mat2x1: public virtual Matrix {
 private:
 	const static type_t CLASS_SERIAL = 133;
-	const static MATRIX_TYPE MATRIX_ARRANGEMENT = MATRIX_2X1;
+	const static MatrixType MATRIX_ARRANGEMENT = MATRIX_2X1;
 	const static tlint MAX_ROW_INDEX = 1;
 	const static tlint MIN_ROW_INDEX = 0;
 	const static tlint MAX_COLUMN_INDEX = 0;
@@ -53,7 +53,7 @@ public:
 	tlint minRowIndex();
 	tlint maxColumnIndex();
 	tlint minColumnIndex();
-	MATRIX_TYPE matrixType();
+	MatrixType matrixType();
 	static type_t type();
 	bool instanceof(type_t);
 };

@@ -19,13 +19,13 @@ private:
 	const static type_t CLASS_SERIAL = 890;
 	pthread_attr_t mAttribute;
 
-	void checkPriorityInput(tlint);
+//	void checkPriorityInput(tlint);
 public:
-	enum SchedulePolicy{
-		SCHEDULE_FIFO,
-		SCHEDULE_RR,
-		SCHEDULE_OTHER
-	};
+//	enum SchedulePolicy{
+//		SCHEDULE_FIFO,
+//		SCHEDULE_RR,
+//		SCHEDULE_OTHER
+//	};
 
 	ThreadAttribute();
 	virtual ~ThreadAttribute();
@@ -37,10 +37,10 @@ public:
 	tlint getStackGuardSize();
 	void setSystemScope();
 	bool isSystemScope();
-	void setSchedulePolicy(SchedulePolicy);
-	SchedulePolicy getSchedulePolicy();
-	void setPriority(tlint);
-	tlint getPriority();
+//	void setSchedulePolicy(SchedulePolicy);
+//	SchedulePolicy getSchedulePolicy();
+//	void setPriority(tlint);
+//	tlint getPriority();
 	pthread_attr_t getAttribute();
 	static type_t type();
 	bool instanceof(type_t);

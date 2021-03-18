@@ -18,7 +18,7 @@ class Vec4: virtual public Vector {
 private:
 	const static type_t CLASS_SERIAL = 90;
 	const static tlint COMPONENT_COUNT = 4;
-	const static VECTOR_TYPE VECTOR_TYPE_VALUE = VECTOR_4;
+	const static VectorType VECTOR_TYPE_VALUE = VECTOR_4;
 	const static tlint MAX_INDEX = 3;
 	const static tlint MIN_INDEX = 0;
 
@@ -56,7 +56,7 @@ public:
 	 */
 	Reference toString();
 	vec4 values();
-	VECTOR_TYPE vectorType();
+	VectorType vectorType();
 	static type_t type();
 	bool instanceof(type_t);
 };

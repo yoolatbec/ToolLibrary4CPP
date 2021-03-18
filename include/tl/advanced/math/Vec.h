@@ -20,7 +20,7 @@ private:
 	const static tlint COMPONENT_COUNT = 1;
 	const static tlint MAX_INDEX = 0;
 	const static tlint MIN_INDEX = 0;
-	const static VECTOR_TYPE VECTOR_TYPE_VALUE = VECTOR_1;
+	const static VectorType VECTOR_TYPE_VALUE = VECTOR_1;
 	vec mValue;
 
 public:
@@ -34,7 +34,7 @@ public:
 	void set(vec);
 	float get(tlint);
 	vec values();
-	VECTOR_TYPE vectorType();
+	VectorType vectorType();
 	tlint maxIndex();
 	tlint minIndex();
 	Reference toString();

@@ -33,7 +33,7 @@ public:
 	Thread(const Thread &other) = delete;
 	Thread& operator=(const Thread &other) = delete;
 	void run();
-	bool isRunning();
+//	bool isRunning();
 	void setName(Reference);
 	void setName(const char*);
 	void setAttribute(Reference);
@@ -41,6 +41,7 @@ public:
 	void detach();
 	void yield();
 	void sleep(tlint, tlint);
+	bool equals(Reference);
 	static type_t type();
 	bool instanceof(type_t);
 };

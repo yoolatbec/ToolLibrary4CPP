@@ -17,7 +17,7 @@ namespace math {
 
 using lang::Reference;
 
-enum MATRIX_TYPE {
+enum MatrixType {
 	MATRIX_1X1,
 	MATRIX_1X2,
 	MATRIX_1X3,
@@ -76,7 +76,7 @@ public:
 	virtual tlint maxColumnIndex() = 0;
 	virtual tlint minRowIndex() = 0;
 	virtual tlint minColumnIndex() = 0;
-	virtual MATRIX_TYPE matrixType() = 0;
+	virtual MatrixType matrixType() = 0;
 	static type_t type();
 	bool instanceof(type_t);
 };

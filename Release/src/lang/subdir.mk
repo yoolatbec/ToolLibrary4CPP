@@ -36,6 +36,7 @@ CPP_SRCS += \
 ../src/lang/ShortArray.cpp \
 ../src/lang/String.cpp \
 ../src/lang/StringBuilder.cpp \
+../src/lang/Throwable.cpp \
 ../src/lang/UnacceptableArgumentException.cpp \
 ../src/lang/UndefinedException.cpp \
 ../src/lang/UnsupportedOperationException.cpp 
@@ -73,6 +74,7 @@ OBJS += \
 ./src/lang/ShortArray.o \
 ./src/lang/String.o \
 ./src/lang/StringBuilder.o \
+./src/lang/Throwable.o \
 ./src/lang/UnacceptableArgumentException.o \
 ./src/lang/UndefinedException.o \
 ./src/lang/UnsupportedOperationException.o 
@@ -110,16 +112,17 @@ CPP_DEPS += \
 ./src/lang/ShortArray.d \
 ./src/lang/String.d \
 ./src/lang/StringBuilder.d \
+./src/lang/Throwable.d \
 ./src/lang/UnacceptableArgumentException.d \
 ./src/lang/UndefinedException.d \
 ./src/lang/UnsupportedOperationException.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-src/lang/%.o: ../src/lang/%.cpp
+src/lang/%.o: ../src/lang/%.cpp src/lang/subdir.mk
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -I"/home/yoolatbec/workspace/cpp/ToolLibrary/include" -O3 -Wall -c -fmessage-length=0 -fPIC -pthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	g++ -std=c++17 -I"/home/yoolatbec/workspace/cpp/ToolLibrary/include" -O3 -Wall -c -fmessage-length=0 -fPIC -pthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

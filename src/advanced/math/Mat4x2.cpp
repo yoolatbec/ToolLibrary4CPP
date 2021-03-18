@@ -184,7 +184,7 @@ tlint Mat4x2::minColumnIndex() {
 	return MIN_COLUMN_INDEX;
 }
 
-MATRIX_TYPE Mat4x2::matrixType() {
+MatrixType Mat4x2::matrixType() {
 	return MATRIX_ARRANGEMENT;
 }
 

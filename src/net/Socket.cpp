@@ -14,6 +14,15 @@ namespace net {
 
 Socket::Socket() {
 	// TODO Auto-generated constructor stub
+	mSocketID = -1;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+Socket::Socket(tlint sockfd) {
+	mSocketID = sockfd;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Socket::~Socket() {

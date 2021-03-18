@@ -9,6 +9,7 @@
 #include <tl/thread/Thread.h>
 #include <tl/thread/ThreadAttribute.h>
 #include "Function.h"
+#include "ErrorCode.h"
 
 namespace tl {
 namespace thread {
@@ -22,6 +23,8 @@ Thread::Thread(Reference target) {
 
 	mTarget = target;
 	mThread = -1;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Thread::Thread(Reference target, Reference ref){
@@ -36,10 +39,10 @@ void Thread::run(){
 
 	pthread_attr_t attr;
 	if(!mAttribute.isNull()){
-		ThreadAttribute* attribute = dynamic_cast<ThreadAttribute*>(mAttribute.getEntity()));
+		ThreadAttribute* attribute = dynamic_cast<ThreadAttribute*>(mAttribute.getEntity());
 		attr = attribute->getAttribute();
 	} else {
-		if(pthread_attr_init(&attr) != 0){
+		if(pthread_attr_init(&attr) != ErrorCode::SUCCESS){
 			//cast an exception
 		}
 	}
@@ -63,6 +66,38 @@ void Thread::setAttribute(Reference attr){
 	argumentTypeCheck(attr, ThreadAttribute::type());
 
 	mAttribute = attr;
+}
+
+void Thread::join(){
+	if(pthread_join(mThread, nullptr) != ErrorCode::SUCCESS){
+		//cast an exception
+	}
+}
+
+void Thread::detach(){
+	if(pthread_detach(mThread) != ErrorCode::SUCCESS){
+		//cast an exception
+	}
+}
+
+void Thread::sleep(tlint sec, tlint nano){
+
+}
+
+bool Thread::equals(Reference ref){
+	if(ref.isNull()){
+		return false;
+	}
+
+	argumentTypeCheck(ref, Thread::type());
+
+	Thread* t = dynamic_cast<Thread*>(ref.getEntity());
+
+	return pthread_equal(mThread, t->mThread) != 0;
+}
+
+void Thread::yield(){
+	tlint ret = sched_yield();
 }
 
 } /* namespace thread */

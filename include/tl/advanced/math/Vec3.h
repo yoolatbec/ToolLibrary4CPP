@@ -18,7 +18,7 @@ class Vec3: virtual public Vector {
 private:
 	const static type_t CLASS_SERIAL = 99;
 	static const tlint COMPONENT_COUNT = 3;
-	const static VECTOR_TYPE VECTOR_TYPE_VALUE = VECTOR_3;
+	const static VectorType VECTOR_TYPE_VALUE = VECTOR_3;
 	const static tlint MAX_INDEX = 2;
 	const static tlint MIN_INDEX = 0;
 	vec3 mValue;
@@ -35,7 +35,7 @@ public:
 	void set(tlint, float);
 	Reference toString();
 	vec3 values();
-	VECTOR_TYPE vectorType();
+	VectorType vectorType();
 	tlint maxIndex();
 	tlint minIndex();
 	static type_t type();

@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#ifndef THREAD_ILLEGALOPERATIONEXCEPTION_H_
-#define THREAD_ILLEGALOPERATIONEXCEPTION_H_
+#ifndef TL_THREAD_ILLEGALOPERATIONEXCEPTION_H_
+#define TL_THREAD_ILLEGALOPERATIONEXCEPTION_H_
 
 #include <tl/lang/Exception.h>
 
@@ -31,4 +31,4 @@ public:
 } /* namespace thread */
 } /* namespace tl */
 
-#endif /* THREAD_ILLEGALOPERATIONEXCEPTION_H_ */
+#endif /* TL_THREAD_ILLEGALOPERATIONEXCEPTION_H_ */
