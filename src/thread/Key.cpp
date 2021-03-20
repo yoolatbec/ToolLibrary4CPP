@@ -8,6 +8,7 @@
 #include "Function.h"
 #include <tl/lang/Pointer.h>
 #include <tl/thread/Key.h>
+#include <tl/thread/ErrorChecker.h>
 
 namespace tl {
 namespace thread {
@@ -16,9 +17,8 @@ using lang::Pointer;
 
 Key::Key() {
 	// TODO Auto-generated constructor stub
-	if (pthread_key_create(&mKey, nullptr) != 0) {
-		//cast an exception;
-	}
+	tlint err = pthread_key_create(&mKey, nullptr);
+	ErrorChecker::check(err);
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }

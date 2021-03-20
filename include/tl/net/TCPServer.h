@@ -18,8 +18,6 @@ private:
 	const static type_t CLASS_SERIAL = 250;
 	const static  tlint DEFAULT_BUFFER_SIZE = 4096;
 
-	Reference mInetAddress;
-
 	byte* mBuffer;
 
 	void openSocket();
@@ -29,9 +27,9 @@ public:
 	virtual ~TCPServer();
 	TCPServer(const TCPServer &other) = delete;
 	TCPServer& operator=(const TCPServer &other) = delete;
-	void bind(Reference);
-	void listen(tlint);
-	Reference accept();
+	void bindLocalAddress(Reference);
+	void listenForConnection(tlint);
+	Reference acceptNewConnection();
 	static type_t type();
 	bool instanceof(type_t);
 };

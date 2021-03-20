@@ -37,6 +37,7 @@ public:
 	void setName(Reference);
 	void setName(const char*);
 	void setAttribute(Reference);
+	void cancel(Reference);
 	void join();
 	void detach();
 	void yield();

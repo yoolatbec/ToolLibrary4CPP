@@ -41,7 +41,7 @@ public:
 //	SchedulePolicy getSchedulePolicy();
 //	void setPriority(tlint);
 //	tlint getPriority();
-	pthread_attr_t getAttribute();
+	pthread_attr_t* getAttribute();
 	static type_t type();
 	bool instanceof(type_t);
 };

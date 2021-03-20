@@ -23,6 +23,14 @@ Inet4Address::Inet4Address(const char *address, short port) {
 	mAddress.sin_family = AF_INET;
 	mAddress.sin_port = htons(port);
 	inet_pton(AF_INET, address, &mAddress.sin_addr);
+
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+Inet4Address::Inet4Address(sockaddr_in addr) {
+	mAddress = addr;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 Inet4Address::~Inet4Address() {

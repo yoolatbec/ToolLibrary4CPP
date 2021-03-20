@@ -11,7 +11,8 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <tl/net/TCPServer.h>
-#include <tl/net/InetAddress.h>
+#include <tl/net/TCPSocket.h>
+#include <tl/net/Inet4Address.h>
 #include <tl/net/UnableToOpenSocketException.h>
 
 namespace tl {
@@ -40,15 +41,44 @@ TCPServer::~TCPServer() {
 	// TODO Auto-generated destructor stub
 }
 
-void TCPServer::bind(Reference address) {
+void TCPServer::bindLocalAddress(Reference address) {
 	dismissNull(address);
-	argumentTypeCheck(address, InetAddress::type());
+	argumentTypeCheck(address, Inet4Address::type());
 
+	mLocalAddress = address;
+
+	int err = 0;
+
+	Inet4Address *addr = dynamic_cast<Inet4Address*>(address.getEntity());
+	sockaddr_in s_addr = addr->getInetAddress();
+	err = bind(mSocketID, (sockaddr*)&s_addr, sizeof(sockaddr_in));
 
 }
 
-void TCPServer::listen(tlint backlog){
+void TCPServer::listenForConnection(tlint backlog) {
 	tlint err = listen(mSocketID, backlog);
+}
+
+Reference TCPServer::acceptNewConnection() {
+	tlint client;
+	sockaddr_in clientAddress;
+	socklen_t addressLen;
+
+	client = accept(mSocketID, (sockaddr*)&clientAddress, &addressLen);
+	if(client <= 0){
+		//cast an exception
+	}
+
+	Reference address = Inet4Address::newInstance(clientAddress);
+	return Reference(new TCPSocket(client, address));
+}
+
+type_t TCPServer::type(){
+	return CLASS_SERIAL;
+}
+
+bool TCPServer::instanceof(type_t type){
+	return (CLASS_SERIAL == type) || Socket::instanceof(type);
 }
 
 } /* namespace net */

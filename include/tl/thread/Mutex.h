@@ -23,16 +23,21 @@ private:
 
 	pthread_mutex_t mMutex;
 	Mutex(Reference);
+	Mutex();
 	void makeConsistent();
 public:
 	virtual ~Mutex();
 	Mutex(const Mutex &other) = delete;
 	Mutex& operator=(const Mutex &other) = delete;
 	Reference newInstance(Reference);
+	Reference newInstance();
+	pthread_mutex_t* getValue();
 	void lock();
 	void tryLock();
 	void unlock();
-
+	void timedLock(tlint, tlint);
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace thread */

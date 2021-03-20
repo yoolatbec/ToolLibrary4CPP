@@ -22,12 +22,14 @@ private:
 	sockaddr_in mAddress;
 
 	Inet4Address(const char*, short);
+	Inet4Address(sockaddr_in);
 public:
 	virtual ~Inet4Address();
 	Inet4Address(const Inet4Address &other) = delete;
 	Inet4Address& operator=(const Inet4Address &other) = delete;
 	static Reference newInstance(const char*, short = DEFAULT_PORT);
 	static Reference newInstance(Reference, short = DEFAULT_PORT);
+	static Reference newInstance(sockaddr_in);
 	Reference toString();
 	short getPort();
 	Reference getAddress();

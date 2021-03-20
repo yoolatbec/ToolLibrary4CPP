@@ -18,10 +18,14 @@ private:
 	const static type_t CLASS_SERIAL = 345;
 public:
 	TCPSocket();
+	TCPSocket(tlint, Reference);
 	virtual ~TCPSocket();
 	TCPSocket(const TCPSocket &other) = delete;
 	TCPSocket& operator=(const TCPSocket &other) = delete;
+	void bindLocalAddress(Reference);
 	void connectTo(Reference);
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace net */

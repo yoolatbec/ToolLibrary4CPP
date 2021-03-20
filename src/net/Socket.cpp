@@ -30,6 +30,14 @@ Socket::~Socket() {
 	close(mSocketID);
 }
 
+Reference Socket::getLocalAddress() {
+	return mLocalAddress;
+}
+
+Reference Socket::getRemoteAddress() {
+	return mRemoteAddress;
+}
+
 type_t Socket::type() {
 	return CLASS_SERIAL;
 }

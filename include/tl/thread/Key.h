@@ -22,13 +22,12 @@ private:
 
 	pthread_key_t mKey;
 
-	Key();
-	Key(Reference);
+//	Key(Reference);
 public:
+	Key();
 	virtual ~Key();
 	Key(const Key &other) = delete;
 	Key& operator=(const Key &other) = delete;
-	static Reference newInstance();
 //	static Reference newInstance(Reference);
 	void set(Reference);
 	Reference get();

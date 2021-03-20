@@ -156,8 +156,8 @@ bool ThreadAttribute::isSystemScope(){
 //	//cast an exception
 //}
 
-pthread_attr_t ThreadAttribute::getAttribute(){
-	return mAttribute;
+pthread_attr_t* ThreadAttribute::getAttribute(){
+	return &mAttribute;
 }
 
 type_t ThreadAttribute::type(){

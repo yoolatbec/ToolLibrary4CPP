@@ -22,12 +22,19 @@ private:
 protected:
 	tlint mSocketID;
 
+	Reference mLocalAddress;
+	Reference mRemoteAddress;
+
 	Socket();
 	Socket(tlint);
+	Socket(Reference);
 public:
 	virtual ~Socket();
 	Socket(const Socket &other) = delete;
 	Socket& operator=(const Socket &other) = delete;
+	virtual void bindLocalAddress(Reference) = 0;
+	Reference getLocalAddress();
+	Reference getRemoteAddress();
 	static type_t type();
 	bool instanceof(type_t);
 };
