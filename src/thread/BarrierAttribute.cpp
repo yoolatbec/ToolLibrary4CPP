@@ -30,6 +30,10 @@ void BarrierAttribute::setShared(bool shared) {
 	}
 }
 
+pthread_barrierattr_t* BarrierAttribute::getAttribute() {
+	return &mAttribute;
+}
+
 bool BarrierAttribute::isShared() {
 	tlint shared;
 	pthread_barrierattr_getpshared(&mAttribute, &shared);
