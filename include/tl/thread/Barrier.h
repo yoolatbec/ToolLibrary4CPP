@@ -21,8 +21,6 @@ private:
 	const static type_t CLASS_SERIAL = 246;
 
 	pthread_barrier_t mBarrier;
-
-	void dismissNegative(tlint);
 public:
 	Barrier(tlint);
 	Barrier(Reference, tlint);
@@ -30,6 +28,8 @@ public:
 	Barrier(const Barrier &other) = delete;
 	Barrier& operator=(const Barrier &other) = delete;
 	void wait();
+	static type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace thread */
