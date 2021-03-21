@@ -9,8 +9,9 @@
 #include <tl/thread/Thread.h>
 #include <tl/thread/ThreadAttribute.h>
 #include <tl/lang/String.h>
+#include <tl/thread/ErrorCode.h>
+
 #include "Function.h"
-#include "ErrorCode.h"
 
 namespace tl {
 namespace thread {

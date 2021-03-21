@@ -19,9 +19,11 @@ using lang::UnacceptableArgumentException;
 
 Mutex::Mutex(Reference ref) {
 	// TODO Auto-generated constructor stub
+	dismissNull(ref);
+	argumentTypeCheck(ref, MutexAttribute::type());
+
 	MutexAttribute *attribute = dynamic_cast<MutexAttribute*>(ref.getEntity());
-	pthread_mutexattr_t attr = attribute->getAttribute();
-	tlint err = pthread_mutex_init(&mMutex, &attr);
+	tlint err = pthread_mutex_init(&mMutex, attribute->getAttribute());
 	ErrorChecker::check(err);
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -31,17 +33,6 @@ Mutex::Mutex() {
 	mMutex = PTHREAD_MUTEX_INITIALIZER;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
-}
-
-Reference Mutex::newInstance(Reference attribute) {
-	dismissNull(attribute);
-	argumentTypeCheck(attribute, MutexAttribute::type());
-
-	return Reference(new Mutex(attribute));
-}
-
-Reference Mutex::newInstance() {
-	return Reference(new Mutex());
 }
 
 pthread_mutex_t* Mutex::getValue() {

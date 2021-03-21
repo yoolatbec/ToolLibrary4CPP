@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#ifndef THREAD_ERRORCODE_H_
-#define THREAD_ERRORCODE_H_
+#ifndef TL_THREAD_ERRORCODE_H_
+#define TL_THREAD_ERRORCODE_H_
 
 #include <pthread.h>
 #include <asm/errno.h>
@@ -29,4 +29,4 @@ enum ErrorCode{
 
 
 
-#endif /* THREAD_ERRORCODE_H_ */
+#endif /* TL_THREAD_ERRORCODE_H_ */

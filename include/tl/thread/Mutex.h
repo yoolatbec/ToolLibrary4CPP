@@ -22,15 +22,13 @@ private:
 	const static type_t CLASS_SERIAL = 70;
 
 	pthread_mutex_t mMutex;
-	Mutex(Reference);
-	Mutex();
 	void makeConsistent();
 public:
+	Mutex();
+	Mutex(Reference);
 	virtual ~Mutex();
 	Mutex(const Mutex &other) = delete;
 	Mutex& operator=(const Mutex &other) = delete;
-	Reference newInstance(Reference);
-	Reference newInstance();
 	pthread_mutex_t* getValue();
 	void lock();
 	void tryLock();
