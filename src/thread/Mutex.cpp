@@ -6,7 +6,7 @@
  */
 
 #include <tl/thread/Mutex.h>
-#include "ErrorChecker.h"
+#include <tl/thread/ErrorChecker.h>
 #include <time.h>
 #include <tl/thread/MutexAttribute.h>
 #include <tl/lang/UnacceptableArgumentException.h>

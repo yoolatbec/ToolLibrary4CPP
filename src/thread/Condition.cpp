@@ -8,7 +8,7 @@
 #include <tl/thread/Condition.h>
 #include <tl/thread/ConditionAttribute.h>
 #include <tl/thread/Mutex.h>
-#include "ErrorChecker.h"
+#include <tl/thread/ErrorChecker.h>
 #include <tl/lang/UnacceptableArgumentException.h>
 
 namespace tl {

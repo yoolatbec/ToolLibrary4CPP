@@ -5,18 +5,19 @@
  *      Author: yoolatbec
  */
 
-#include <tl/lang/Pointer.h>
 #include <tl/thread/Thread.h>
 #include <tl/thread/ThreadAttribute.h>
+#include <tl/thread/ErrorChecker.h>
+#include <tl/lang/Pointer.h>
 #include <tl/lang/String.h>
-#include <tl/thread/ErrorCode.h>
-
+#include <tl/lang/IllegalArgumentTypeException.h>
 #include "Function.h"
 
 namespace tl {
 namespace thread {
 
 using lang::Pointer;
+using lang::IllegalArgumentTypeException;
 using lang::String;
 
 Thread::Thread(Reference target) {
@@ -42,6 +43,7 @@ Thread::Thread(Reference target, Reference ref) {
 		mName = ref;
 	} else {
 		//cast an exception
+		throw IllegalArgumentTypeException();
 	}
 
 	mThread = -1;
