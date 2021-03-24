@@ -21,6 +21,8 @@ private:
 	constexpr const static double DEFAULT_REAL = 0;
 	constexpr const static double DEFAULT_IMAGINARY = 0;
 
+	static Reference sOrigin;
+
 	double mReal;
 	double mImaginary;
 	double mModulus;
@@ -34,6 +36,8 @@ public:
 	Reference conjugate();
 	double modulus();
 	static Reference add(Reference, Reference);
+	static Reference substract(Reference, Reference);
+	static Reference multiply(Reference, double);
 	static Reference multiply(Reference, Reference);
 	static type_t type();
 	bool instanceof(type_t);

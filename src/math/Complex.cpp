@@ -14,6 +14,8 @@ namespace math {
 using lang::Reference;
 using lang::Math;
 
+Reference Complex::sOrigin = Reference(new Complex(0, 0));
+
 Complex::Complex(double real, double imaginary) {
 	// TODO Auto-generated constructor stub
 	mReal = real;
@@ -56,6 +58,19 @@ Reference Complex::add(Reference u, Reference v) {
 		new Complex(c1->real() + c2->real(), c1->imaginary() + c2->imaginary()));
 }
 
+Reference Complex::substract(Reference u, Reference v) {
+	dismissNull(u);
+	dismissNull(v);
+	argumentTypeCheck(u, Complex::type());
+	argumentTypeCheck(v, Complex::type());
+
+	Complex *c1 = dynamic_cast<Complex*>(u.getEntity());
+	Complex *c2 = dynamic_cast<Complex*>(v.getEntity());
+
+	return Reference(
+		new Complex(c1->real() - c2->real(), c1->imaginary() - c2->imaginary()));
+}
+
 Reference Complex::multiply(Reference u, Reference v) {
 	dismissNull(u);
 	dismissNull(v);
@@ -69,6 +84,18 @@ Reference Complex::multiply(Reference u, Reference v) {
 	double imag = c1->real() * c2->imaginary() + c1->imaginary() * c2->real();
 
 	return Reference(new Complex(real, imag));
+}
+
+Reference Complex::multiply(Reference u, double a) {
+	dismissNull(u);
+	argumentTypeCheck(u, Complex::type());
+
+	if (a == 0.0) {
+		return sOrigin;
+	}
+
+	Complex *c = dynamic_cast<Complex*>(u.getEntity());
+	return Reference(new Complex(c->real() * a, c->imaginary() * a));
 }
 
 type_t Complex::type() {

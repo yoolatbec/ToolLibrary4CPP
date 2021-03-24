@@ -18,11 +18,13 @@ private:
 	const static type_t CLASS_SERIAL = 11;
 
 	void* const mPointer;
+	tlint mLength;
 public:
-	Pointer(void*);
+	Pointer(void*, tlint);
 	virtual ~Pointer();
 	Pointer(const Pointer &other) = delete;
 	Pointer& operator=(const Pointer &other) = delete;
+	tlint length();
 	void* get();
 	static type_t type();
 	bool instanceof(type_t);
