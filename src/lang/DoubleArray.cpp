@@ -43,7 +43,7 @@ DoubleArray::~DoubleArray() {
 
 void DoubleArray::initParameterCheck(tlint size) {
 	if (size <= 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 }
 

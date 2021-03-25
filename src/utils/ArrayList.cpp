@@ -15,7 +15,7 @@ namespace utils {
 
 using lang::Reference;
 using lang::Array;
-using lang::UnacceptableArgumentException;
+using lang::IllegalArgumentException;
 using lang::MemoryLimitExceededException;
 
 ArrayList::ArrayList(type_t type)
@@ -29,7 +29,7 @@ ArrayList::ArrayList(type_t type, tlint reserved)
 		: Collection(type), List(type, reserved) {
 	if (reserved > MAX_CAPACITY) {
 		//cast an exception here
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	mElements = new Reference[mCapacity];
@@ -54,7 +54,7 @@ ArrayList::~ArrayList() {
 void ArrayList::boundCheck(tlint position) {
 	if (position >= mSize || position < 0) {
 		//cast IndexOutOfBoundException exception
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 }
 
@@ -374,7 +374,7 @@ Reference ArrayList::toArray() {
 Reference ArrayList::sublist(tlint begin, tlint end) {
 	if (end < begin) {
 		//should cast an exception
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	boundCheck(begin);
@@ -493,7 +493,7 @@ void ArrayList::ArrayListIterator::remove() {
 
 	if (mLastCursor < 0) {
 		//cast an exception
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	List *list = dynamic_cast<List*>(mList.getEntity());
@@ -508,7 +508,7 @@ void ArrayList::ArrayListIterator::set(Reference newValue) {
 
 	if (mLastCursor < 0) {
 		//cast an exception
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	List *list = dynamic_cast<List*>(mList.getEntity());

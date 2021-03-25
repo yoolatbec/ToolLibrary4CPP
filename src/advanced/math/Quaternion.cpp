@@ -15,7 +15,7 @@ namespace math {
 
 using lang::Reference;
 using lang::Math;
-using lang::UnacceptableArgumentException;
+using lang::IllegalArgumentException;
 
 Quaternion::Quaternion(float x, float y, float z, float w) {
 	// TODO Auto-generated constructor stub
@@ -86,7 +86,7 @@ float Quaternion::value(tlint index) {
 		result = mValue.w;
 		break;
 	default:
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	return result;

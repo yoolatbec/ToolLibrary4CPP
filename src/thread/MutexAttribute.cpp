@@ -12,7 +12,7 @@
 namespace tl {
 namespace thread {
 
-using lang::UnacceptableArgumentException;
+using lang::IllegalArgumentException;
 using MutexAttribute::MutexType;
 
 MutexAttribute::MutexAttribute() {
@@ -63,7 +63,7 @@ void MutexAttribute::setMutexType(MutexType type) {
 		break;
 	default:
 		//cast an exception
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 }
 

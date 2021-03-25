@@ -15,7 +15,7 @@ Pointer::Pointer(void *ptr, tlint length)
 	: mPointer(ptr) {
 	// TODO Auto-generated constructor stub
 	if(length <= 0){
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 	mLength = length;
 

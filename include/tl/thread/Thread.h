@@ -25,6 +25,7 @@ protected:
 	Reference mName;
 	Reference mAttribute;
 
+	bool mStatus;
 public:
 	Thread(Reference target);
 	Thread(Reference, Reference);
@@ -35,13 +36,13 @@ public:
 	void run();
 //	bool isRunning();
 	void setName(Reference);
-	void setName(const char*);
+	Reference getName();
 	void setAttribute(Reference);
-	void cancel(Reference);
-	void join();
+	static void cancel(Reference);
+	Reference join();
 	void detach();
-	void yield();
-	void sleep(tlint, tlint);
+	static void yield();
+//	void sleep(tlint);
 	bool equals(Reference);
 	static type_t type();
 	bool instanceof(type_t);

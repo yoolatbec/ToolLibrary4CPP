@@ -15,7 +15,7 @@ namespace tl {
 namespace thread {
 
 using lang::Reference;
-using lang::UnacceptableArgumentException;
+using lang::IllegalArgumentException;
 
 Condition::Condition() {
 	// TODO Auto-generated constructor stub
@@ -59,7 +59,7 @@ void Condition::timedWait(Reference mutex, tlint sec, tlint nano) {
 	argumentTypeCheck(mutex, Mutex::type());
 
 	if (sec < 0 || nano < 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	timespec time;

@@ -11,13 +11,17 @@
 #include <tl/lang/Pointer.h>
 #include <tl/lang/String.h>
 #include <tl/lang/IllegalArgumentTypeException.h>
-#include "Function.h"
+#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/thread/Function.h>
+
+#include <unistd.h>
 
 namespace tl {
 namespace thread {
 
 using lang::Pointer;
 using lang::IllegalArgumentTypeException;
+using lang::IllegalArgumentException;
 using lang::String;
 
 Thread::Thread(Reference target) {
@@ -27,6 +31,7 @@ Thread::Thread(Reference target) {
 
 	mTarget = target;
 	mThread = -1;
+	mStatus = false;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -47,12 +52,31 @@ Thread::Thread(Reference target, Reference ref) {
 	}
 
 	mThread = -1;
+	mStatus = false;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+Thread::Thread(Reference target, Reference attribute, Reference name) {
+	dismissNull(target);
+	dismissNull(attribute);
+	dismissNull(name);
+	argumentTypeCheck(target, Function::type());
+	argumentTypeCheck(attribute, ThreadAttribute::type());
+	argumentTypeCheck(name, String::type());
+
+	mTarget = target;
+	mAttribute = attribute;
+	mName = name;
+
+	mThread = -1;
+	mStatus = false;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 void Thread::run() {
-	Function *func = dynamic_cast<Function*>(mTarget.getEntity());
+	tlint err = 0;
 
 	pthread_attr_t attr;
 	if (!mAttribute.isNull()) {
@@ -60,11 +84,11 @@ void Thread::run() {
 			dynamic_cast<ThreadAttribute*>(mAttribute.getEntity());
 		attr = attribute->getAttribute();
 	} else {
-		if (pthread_attr_init(&attr) != ErrorCode::SUCCESS) {
-			//cast an exception
-		}
+		err = pthread_attr_init(&attr);
+		ErrorChecker::check(err);
 	}
 
+	Function *func = dynamic_cast<Function*>(mTarget.getEntity());
 	Reference argument = func->getArgument();
 	void *arg = nullptr;
 	if (!argument.isNull()) {
@@ -72,7 +96,8 @@ void Thread::run() {
 		arg = p->get();
 	}
 
-	pthread_create(&mThread, &attr, func->getFunction(), arg);
+	err = pthread_create(&mThread, &attr, func->getFunction(), arg);
+	ErrorChecker::check(err);
 }
 
 Thread::~Thread() {
@@ -86,21 +111,38 @@ void Thread::setAttribute(Reference attr) {
 	mAttribute = attr;
 }
 
-void Thread::join() {
-	if (pthread_join(mThread, nullptr) != ErrorCode::SUCCESS) {
-		//cast an exception
-	}
+void Thread::setName(Reference ref) {
+	dismissNull(ref);
+	argumentTypeCheck(ref, String::type());
+
+	mName = ref;
+}
+
+Reference Thread::getName() {
+	return mName;
+}
+
+Reference Thread::join() {
+	void *status = nullptr;
+	tlint err = pthread_join(mThread, &status);
+	ErrorChecker::check(err);
+
+	return Reference(new Pointer(status, sizeof(void*)));
+
 }
 
 void Thread::detach() {
-	if (pthread_detach(mThread) != ErrorCode::SUCCESS) {
-		//cast an exception
-	}
+	tlint err = pthread_detach(mThread);
+	ErrorChecker::check(err);
 }
 
-void Thread::sleep(tlint sec, tlint nano) {
-
-}
+//void Thread::sleep(tlint mili) {
+//	if (mili <= 0) {
+//		throw UnacceptableArgumentException();
+//	}
+//
+//	usleep(mili);
+//}
 
 bool Thread::equals(Reference ref) {
 	if (ref.isNull()) {
@@ -115,7 +157,18 @@ bool Thread::equals(Reference ref) {
 }
 
 void Thread::yield() {
-	tlint ret = sched_yield();
+	tlint err = sched_yield();
+	ErrorChecker::check(err);
+}
+
+void Thread::cancel(Reference t) {
+	dismissNull(t);
+	argumentTypeCheck(t, Thread::type());
+
+	Thread *thread = dynamic_cast<Thread*>(t.getEntity());
+	tlint err = pthread_cancel(thread->mThread);
+
+	ErrorChecker::check(err);
 }
 
 type_t Thread::type() {

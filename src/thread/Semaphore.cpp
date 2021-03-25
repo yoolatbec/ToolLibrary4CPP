@@ -12,12 +12,12 @@
 namespace tl {
 namespace thread {
 
-using lang::UnacceptableArgumentException;
+using lang::IllegalArgumentException;
 
 Semaphore::Semaphore(bool shared, tlint value) {
 	// TODO Auto-generated constructor stub
 	if (value <= 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	tlint err = sem_init(&mSemaphore, shared, value);

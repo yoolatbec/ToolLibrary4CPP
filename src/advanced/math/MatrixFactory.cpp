@@ -20,7 +20,7 @@ namespace math {
 
 using lang::Reference;
 using lang::IllegalArgumentTypeException;
-using lang::UnacceptableArgumentException;
+using lang::IllegalArgumentException;
 using lang::UndefinedException;
 
 MatrixFactory::MatrixFactory() {
@@ -53,7 +53,7 @@ float MatrixFactory::dot(Reference v, Reference u) {
 	Vector *vector_u = dynamic_cast<Vector*>(u.getEntity());
 
 	if (vector_v->vectorType() != vector_u->vectorType()) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	float product = 0;
@@ -250,7 +250,7 @@ Reference MatrixFactory::newMatrix(MatrixType type) {
 		break;
 	default:
 		// cast an exception
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	return ref;
@@ -273,7 +273,7 @@ Reference MatrixFactory::newVector(tlint i) {
 		break;
 	default:
 		//cast an exception
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	return ref;
@@ -296,7 +296,7 @@ Reference MatrixFactory::newVector(VectorType type) {
 		break;
 	default:
 		//cast an exception
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	return ref;
@@ -403,7 +403,7 @@ Reference MatrixFactory::add(Reference m1, Reference m2) {
 		return vAdd0(m1, m2);
 	}
 
-	throw UnacceptableArgumentException();
+	throw IllegalArgumentException();
 }
 
 Reference MatrixFactory::vAdd0(Reference v, Reference u) {
@@ -457,7 +457,7 @@ Reference MatrixFactory::minus(Reference m1, Reference m2) {
 		return vMinus0(m1, m2);
 	}
 
-	throw UnacceptableArgumentException();
+	throw IllegalArgumentException();
 }
 
 Reference MatrixFactory::vMinus0(Reference v, Reference u) {

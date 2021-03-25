@@ -11,12 +11,12 @@
 namespace tl {
 namespace net {
 
-using lang::UnacceptableArgumentException;
+using lang::IllegalArgumentException;
 
 DatagramPacket::DatagramPacket(tlint dataSize) {
 	// TODO Auto-generated constructor stub
 	if(dataSize <= 0){
-		throw UnacceptableArgumentException("data size can't be negative");
+		throw IllegalArgumentException("data size can't be negative");
 	}
 
 	mData = new byte[dataSize];

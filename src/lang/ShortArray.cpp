@@ -37,7 +37,7 @@ ShortArray::ShortArray(tlint size, short *initValues)
 
 void ShortArray::initParameterCheck(tlint size) {
 	if (size <= 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 }
 

@@ -37,7 +37,7 @@ ByteArray::ByteArray(tlint size, byte *initValues)
 
 void ByteArray::initParameterCheck(tlint size) {
 	if (size <= 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 }
 

@@ -221,7 +221,7 @@ Reference String::replace(char src, char target) {
 
 Reference String::substring(tlint length) {
 	if (length <= 0 || length > mLength) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	char *str = new char[length + 1];
@@ -240,7 +240,7 @@ Reference String::substring(tlint start, tlint length) {
 	}
 
 	if (length <= 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	char *str = new char[length + 1];

@@ -5,9 +5,9 @@
  *      Author: yoolatbec
  */
 
-#include "Function.h"
 #include <tl/lang/Pointer.h>
 #include <tl/thread/FailedToExecuteException.h>
+#include <tl/thread/Function.h>
 
 namespace tl {
 namespace thread {
@@ -30,20 +30,25 @@ fp Function::getFunction() {
 }
 
 void Function::setArgument(Reference ref) {
+	dismissNull(ref);
 	argumentTypeCheck(ref, Pointer::type());
 
 	mArguments = ref;
 }
 
-void Function::setArgument(void *arguments) {
-	mArguments = Reference(new Pointer(arguments));
+void Function::setArgument(void *arguments, tlint length) {
+	mArguments = Reference(new Pointer(arguments, length));
 }
 
-void* Function::perform(void *arguments) {
+Reference Function::getArgument(){
+	return mArguments;
+}
+
+void* Function::execute(void *arguments) {
 	return mFunction(arguments);
 }
 
-void* Function::perform() {
+void* Function::execute() {
 	if (mArguments.isNull()) {
 		throw FailedToExecuteException();
 	}

@@ -12,7 +12,7 @@
 namespace tl {
 namespace thread {
 
-using lang::UnacceptableArgumentException;
+using lang::IllegalArgumentException;
 
 ReadWriteLock::ReadWriteLock(bool shared) {
 	// TODO Auto-generated constructor stub
@@ -48,7 +48,7 @@ void ReadWriteLock::writeLock() {
 
 void ReadWriteLock::timedReadLock(tlint sec, tlint nano) {
 	if (sec < 0 || nano < 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	timespec timeout;
@@ -61,7 +61,7 @@ void ReadWriteLock::timedReadLock(tlint sec, tlint nano) {
 
 void ReadWriteLock::timedWriteLock(tlint sec, tlint nano) {
 	if (sec < 0 || nano < 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	timespec timeout;

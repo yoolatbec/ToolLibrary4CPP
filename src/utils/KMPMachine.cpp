@@ -15,7 +15,7 @@ namespace tl {
 namespace utils {
 
 using lang::String;
-using lang::UnacceptableArgumentException;
+using lang::IllegalArgumentException;
 using lang::IndexOutOfBoundsException;
 
 KMPMachine::KMPMachine(Reference pattern) {
@@ -62,7 +62,7 @@ Reference KMPMachine::newInstance(Reference ref) {
 
 	String *str = dynamic_cast<String*>(ref.getEntity());
 	if (str->length() == 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	return Reference(new KMPMachine(ref));

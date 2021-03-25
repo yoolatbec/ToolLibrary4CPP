@@ -37,7 +37,7 @@ LongArray::LongArray(tlint size, tlint64 *initValues)
 
 void LongArray::initParameterCheck(tlint size) {
 	if (size <= 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 }
 

@@ -15,7 +15,7 @@ namespace tl {
 namespace thread {
 
 using lang::Reference;
-using lang::UnacceptableArgumentException;
+using lang::IllegalArgumentException;
 
 Mutex::Mutex(Reference ref) {
 	// TODO Auto-generated constructor stub
@@ -61,7 +61,7 @@ void Mutex::unlock() {
 
 void Mutex::timedLock(tlint sec, tlint nano) {
 	if (sec < 0 || nano < 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	timespec time;

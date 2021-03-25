@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include "BarrierAttribute.h"
+#include <tl/thread/BarrierAttribute.h>
 
 namespace tl {
 namespace thread {

@@ -6,8 +6,8 @@
  */
 
 #include <tl/thread/Barrier.h>
+#include <tl/thread/BarrierAttribute.h>
 #include "ErrorChecker.h"
-#include <BarrierAttribute.h>
 
 namespace tl {
 namespace thread {

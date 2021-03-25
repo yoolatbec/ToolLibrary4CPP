@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#ifndef THREAD_BARRIERATTRIBUTE_H_
-#define THREAD_BARRIERATTRIBUTE_H_
+#ifndef TL_THREAD_BARRIERATTRIBUTE_H_
+#define TL_THREAD_BARRIERATTRIBUTE_H_
 
 #include <tl/lang/Object.h>
 #include <pthread.h>
@@ -34,4 +34,4 @@ public:
 } /* namespace thread */
 } /* namespace tl */
 
-#endif /* THREAD_BARRIERATTRIBUTE_H_ */
+#endif /* TL_THREAD_BARRIERATTRIBUTE_H_ */

@@ -8,6 +8,7 @@
 #ifndef IO_FILE_H_
 #define IO_FILE_H_
 
+#include <tl/io/Streaming.h>
 #include <tl/lang/Reference.h>
 #include <cstdio>
 

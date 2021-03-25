@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#ifndef THREAD_FUNCTION_H_
-#define THREAD_FUNCTION_H_
+#ifndef TL_THREAD_FUNCTION_H_
+#define TL_THREAD_FUNCTION_H_
 
 #include <tl/lang/Reference.h>
 
@@ -29,10 +29,10 @@ public:
 	Function(const Function &other) = delete;
 	Function& operator=(const Function &other) = delete;
 	fp getFunction();
-	void* perform(void*);
-	void* perform();
+	void* execute(void*);
+	void* execute();
 	void setArgument(Reference);
-	void setArgument(void*);
+	void setArgument(void*, tlint);
 	Reference getArgument();
 	static type_t type();
 	bool instanceof(type_t);
@@ -41,4 +41,4 @@ public:
 } /* namespace thread */
 } /* namespace tl */
 
-#endif /* THREAD_FUNCTION_H_ */
+#endif /* TL_THREAD_FUNCTION_H_ */

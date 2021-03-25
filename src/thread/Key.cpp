@@ -5,10 +5,10 @@
  *      Author: yoolatbec
  */
 
-#include "Function.h"
 #include <tl/lang/Pointer.h>
 #include <tl/thread/Key.h>
 #include <tl/thread/ErrorChecker.h>
+#include <tl/thread/Function.h>
 
 namespace tl {
 namespace thread {

@@ -184,7 +184,7 @@ Reference StringBuilder::substring(tlint begin, tlint end) {
 	indexBoundCheck(end - 1);
 
 	if (begin > end) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 
 	char *str = new char[end - begin + 1];

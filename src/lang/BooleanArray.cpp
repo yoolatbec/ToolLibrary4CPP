@@ -38,7 +38,7 @@ BooleanArray::BooleanArray(tlint size, bool *initValues)
 
 void BooleanArray::initParameterCheck(tlint value) {
 	if (value <= 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 }
 

@@ -40,7 +40,7 @@ FloatArray::~FloatArray() {
 
 void FloatArray::initParameterCheck(tlint i) {
 	if (i < 0) {
-		throw UnacceptableArgumentException();
+		throw IllegalArgumentException();
 	}
 }
 
