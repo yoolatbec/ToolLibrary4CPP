@@ -161,6 +161,16 @@ void Thread::yield() {
 	ErrorChecker::check(err);
 }
 
+void Thread::exit(Reference ref) {
+	if (ref.isNull()) {
+		pthread_exit(nullptr);
+	}
+
+	argumentTypeCheck(ref, Pointer::type());
+	Pointer *ptr = dynamic_cast<Pointer*>(ref.getEntity());
+	pthread_exit(ptr->get());
+}
+
 void Thread::cancel(Reference t) {
 	dismissNull(t);
 	argumentTypeCheck(t, Thread::type());

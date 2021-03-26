@@ -42,6 +42,7 @@ public:
 	Reference join();
 	void detach();
 	static void yield();
+	void exit(Reference);
 //	void sleep(tlint);
 	bool equals(Reference);
 	static type_t type();
