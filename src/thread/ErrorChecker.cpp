@@ -13,6 +13,8 @@
 #include <tl/thread/DeadlockException.h>
 #include <tl/thread/InsufficientMemoryException.h>
 #include <tl/thread/NoSuchThreadException.h>
+#include <tl/thread/IrrecoverableException.h>
+#include <tl/thread/NoMemoryException.h>
 #include <tl/lang/IllegalArgumentException.h>
 
 namespace tl {
@@ -53,6 +55,12 @@ void ErrorChecker::check(tlint err) {
 		break;
 	case TIMEDOUT:
 		throw TimeOutException();
+		break;
+	case IRRECOVERABLE:
+		throw IrrecoverableException();
+		break;
+	case NO_MEMORY:
+		throw NoMemoryException();
 		break;
 	default:
 		throw ThreadException();
