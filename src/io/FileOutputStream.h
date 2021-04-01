@@ -8,7 +8,7 @@
 #ifndef IO_FILEOUTPUTSTREAM_H_
 #define IO_FILEOUTPUTSTREAM_H_
 
-#include "OutputStream.h"
+#include <tl/io/OutputStream.h>
 
 namespace tl {
 namespace io {

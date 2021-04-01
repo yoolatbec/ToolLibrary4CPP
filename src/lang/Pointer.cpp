@@ -6,12 +6,12 @@
  */
 
 #include <tl/lang/Pointer.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 
 namespace tl {
 namespace lang {
 
-Pointer::Pointer(void *ptr, tlint length)
+Pointer::Pointer(void *ptr, tlint64 length)
 	: mPointer(ptr) {
 	// TODO Auto-generated constructor stub
 	if(length <= 0){
@@ -31,7 +31,7 @@ void* Pointer::get(){
 	return mPointer;
 }
 
-tlint Pointer::length(){
+tlint64 Pointer::length(){
 	return mLength;
 }
 

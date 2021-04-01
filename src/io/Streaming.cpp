@@ -6,9 +6,12 @@
  */
 
 #include <tl/io/Streaming.h>
+#include <tl/lang/UnsupportedOperationException.h>
 
 namespace tl {
 namespace io {
+
+using lang::UnsupportedOperationException;
 
 Streaming::Streaming() {
 	// TODO Auto-generated constructor stub
@@ -17,6 +20,14 @@ Streaming::Streaming() {
 
 Streaming::~Streaming() {
 	// TODO Auto-generated destructor stub
+}
+
+Reference Streaming::openInputStream() {
+	throw UnsupportedOperationException();
+}
+
+Reference Streaming::openOutputStream() {
+	throw UnsupportedOperationException();
 }
 
 type_t Streaming::type() {

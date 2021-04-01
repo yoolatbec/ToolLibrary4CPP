@@ -7,7 +7,7 @@
 
 #include "Quaternion.h"
 #include <tl/lang/Math.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 
 namespace tl {
 namespace advanced {

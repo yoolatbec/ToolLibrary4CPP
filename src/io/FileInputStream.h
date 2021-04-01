@@ -8,7 +8,7 @@
 #ifndef IO_FILEINPUTSTREAM_H_
 #define IO_FILEINPUTSTREAM_H_
 
-#include "InputStream.h"
+#include <tl/io/InputStream.h>
 
 namespace tl {
 namespace io {

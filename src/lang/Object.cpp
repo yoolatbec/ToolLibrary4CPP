@@ -7,6 +7,7 @@
 
 #include <tl/lang/IllegalArgumentTypeException.h>
 #include <tl/lang/NullPointerException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <tl/lang/String.h>
 #include <cstdio>
 
@@ -35,9 +36,15 @@ void Object::argumentTypeCheck(Reference ref, type_t type) {
 	}
 }
 
-void Object::dismissNull(Reference ref){
-	if(ref.isNull()){
+void Object::dismissNull(Reference ref) {
+	if (ref.isNull()) {
 		throw NullPointerException();
+	}
+}
+
+void Object::dismissNegative(tlint i) {
+	if (i < 0) {
+		throw IllegalArgumentException();
 	}
 }
 

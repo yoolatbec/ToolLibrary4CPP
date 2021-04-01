@@ -24,8 +24,8 @@ public:
 	virtual ~Streaming();
 	Streaming(const Streaming &other) = delete;
 	Streaming& operator=(const Streaming &other) = delete;
-	virtual Reference openInputStream()= 0;
-	virtual Reference openOutputStream() = 0;
+	virtual Reference openInputStream();
+	virtual Reference openOutputStream();
 	static type_t type();
 	virtual bool instanceof(type_t);
 };

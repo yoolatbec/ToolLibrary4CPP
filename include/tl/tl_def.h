@@ -8,17 +8,9 @@
 #ifndef INCLUDE_TL_DEF_H_
 #define INCLUDE_TL_DEF_H_
 
-#ifdef __linux__
 
 #include <stddef.h>
 
-#endif
-
-#ifdef _WIN32
-
-typedef unsigned int size_t
-
-#endif
 
 typedef signed char byte;
 typedef int tlint;

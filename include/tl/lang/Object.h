@@ -85,6 +85,7 @@ public:
 	 */
 	static void argumentTypeCheck(Reference, type_t);
 	static void dismissNull(Reference);
+	static void dismissNegative(tlint);
 	virtual bool instanceof(type_t);
 	static type_t type();
 
