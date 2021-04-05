@@ -93,8 +93,9 @@ double Mat2x2::computeDeterminant() {
 mat2x2 Mat2x2::inverse0() {
 	mat2x2 m;
 	m.r0.x = mValue.r1.y / mDeterminant;
-	m.r0.y = -mValue.r1.x / mDeterminant;
-	m.r1.x = -mValue.r0.y / mDeterminant;
+	m.r1.x = -mValue.r1.x / mDeterminant;
+
+	m.r0.y = -mValue.r0.y / mDeterminant;
 	m.r1.y = mValue.r0.x / mDeterminant;
 
 	return m;

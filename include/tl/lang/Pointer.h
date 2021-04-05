@@ -25,6 +25,7 @@ public:
 	Pointer(const Pointer &other) = delete;
 	Pointer& operator=(const Pointer &other) = delete;
 	tlint64 length();
+//	Reference toByteArray();
 	void* get();
 	static type_t type();
 	bool instanceof(type_t);

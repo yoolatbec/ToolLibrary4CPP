@@ -17,6 +17,7 @@ OutputStream::OutputStream() {
 	// TODO Auto-generated constructor stub
 	mBufferSize = DEFAULT_BUFFER_SIZE;
 	mBuffer = new byte[mBufferSize];
+	mUsedBufferSize = 0;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -25,6 +26,7 @@ OutputStream::OutputStream(tlint bufferSize) {
 	dismissNegative(bufferSize);
 
 	mBufferSize = bufferSize;
+	mUsedBufferSize = 0;
 	if (mBufferSize == 0) {
 		mBuffer = nullptr;
 	} else {
@@ -77,7 +79,7 @@ type_t OutputStream::type() {
 }
 
 bool OutputStream::instanceof(type_t type) {
-	return (CLASS_SERIAL == type) || Object::instanceof(type);
+	return (CLASS_SERIAL == type) || Closeable::instanceof(type);
 }
 
 } /* namespace io */

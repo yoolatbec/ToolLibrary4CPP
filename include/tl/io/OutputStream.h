@@ -8,22 +8,26 @@
 #ifndef TL_IO_OUTPUTSTREAM_H_
 #define TL_IO_OUTPUTSTREAM_H_
 
-#include <tl/lang/Object.h>
+#include <tl/io/Closeable.h>
 
 namespace tl {
 namespace io {
 
 using lang::Reference;
 
-class OutputStream: public virtual lang::Object {
+class OutputStream: public virtual Closeable {
 private:
 	const static type_t CLASS_SERIAL = 249;
+
+	void unbufferedWrite0(tlint, Reference);
+	void bufferedWrite0(tlint, Reference);
 
 protected:
 	const static tlint DEFAULT_BUFFER_SIZE = 4096;
 
 	byte* mBuffer;
 	tlint mBufferSize;
+	tlint mUsedBufferSize;
 
 	OutputStream();
 	OutputStream(tlint);

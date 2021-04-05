@@ -8,14 +8,14 @@
 #ifndef TL_IO_INPUTSTREAM_H_
 #define TL_IO_INPUTSTREAM_H_
 
-#include <tl/lang/Reference.h>
+#include <tl/io/Closeable.h>
 
 namespace tl {
 namespace io {
 
 using lang::Reference;
 
-class InputStream: public virtual lang::Object {
+class InputStream: public virtual Closeable {
 private:
 	const static type_t CLASS_SERIAL = 183;
 

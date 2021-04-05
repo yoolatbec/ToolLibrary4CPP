@@ -109,21 +109,21 @@ mat3x3 Mat3x3::inverse0() {
 	mat3x3 m;
 	m.r0.x = (mValue.r1.y * mValue.r2.z - mValue.r1.z * mValue.r2.y)
 		/ mDeterminant;
-	m.r0.y = -(mValue.r1.x * mValue.r2.z - mValue.r1.z * mValue.r2.x)
+	m.r1.x = -(mValue.r1.x * mValue.r2.z - mValue.r1.z * mValue.r2.x)
 		/ mDeterminant;
-	m.r0.z = (mValue.r1.x * mValue.r2.y - mValue.r1.y * mValue.r2.x)
+	m.r2.x = (mValue.r1.x * mValue.r2.y - mValue.r1.y * mValue.r2.x)
 		/ mDeterminant;
 
-	m.r1.x = -(mValue.r0.y * mValue.r2.z - mValue.r0.z * mValue.r2.y)
+	m.r0.y = -(mValue.r0.y * mValue.r2.z - mValue.r0.z * mValue.r2.y)
 		/ mDeterminant;
 	m.r1.y = (mValue.r0.x * mValue.r2.z - mValue.r0.z * mValue.r2.x)
 		/ mDeterminant;
-	m.r1.z = -(mValue.r0.x * mValue.r2.y - mValue.r0.y * mValue.r2.x)
+	m.r2.y = -(mValue.r0.x * mValue.r2.y - mValue.r0.y * mValue.r2.x)
 		/ mDeterminant;
 
-	m.r2.x = (mValue.r0.y * mValue.r1.z - mValue.r0.z * mValue.r1.y)
+	m.r0.z = (mValue.r0.y * mValue.r1.z - mValue.r0.z * mValue.r1.y)
 		/ mDeterminant;
-	m.r2.y = -(mValue.r0.x * mValue.r1.z - mValue.r0.z * mValue.r1.x)
+	m.r1.z = -(mValue.r0.x * mValue.r1.z - mValue.r0.z * mValue.r1.x)
 		/ mDeterminant;
 	m.r2.z = (mValue.r0.x * mValue.r1.y - mValue.r0.y * mValue.r1.x)
 		/ mDeterminant;

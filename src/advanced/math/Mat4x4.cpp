@@ -62,23 +62,23 @@ mat4x4 Mat4x4::inverse0() {
 		- mValue.r1.z * (mValue.r2.y * mValue.r3.w - mValue.r2.w * mValue.r3.y)
 		+ mValue.r1.w * (mValue.r2.y * mValue.r3.z - mValue.r2.z * mValue.r3.y))
 		/ mDeterminant;
-	m.r0.y = -(mValue.r1.x
+	m.r1.x = -(mValue.r1.x
 		* (mValue.r2.z * mValue.r3.w - mValue.r2.w * mValue.r3.z)
 		- mValue.r1.z * (mValue.r2.x * mValue.r3.w - mValue.r2.w * mValue.r3.x)
 		+ mValue.r1.w * (mValue.r2.x * mValue.r3.z - mValue.r2.z * mValue.r3.x))
 		/ mDeterminant;
-	m.r0.z = (mValue.r1.x
+	m.r2.x = (mValue.r1.x
 		* (mValue.r2.y * mValue.r3.w - mValue.r2.w * mValue.r3.y)
 		- mValue.r1.y * (mValue.r2.x * mValue.r3.w - mValue.r2.w * mValue.r3.x)
 		+ mValue.r1.w * (mValue.r2.x * mValue.r3.y - mValue.r2.y * mValue.r3.x))
 		/ mDeterminant;
-	m.r0.w = -(mValue.r1.x
+	m.r3.x = -(mValue.r1.x
 		* (mValue.r2.y * mValue.r3.z - mValue.r2.z * mValue.r3.y)
 		- mValue.r1.y * (mValue.r2.x * mValue.r3.z - mValue.r2.z * mValue.r3.x)
 		+ mValue.r1.z * (mValue.r2.x * mValue.r3.y - mValue.r2.y * mValue.r3.x))
 		/ mDeterminant;
 
-	m.r1.x = -(mValue.r0.y
+	m.r0.y = -(mValue.r0.y
 		* (mValue.r2.z * mValue.r3.w - mValue.r2.w * mValue.r3.z)
 		- mValue.r0.z * (mValue.r2.y * mValue.r3.w - mValue.r2.w * mValue.r3.y)
 		+ mValue.r0.w * (mValue.r2.y * mValue.r3.z - mValue.r2.z * mValue.r3.y))
@@ -88,23 +88,23 @@ mat4x4 Mat4x4::inverse0() {
 		- mValue.r0.z * (mValue.r2.x * mValue.r3.w - mValue.r2.w * mValue.r3.x)
 		+ mValue.r0.w * (mValue.r2.x * mValue.r3.z - mValue.r2.z * mValue.r3.x))
 		/ mDeterminant;
-	m.r1.z = -(mValue.r0.x
+	m.r2.y = -(mValue.r0.x
 		* (mValue.r2.y * mValue.r3.w - mValue.r2.w * mValue.r3.y)
 		- mValue.r0.y * (mValue.r2.x * mValue.r3.w - mValue.r2.w * mValue.r3.x)
 		+ mValue.r0.w * (mValue.r2.x * mValue.r3.y - mValue.r2.y * mValue.r3.x))
 		/ mDeterminant;
-	m.r1.w = (mValue.r0.x
+	m.r3.y = (mValue.r0.x
 		* (mValue.r2.y * mValue.r3.z - mValue.r2.z * mValue.r3.y)
 		- mValue.r0.y * (mValue.r2.x * mValue.r3.z - mValue.r2.z * mValue.r3.x)
 		+ mValue.r0.z * (mValue.r2.x * mValue.r3.y - mValue.r2.y * mValue.r3.x))
 		/ mDeterminant;
 
-	m.r2.x = (mValue.r0.y
+	m.r0.z = (mValue.r0.y
 		* (mValue.r1.z * mValue.r3.w - mValue.r1.w * mValue.r3.z)
 		- mValue.r0.z * (mValue.r1.y * mValue.r3.w - mValue.r1.w * mValue.r3.y)
 		+ mValue.r0.w * (mValue.r1.y * mValue.r3.z - mValue.r1.z * mValue.r3.y))
 		/ mDeterminant;
-	m.r2.y = -(mValue.r0.x
+	m.r1.z = -(mValue.r0.x
 		* (mValue.r1.z * mValue.r3.w - mValue.r1.w * mValue.r3.z)
 		- mValue.r0.z * (mValue.r1.x * mValue.r3.w - mValue.r1.w * mValue.r3.x)
 		+ mValue.r0.w * (mValue.r1.x * mValue.r3.z - mValue.r1.z * mValue.r3.x))
@@ -114,22 +114,22 @@ mat4x4 Mat4x4::inverse0() {
 		- mValue.r0.y * (mValue.r1.x * mValue.r3.w - mValue.r1.w * mValue.r3.x)
 		+ mValue.r0.w * (mValue.r1.x * mValue.r3.y - mValue.r1.y * mValue.r3.x))
 		/ mDeterminant;
-	m.r2.w = -(mValue.r0.x
+	m.r3.z = -(mValue.r0.x
 		* (mValue.r1.y * mValue.r3.z - mValue.r1.z * mValue.r3.y)
 		- mValue.r0.y * (mValue.r1.x * mValue.r3.z - mValue.r1.z * mValue.r3.z)
 		+ mValue.r0.z * (mValue.r1.x * mValue.r3.y - mValue.r1.y * mValue.r3.x))
 		/ mDeterminant;
 
-	m.r3.x = -(mValue.r0.y
+	m.r0.w= -(mValue.r0.y
 		* (mValue.r1.z * mValue.r2.w - mValue.r1.w * mValue.r2.z)
 		- mValue.r0.z * (mValue.r1.y * mValue.r2.w - mValue.r1.w * mValue.r2.y)
 		+ mValue.r0.w * (mValue.r1.y * mValue.r2.z - mValue.r1.z * mValue.r2.y))
 		/ mDeterminant;
-	m.r3.y = (mValue.r0.x * (mValue.r1.z * mValue.r2.w)
+	m.r1.w = (mValue.r0.x * (mValue.r1.z * mValue.r2.w)
 		- mValue.r0.z * (mValue.r1.x * mValue.r2.w - mValue.r1.w * mValue.r2.x)
 		+ mValue.r0.w * (mValue.r1.x * mValue.r2.z - mValue.r1.z * mValue.r2.x))
 		/ mDeterminant;
-	m.r3.z = -(mValue.r0.x
+	m.r2.w = -(mValue.r0.x
 		* (mValue.r1.y * mValue.r2.w - mValue.r1.w * mValue.r2.y)
 		- mValue.r0.y * (mValue.r1.x * mValue.r2.w - mValue.r1.w * mValue.r2.x)
 		+ mValue.r0.w * (mValue.r1.x * mValue.r2.y - mValue.r1.y * mValue.r2.x))

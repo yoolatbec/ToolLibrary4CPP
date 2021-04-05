@@ -32,12 +32,16 @@ private:
 		tlint mIdentifier;
 	public:
 		FileInputStream(tlint);
+		FileInputStream(const FileInputStream&) = delete;
+		FileInputStream& operator=(const FileInputStream&) = delete;
+		~FileInputStream();
 		tlint readn(tlint, Reference);
 		Reference readAll();
 		void skip(tlint64);
 		void reset();
 		void mark();
 		void rewind();
+		void close();
 		static type_t type();
 		bool instanceof(type_t);
 	};
@@ -50,14 +54,21 @@ private:
 	public:
 		FileOutputStream(tlint);
 		FileOutputStream(tlint identifier, tlint bufferSize);
-		tlint writen(tlint, Reference);
-		tlint writeAll(Reference);
+		FileOutputStream(const FileOutputStream&) = delete;
+		FileOutputStream& operator=(const FileOutputStream&) = delete;
+		~FileOutputStream();
+		void writen(tlint, Reference);
+		void writeAll(Reference);
+		void writeByte(byte);
+		void close();
 		void flush();
+		static type_t type();
+		bool instanceof(type_t);
 	};
 
 	Reference mMutex;
-	bool mReading;
-	bool mWriting;
+	Reference mInputStream;
+	Reference mOutputStream;
 public:
 	File(Reference, bool append = true);
 	File(Reference, Reference, bool append = true);
@@ -65,7 +76,6 @@ public:
 	File(const File &other) = delete;
 	File& operator=(const File &other) = delete;
 	Reference openInputStream();
-	Reference openInputStream(tlint);
 	Reference openOutputStream();
 	Reference openOutputStream(tlint);
 	tlint64 length();

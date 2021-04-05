@@ -26,9 +26,6 @@ using lang::Pointer;
 File::File(Reference path, bool append)
 	: AbstractFile(path) {
 	// TODO Auto-generated constructor stub
-	mReading = false;
-	mWriting = false;
-
 	String *str = dynamic_cast<String*>(path.getEntity());
 	if (append) {
 		mIdentifier = open(str->toCharArray(), O_RDWR | O_CREAT | O_APPEND,
@@ -43,6 +40,8 @@ File::File(Reference path, bool append)
 	}
 
 	mMutex = Reference(new Mutex());
+	mInputStream = Reference();
+	mOutputStream = Reference();
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -67,10 +66,9 @@ File::File(Reference parent, Reference path, bool append) {
 		//cast an exception
 	}
 
-	mReading = false;
-	mWriting = false;
-
 	mMutex = Reference(new Mutex());
+	mInputStream = Reference();
+	mOutputStream = Reference();
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -84,39 +82,83 @@ Reference File::openInputStream() {
 	Mutex *mutex = dynamic_cast<Mutex*>(mMutex.getEntity());
 	mutex->lock();
 
-	if (mWriting) {
-		//cast an exception
-		throw SimultaneousReadWriteException();
+	if (!mOutputStream.isNull()) {
+		OutputStream *out =
+			dynamic_cast<OutputStream*>(mOutputStream.getEntity());
+		if (!out->isClosed()) {
+			//cast an exception
+			throw SimultaneousReadWriteException();
+		}
 	}
 
-	if (mReading) {
-		throw ReopenStreamException();
+	if (!mInputStream.isNull()) {
+		InputStream *in = dynamic_cast<InputStream*>(mInputStream.getEntity());
+		if (!in->isClosed()) {
+			//cast an exception
+			throw ReopenStreamException();
+		}
 	}
 
-	Reference stream = Reference(new FileInputStream(mIdentifier));
-	mReading = true;
+	mInputStream = Reference(new FileInputStream(mIdentifier));
 
 	mutex->unlock();
-	return stream;
+	return mInputStream;
 }
 
 Reference File::openOutputStream() {
 	Mutex *mutex = dynamic_cast<Mutex*>(mMutex.getEntity());
 	mutex->lock();
 
-	if (mReading) {
-		throw SimultaneousReadWriteException();
+	if (!mInputStream.isNull()) {
+		InputStream *in = dynamic_cast<InputStream*>(mInputStream.getEntity());
+		if (!in->isClosed()) {
+			//cast an exception
+			throw SimultaneousReadWriteException();
+		}
 	}
 
-	if (mWriting) {
-		throw ReopenStreamException();
+	if (!mOutputStream.isNull()) {
+		OutputStream *out =
+			dynamic_cast<OutputStream*>(mOutputStream.getEntity());
+		if (!out->isClosed()) {
+			//cast an exception
+			throw ReopenStreamException();
+		}
 	}
 
-	Reference stream = Reference(new FileOutputStream(mIdentifier));
-	mWriting = true;
+	mOutputStream = Reference(new FileOutputStream(mIdentifier));
+	mutex->unlock();
+
+	return mOutputStream;
+}
+
+Reference File::openOutputStream(tlint bufferSize) {
+	dismissNegative(bufferSize);
+
+	Mutex *mutex = dynamic_cast<Mutex*>(mMutex.getEntity());
+	mutex->lock();
+
+	if (!mInputStream.isNull()) {
+		InputStream *in = dynamic_cast<InputStream*>(mInputStream.getEntity());
+		if (!in->isClosed()) {
+			//cast an exception
+			throw SimultaneousReadWriteException();
+		}
+	}
+
+	if (!mOutputStream.isNull()) {
+		OutputStream *out =
+			dynamic_cast<OutputStream*>(mOutputStream.getEntity());
+		if (!out->isClosed()) {
+			//cast an exception
+			throw ReopenStreamException();
+		}
+	}
+
+	mOutputStream = Reference(new FileOutputStream(mIdentifier, bufferSize));
 
 	mutex->unlock();
-	return stream;
+	return mOutputStream;
 }
 
 bool File::canRead() {
@@ -207,6 +249,10 @@ void File::FileInputStream::rewind() {
 	mMarker = 0;
 }
 
+File::FileInputStream::~FileInputStream() {
+
+}
+
 type_t File::FileInputStream::type() {
 	return CLASS_SERIAL;
 }
@@ -219,6 +265,44 @@ File::FileOutputStream::FileOutputStream(tlint identifier) {
 	mIdentifier = identifier;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+File::FileOutputStream::FileOutputStream(tlint identifier, tlint bufferSize)
+	: OutputStream(bufferSize) {
+	mIdentifier = identifier;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+void File::FileOutputStream::writen(tlint length, Reference ref){
+	dismissNull(ref);
+	dismissNegative(length);
+
+	if(length == 0){
+		return;
+	}
+
+	argumentTypeCheck(ref, Pointer::type());
+	if(mBuffer == nullptr){
+		unbufferedWrite0(length, ref);
+	} else {
+		bufferedWrite0(length, ref);
+	}
+}
+
+void File::FileOutputStream::writeAll(Reference ref){
+	dismissNull(ref);
+	argumentTypeCheck(ref, Pointer::type());
+}
+
+void File::FileOutputStream::flush(){
+	tlint err = write(mIdentifier, mBuffer, mUsedBufferSize);
+	if(err == -1){
+		//cast an exception
+		throw IOException();
+	}
+
+	mUsedBufferSize = 0;
 }
 
 } /* namespace io */

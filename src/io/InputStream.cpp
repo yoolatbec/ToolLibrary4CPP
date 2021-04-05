@@ -59,7 +59,7 @@ type_t InputStream::type() {
 }
 
 bool InputStream::instanceof(type_t type) {
-	return (CLASS_SERIAL == type) || Object::instanceof(type);
+	return (CLASS_SERIAL == type) || Closeable::instanceof(type);
 }
 
 } /* namespace io */
