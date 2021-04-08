@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <tl/thread/ErrorChecker.h>
 #include <tl/thread/Semaphore.h>
 

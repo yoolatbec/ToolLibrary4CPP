@@ -10,7 +10,6 @@ RM := rm -rf
 -include sources.mk
 -include src/utils/subdir.mk
 -include src/thread/subdir.mk
--include src/net/ipv6/subdir.mk
 -include src/net/subdir.mk
 -include src/math/subdir.mk
 -include src/lang/subdir.mk

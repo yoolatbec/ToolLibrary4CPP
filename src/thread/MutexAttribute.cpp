@@ -5,7 +5,7 @@
  *      Author: yoolatbec
  */
 
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <tl/thread/ErrorChecker.h>
 #include <tl/thread/MutexAttribute.h>
 
@@ -13,7 +13,6 @@ namespace tl {
 namespace thread {
 
 using lang::IllegalArgumentException;
-using MutexAttribute::MutexType;
 
 MutexAttribute::MutexAttribute() {
 	// TODO Auto-generated constructor stub
@@ -67,7 +66,7 @@ void MutexAttribute::setMutexType(MutexType type) {
 	}
 }
 
-MutexType MutexAttribute::getMutexType() {
+MutexAttribute::MutexType MutexAttribute::getMutexType() {
 	tlint type;
 	pthread_mutexattr_gettype(&mAttribute, &type);
 
@@ -81,6 +80,9 @@ MutexType MutexAttribute::getMutexType() {
 		break;
 	case PTHREAD_MUTEX_RECURSIVE:
 		mutexType = MutexType::RECURSIVE;
+		break;
+	default:
+		mutexType = MutexType::DEFAULT;
 		break;
 	}
 

@@ -48,8 +48,8 @@ protected:
 	tlint mCapacity;
 
 	void indexBoundCheck(tlint);
-public:
 	explicit List(type_t);
+public:
 	List(type_t, tlint reserved);
 	List(const List&) = delete;
 	virtual List& operator=(const List&) = delete;

@@ -11,7 +11,7 @@
 #include <tl/lang/Pointer.h>
 #include <tl/lang/String.h>
 #include <tl/lang/IllegalArgumentTypeException.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <tl/thread/Function.h>
 
 #include <unistd.h>
@@ -78,16 +78,6 @@ Thread::Thread(Reference target, Reference attribute, Reference name) {
 void Thread::run() {
 	tlint err = 0;
 
-	pthread_attr_t attr;
-	if (!mAttribute.isNull()) {
-		ThreadAttribute *attribute =
-			dynamic_cast<ThreadAttribute*>(mAttribute.getEntity());
-		attr = attribute->getAttribute();
-	} else {
-		err = pthread_attr_init(&attr);
-		ErrorChecker::check(err);
-	}
-
 	Function *func = dynamic_cast<Function*>(mTarget.getEntity());
 	Reference argument = func->getArgument();
 	void *arg = nullptr;
@@ -96,7 +86,12 @@ void Thread::run() {
 		arg = p->get();
 	}
 
-	err = pthread_create(&mThread, &attr, func->getFunction(), arg);
+	if(!mAttribute.isNull()){
+		ThreadAttribute* attribute = dynamic_cast<ThreadAttribute*>(mAttribute.getEntity());
+		err = pthread_create(&mThread, attribute->getAttribute(), func->getFunction(), arg);
+	} else {
+		err = pthread_create(&mThread, nullptr, func->getFunction(), arg);
+	}
 	ErrorChecker::check(err);
 }
 

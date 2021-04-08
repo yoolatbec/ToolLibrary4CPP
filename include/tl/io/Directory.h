@@ -5,10 +5,13 @@
  *      Author: yoolatbec
  */
 
-#ifndef IO_DIRECTORY_H_
-#define IO_DIRECTORY_H_
+#ifndef TL_IO_DIRECTORY_H_
+#define TL_IO_DIRECTORY_H_
 
-#include "AbstractFile.h"
+#include <tl/io/AbstractFile.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <dirent.h>
 
 namespace tl {
 namespace io {
@@ -16,6 +19,10 @@ namespace io {
 class Directory: public virtual AbstractFile {
 private:
 	const static type_t CLASS_SERIAL = 2424;
+	const static tlint DEFAULT_DIRECTORY_ACCESS = S_IRUSR | S_IWUSR | S_IXUSR
+		| S_IRGRP | S_IWGRP | S_IXGRP | S_IROTH | S_IXOTH;
+
+	DIR* mDirectory;
 
 	Reference standardizePath(Reference);
 public:
@@ -23,9 +30,8 @@ public:
 	virtual ~Directory();
 	Directory(const Directory &other) = delete;
 	Directory& operator=(const Directory &other) = delete;
-	Reference getPath();
-	static void mkdir(Reference);
-	static void mkdirs(Reference);
+	void remove();
+	static void newDirectory(Reference);
 	static type_t type();
 	bool instanceof(type_t);
 };
@@ -33,4 +39,4 @@ public:
 } /* namespace io */
 } /* namespace tl */
 
-#endif /* IO_DIRECTORY_H_ */
+#endif /* TL_IO_DIRECTORY_H_ */

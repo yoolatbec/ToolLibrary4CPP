@@ -30,8 +30,10 @@ private:
 //		static type_t type();
 //		bool instanceof(type_t);
 //	};
-public:
+protected:
 	Set(type_t);
+
+public:
 	virtual ~Set();
 	Set(const Set &other) = delete;
 	Set& operator=(const Set &other) = delete;

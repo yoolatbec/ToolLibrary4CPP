@@ -59,9 +59,6 @@ void ErrorChecker::check(tlint err) {
 	case IRRECOVERABLE:
 		throw IrrecoverableException();
 		break;
-	case NO_MEMORY:
-		throw NoMemoryException();
-		break;
 	default:
 		throw ThreadException();
 		break;

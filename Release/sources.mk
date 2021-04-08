@@ -28,7 +28,6 @@ src/io \
 src/lang \
 src/math \
 src/net \
-src/net/ipv6 \
 src/thread \
 src/utils \
 

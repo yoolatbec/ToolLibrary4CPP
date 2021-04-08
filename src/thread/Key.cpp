@@ -35,9 +35,9 @@ void Key::set(Reference ref) {
 	pthread_setspecific(mKey, data->get());
 }
 
-Reference Key::get() {
+Reference Key::get(tlint64 length) {
 	void *data = pthread_getspecific(mKey);
-	return Reference(new Pointer(data));
+	return Reference(new Pointer(data, length));
 }
 
 Key::~Key() {

@@ -5,11 +5,12 @@
  *      Author: yoolatbec
  */
 
-#include "AbstractFile.h"
 #include <tl/lang/String.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include "Directory.h"
+#include <tl/io/AbstractFile.h>
+#include <tl/io/Directory.h>
+#include <tl/io/IOException.h>
 
 namespace tl {
 namespace io {
@@ -57,7 +58,7 @@ AbstractFile::~AbstractFile() {
 	// TODO Auto-generated destructor stub
 }
 
-bool AbstractFile::exists(Reference path) {
+bool AbstractFile::accessible(Reference path) {
 	dismissNull(path);
 	argumentTypeCheck(path, String::type());
 
@@ -68,8 +69,9 @@ bool AbstractFile::exists(Reference path) {
 }
 
 bool AbstractFile::isDirectory(Reference path) {
-	if (!exists(path)) {
+	if (!accessible(path)) {
 		//cast an exception
+		throw IOException();
 	}
 
 	String *str = dynamic_cast<String*>(path.getEntity());
@@ -77,14 +79,16 @@ bool AbstractFile::isDirectory(Reference path) {
 	tlint err = stat(str->toCharArray(), &status);
 	if (err != SUCCESS) {
 		//cast an exception
+		throw IOException();
 	}
 
 	return S_ISDIR(status.st_mode);
 }
 
 bool AbstractFile::isFile(Reference path) {
-	if (!exists(path)) {
+	if (!accessible(path)) {
 		//cast an exception
+		throw IOException();
 	}
 
 	String *str = dynamic_cast<String*>(path.getEntity());
@@ -92,14 +96,16 @@ bool AbstractFile::isFile(Reference path) {
 	tlint err = stat(str->toCharArray(), &status);
 	if (err != SUCCESS) {
 		//cast an exception
+		throw IOException();
 	}
 
 	return S_ISREG(status.st_mode);
 }
 
 bool AbstractFile::isSymbol(Reference path) {
-	if (!exists(path)) {
+	if (!accessible(path)) {
 		//cast an exception
+		throw IOException();
 	}
 
 	String *str = dynamic_cast<String*>(path.getEntity());
@@ -107,6 +113,7 @@ bool AbstractFile::isSymbol(Reference path) {
 	tlint err = lstat(str->toCharArray(), &status);
 	if (err != SUCCESS) {
 		//cast an exception
+		throw IOException();
 	}
 
 	return S_ISLNK(status.st_mode);

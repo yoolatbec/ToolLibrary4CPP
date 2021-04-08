@@ -13,13 +13,9 @@ CPP_SRCS += \
 ../src/io/IllegalStreamException.cpp \
 ../src/io/InputStream.cpp \
 ../src/io/OutputStream.cpp \
-../src/io/Reader.cpp \
 ../src/io/ReopenStreamException.cpp \
 ../src/io/SimultaneousReadWriteException.cpp \
-../src/io/Streaming.cpp \
-../src/io/TextFile.cpp \
-../src/io/TextStreaming.cpp \
-../src/io/Writer.cpp 
+../src/io/Streaming.cpp 
 
 OBJS += \
 ./src/io/AbstractFile.o \
@@ -31,13 +27,9 @@ OBJS += \
 ./src/io/IllegalStreamException.o \
 ./src/io/InputStream.o \
 ./src/io/OutputStream.o \
-./src/io/Reader.o \
 ./src/io/ReopenStreamException.o \
 ./src/io/SimultaneousReadWriteException.o \
-./src/io/Streaming.o \
-./src/io/TextFile.o \
-./src/io/TextStreaming.o \
-./src/io/Writer.o 
+./src/io/Streaming.o 
 
 CPP_DEPS += \
 ./src/io/AbstractFile.d \
@@ -49,13 +41,9 @@ CPP_DEPS += \
 ./src/io/IllegalStreamException.d \
 ./src/io/InputStream.d \
 ./src/io/OutputStream.d \
-./src/io/Reader.d \
 ./src/io/ReopenStreamException.d \
 ./src/io/SimultaneousReadWriteException.d \
-./src/io/Streaming.d \
-./src/io/TextFile.d \
-./src/io/TextStreaming.d \
-./src/io/Writer.d 
+./src/io/Streaming.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

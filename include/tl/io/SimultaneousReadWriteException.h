@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#ifndef IO_SIMULTANEOUSREADWRITEEXCEPTION_H_
-#define IO_SIMULTANEOUSREADWRITEEXCEPTION_H_
+#ifndef TL_IO_SIMULTANEOUSREADWRITEEXCEPTION_H_
+#define TL_IO_SIMULTANEOUSREADWRITEEXCEPTION_H_
 
 #include <tl/io/IOException.h>
 
@@ -25,4 +25,4 @@ public:
 } /* namespace io */
 } /* namespace tl */
 
-#endif /* IO_SIMULTANEOUSREADWRITEEXCEPTION_H_ */
+#endif /* TL_IO_SIMULTANEOUSREADWRITEEXCEPTION_H_ */

@@ -9,7 +9,7 @@
 #include <tl/thread/ConditionAttribute.h>
 #include <tl/thread/Mutex.h>
 #include <tl/thread/ErrorChecker.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 
 namespace tl {
 namespace thread {

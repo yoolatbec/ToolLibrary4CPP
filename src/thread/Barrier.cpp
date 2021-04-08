@@ -7,7 +7,7 @@
 
 #include <tl/thread/Barrier.h>
 #include <tl/thread/BarrierAttribute.h>
-#include "ErrorChecker.h"
+#include <tl/thread/ErrorChecker.h>
 
 namespace tl {
 namespace thread {
@@ -22,11 +22,11 @@ Barrier::Barrier(tlint count) {
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-Barrier::Barrier(Reference attri, tlint count) {
-	dismissNull(attri);
-	argumentTypeCheck(attri, BarrierAttribute::type());
+Barrier::Barrier(Reference attrib, tlint count) {
+	dismissNull(attrib);
+	argumentTypeCheck(attrib, BarrierAttribute::type());
 
-	BarrierAttribute *attr = dynamic_cast<BarrierAttribute*>(attri.getEntity());
+	BarrierAttribute *attr = dynamic_cast<BarrierAttribute*>(attrib.getEntity());
 	tlint err = pthread_barrier_init(&mBarrier, attr->getAttribute(), count);
 	ErrorChecker::check(err);
 

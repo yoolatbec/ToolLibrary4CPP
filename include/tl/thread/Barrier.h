@@ -8,7 +8,7 @@
 #ifndef TL_THREAD_BARRIER_H_
 #define TL_THREAD_BARRIER_H_
 
-#include <tl/lang/Object.h>
+#include <tl/lang/Reference.h>
 #include <pthread.h>
 
 namespace tl {

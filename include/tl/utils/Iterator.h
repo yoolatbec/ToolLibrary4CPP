@@ -20,8 +20,8 @@ private:
 	bool mValid;
 protected:
 	virtual void checkValidation();
-public:
 	Iterator();
+public:
 	virtual ~Iterator();
 	Iterator(const Iterator &other) = delete;
 	Iterator& operator=(const Iterator&) = delete;

@@ -21,6 +21,8 @@ protected:
 	const type_t mKeyType;
 	const type_t mValueType;
 	tlint mSize;
+
+	Map(type_t, type_t);
 public:
 	class Entry: public Object{
 		private:
@@ -35,7 +37,6 @@ public:
 			void setValue(Reference);
 		};
 
-	Map(type_t, type_t);
 	virtual ~Map();
 	Map(const Map &other) = delete;
 	Map& operator=(const Map &other) = delete;

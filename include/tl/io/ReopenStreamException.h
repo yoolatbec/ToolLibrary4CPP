@@ -14,11 +14,16 @@ namespace tl {
 namespace io {
 
 class ReopenStreamException: public virtual IOException {
+private:
+	const static type_t CLASS_SERIAL = 3546;
+	const static constexpr char *DEFAULT_MESSAGE = "ReopenStreamException:";
+	static Reference sDefaultMessage;
 public:
 	ReopenStreamException();
+	ReopenStreamException(const char*);
 	virtual ~ReopenStreamException();
-	ReopenStreamException(const ReopenStreamException &other) = delete;
-	ReopenStreamException& operator=(const ReopenStreamException &other) = delete;
+	type_t type();
+	bool instanceof(type_t);
 };
 
 } /* namespace io */

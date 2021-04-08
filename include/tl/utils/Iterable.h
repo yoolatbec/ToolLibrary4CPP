@@ -19,8 +19,8 @@ private:
 	const static type_t CLASS_SERIAL = 9;
 protected:
 	virtual void invalidateIterators() = 0;
-public:
 	Iterable();
+public:
 	virtual ~Iterable();
 	Iterable(const Iterable &other) = delete;
 	Iterable& operator=(const Iterator&) = delete;

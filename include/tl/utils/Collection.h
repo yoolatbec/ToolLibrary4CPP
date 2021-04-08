@@ -22,8 +22,8 @@ private:
 protected:
 	const type_t mElementType;
 	tlint mSize;
-public:
 	explicit Collection(type_t);
+public:
 	virtual ~Collection();
 	Collection(const Collection &other) = delete;
 	Collection& operator=(const Collection &other) = delete;

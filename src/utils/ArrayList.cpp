@@ -7,7 +7,7 @@
 
 #include <tl/lang/Array.h>
 #include <tl/lang/MemoryLimitExceededException.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <tl/utils/ArrayList.h>
 
 namespace tl {

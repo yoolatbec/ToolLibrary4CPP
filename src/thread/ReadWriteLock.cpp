@@ -6,7 +6,7 @@
  */
 
 #include <tl/thread/ErrorChecker.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <tl/thread/ReadWriteLock.h>
 
 namespace tl {
@@ -24,7 +24,8 @@ ReadWriteLock::ReadWriteLock(bool shared) {
 	}
 
 	mShared = shared;
-	mLock = pthread_rwlock_init(&mLock, &attr);
+	tlint err = pthread_rwlock_init(&mLock, &attr);
+	ErrorChecker::check(err);
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }

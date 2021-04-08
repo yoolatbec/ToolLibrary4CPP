@@ -16,8 +16,10 @@ namespace utils {
 class SortedMap: public Map {
 private:
 	const static type_t CLASS_SERIAL = 43;
-public:
+protected:
 	SortedMap(type_t, type_t);
+
+public:
 	virtual ~SortedMap();
 	SortedMap(const SortedMap &other) = delete;
 	SortedMap& operator=(const SortedMap &other) = delete;

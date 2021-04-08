@@ -30,7 +30,7 @@ public:
 	Key& operator=(const Key &other) = delete;
 //	static Reference newInstance(Reference);
 	void set(Reference);
-	Reference get();
+	Reference get(tlint64);
 	static type_t type();
 	bool instanceof(type_t);
 };

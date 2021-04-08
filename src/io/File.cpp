@@ -5,18 +5,18 @@
  *      Author: yoolatbec
  */
 
-#include "File.h"
 #include <tl/lang/String.h>
 #include <fcntl.h>
+#include <tl/io/Directory.h>
+#include <tl/io/FailedToOpenFileException.h>
+#include <tl/io/File.h>
+#include <tl/io/IllegalStreamException.h>
 #include <unistd.h>
 #include <tl/thread/Mutex.h>
 #include <tl/io/ReopenStreamException.h>
-#include "SimultaneousReadWriteException.h"
-#include "Directory.h"
+#include <tl/io/SimultaneousReadWriteException.h>
 #include <tl/lang/ByteArray.h>
 #include <tl/lang/IndexOutOfBoundsException.h>
-#include "FailedToOpenFileException.h"
-#include "IllegalStreamException.h"
 #include <tl/lang/Integer.h>
 
 namespace tl {
@@ -28,7 +28,6 @@ using lang::Reference;
 using lang::ByteArray;
 using lang::IndexOutOfBoundsException;
 using lang::Integer;
-
 
 File::File(Reference path, bool append)
 	: AbstractFile(path) {
@@ -155,11 +154,35 @@ bool File::canExecute() {
 	return access(path->toCharArray(), X_OK) == SUCCESS;
 }
 
+void File::remove() {
+	if (!mInputStream.isNull()) {
+		InputStream *in = dynamic_cast<InputStream*>(mInputStream.getEntity());
+		if (!in->isClosed()) {
+			throw IOException();
+		}
+	}
+
+	if (!mOutputStream.isNull()) {
+		OutputStream *out =
+			dynamic_cast<OutputStream*>(mOutputStream.getEntity());
+		if (!out->isClosed()) {
+			throw IOException();
+		}
+	}
+
+	String *path = dynamic_cast<String*>(mPath.getEntity());
+	tlint err = unlink(path->toCharArray());
+	if (err != SUCCESS) {
+		throw IOException();
+	}
+}
+
 tlint64 File::length() {
 	struct stat status;
 	String *path = dynamic_cast<String*>(mPath.getEntity());
 	if (stat(path->toCharArray(), &status) != SUCCESS) {
 		//cast an exception
+		throw IOException();
 	}
 
 	return status.st_size;
@@ -168,6 +191,7 @@ tlint64 File::length() {
 void File::newFile(Reference path) {
 	if (!isAbsolutePath(path)) {
 		//cast an exception
+		throw IOException();
 	}
 
 	String *str = dynamic_cast<String*>(path.getEntity());
@@ -175,8 +199,17 @@ void File::newFile(Reference path) {
 		DEFAULT_ACCESS);
 
 	if (identifier == INVALID_IDENTIFIER) {
-
+		throw IOException();
 	}
+}
+
+bool File::isAbsolutePath(Reference path) {
+	dismissNull(path);
+	argumentTypeCheck(path, String::type());
+
+	String *str = dynamic_cast<String*>(path.getEntity());
+	const char *s = str->toCharArray();
+	return s[0] == '/';
 }
 
 type_t File::type() {
@@ -199,6 +232,10 @@ File::FileInputStream::FileInputStream(Reference path) {
 	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+Reference File::FileInputStream::getPath() {
+	return mPath;
 }
 
 tlint File::FileInputStream::readn(tlint length, Reference ref) {
@@ -272,7 +309,7 @@ void File::FileInputStream::shutDown() {
 }
 
 File::FileInputStream::~FileInputStream() {
-	if (mIdentifier != INVALID_IDENTIFIER) {
+	if (!isClosed()) {
 		close(mIdentifier);
 	}
 }
@@ -339,19 +376,46 @@ void File::FileOutputStream::writeAll(Reference ref) {
 	}
 }
 
+void File::FileOutputStream::writeByte(byte b) {
+	tlint count = write(mIdentifier, &b, sizeof(byte));
+	if (count == UNSUCCESS_WRITE) {
+		throw IOException();
+	}
+}
+
 void File::FileOutputStream::shutDown() {
 	if (mIdentifier == INVALID_IDENTIFIER) {
 		//cast an exception
 		throw IllegalStreamException();
 	}
 
+	flush();
 	close(mIdentifier);
 	mIdentifier = INVALID_IDENTIFIER;
 	mClosed = true;
 }
 
 void File::FileOutputStream::flush() {
-	//do nothing
+	fsync(mIdentifier);
+}
+
+Reference File::FileOutputStream::getPath() {
+	return mPath;
+}
+
+File::FileOutputStream::~FileOutputStream() {
+	if (!isClosed()) {
+		flush();
+		close(mIdentifier);
+	}
+}
+
+type_t File::FileOutputStream::type() {
+	return CLASS_SERIAL;
+}
+
+bool File::FileOutputStream::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || OutputStream::instanceof(type);
 }
 
 } /* namespace io */

@@ -6,7 +6,7 @@
  */
 
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 
 namespace tl {
 namespace lang {

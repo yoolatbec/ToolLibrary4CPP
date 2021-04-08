@@ -5,12 +5,12 @@
  *      Author: yoolatbec
  */
 
-#ifndef IO_FILE_H_
-#define IO_FILE_H_
+#ifndef TL_IO_FILE_H_
+#define TL_IO_FILE_H_
 
-#include "AbstractFile.h"
 #include <tl/io/Streaming.h>
 #include <sys/stat.h>
+#include <tl/io/AbstractFile.h>
 #include <tl/io/InputStream.h>
 #include <tl/io/OutputStream.h>
 
@@ -22,7 +22,8 @@ using lang::Reference;
 class File: public virtual AbstractFile, public virtual Streaming {
 private:
 	const static type_t CLASS_SERIAL = 5389;
-	const static tlint DEFAULT_ACCESS = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	const static tlint DEFAULT_ACCESS = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP
+		| S_IROTH;
 
 	class FileInputStream: public virtual InputStream {
 	private:
@@ -35,6 +36,7 @@ private:
 		FileInputStream(const FileInputStream&) = delete;
 		FileInputStream& operator=(const FileInputStream&) = delete;
 		~FileInputStream();
+		Reference getPath();
 		tlint readn(tlint, Reference);
 		Reference readAll();
 		void skip(tlint64);
@@ -49,8 +51,8 @@ private:
 	class FileOutputStream: public virtual OutputStream {
 	private:
 		const static type_t CLASS_SERIAL = 880;
-		const static tlint DEFAULT_WRITE_ACCESS = S_IRUSR | S_IWUSR | S_IWGRP |
-		S_IROTH;
+		const static tlint DEFAULT_WRITE_ACCESS = S_IRUSR | S_IWUSR | S_IRGRP
+			| S_IWGRP | S_IROTH;
 
 		Reference mPath;
 		tlint mIdentifier;
@@ -59,6 +61,7 @@ private:
 		FileOutputStream(const FileOutputStream&) = delete;
 		FileOutputStream& operator=(const FileOutputStream&) = delete;
 		~FileOutputStream();
+		Reference getPath();
 		void writen(tlint, Reference);
 		void writeAll(Reference);
 		void writeByte(byte);
@@ -85,8 +88,8 @@ public:
 	bool canRead();
 	bool canWrite();
 	bool canExecute();
+	void remove();
 	static bool isAbsolutePath(Reference);
-	static bool isRelativePath(Reference);
 	static void newFile(Reference);
 	static type_t type();
 	bool instanceof(type_t);
@@ -95,4 +98,4 @@ public:
 } /* namespace io */
 } /* namespace tl */
 
-#endif /* IO_FILE_H_ */
+#endif /* TL_IO_FILE_H_ */

@@ -7,7 +7,7 @@
 
 #include <tl/lang/IndexOutOfBoundsException.h>
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <tl/utils/KMPMachine.h>
 #include <cstring>
 

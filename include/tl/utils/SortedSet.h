@@ -16,8 +16,10 @@ namespace utils {
 class SortedSet: public virtual Set {
 private:
 	const static type_t CLASS_SERIAL = 92;
-public:
+protected:
 	SortedSet(type_t);
+
+public:
 	virtual ~SortedSet();
 	SortedSet(const SortedSet &other) = delete;
 	SortedSet& operator=(const SortedSet &other) = delete;
