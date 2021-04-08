@@ -24,7 +24,7 @@ private:
 	/*
 	 * For the sake of parameter check, make the constructor private.
 	 */
-	FloatArray(tlint, float*);
+	FloatArray(tlint, float*, bool);
 	FloatArray(tlint, float);
 
 	static void initParameterCheck(tlint);
@@ -33,8 +33,10 @@ public:
 	virtual ~FloatArray();
 	FloatArray(const FloatArray &other) = delete;
 	FloatArray& operator=(const FloatArray &other) = delete;
-	static Reference newInstance(tlint, float*);
-	static Reference newInstance(tlint = NOArray::DEFAULT_SIZE, float = DEFAULT_VALUE);
+//	static Reference newInstance(tlint, float*);
+	static Reference newInstance(tlint = NOArray::DEFAULT_SIZE, float =
+		DEFAULT_VALUE);
+	static Reference newInstance(tlint, float*, bool);
 	Reference clone();
 	float get(tlint);
 	void set(tlint, float);

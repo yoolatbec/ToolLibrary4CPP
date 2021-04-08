@@ -22,7 +22,7 @@ private:
 	short* mElements;
 
 	ShortArray(tlint, short);
-	ShortArray(tlint, short*);
+	ShortArray(tlint, short*, bool);
 
 	static void initParameterCheck(tlint);
 
@@ -31,7 +31,7 @@ public:
 	ShortArray(const ShortArray &other) = delete;
 	ShortArray& operator=(const ShortArray &other) = delete;
 	Reference newInstance(tlint = DEFAULT_SIZE, short = DEFAULT_VALUE);
-	Reference newInstance(tlint, short*);
+	Reference newInstance(tlint, short*, bool);
 	void set(tlint, short);
 	short get(tlint);
 	Reference toString();

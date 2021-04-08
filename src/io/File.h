@@ -22,16 +22,16 @@ using lang::Reference;
 class File: public virtual AbstractFile, public virtual Streaming {
 private:
 	const static type_t CLASS_SERIAL = 5389;
-	const static tlint DEFAULT_ACCESS = S_IRUSR | S_IWUSR | S_IRGRP
-		| S_IWGRP | S_IROTH;
+	const static tlint DEFAULT_ACCESS = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
 	class FileInputStream: public virtual InputStream {
 	private:
 		const static type_t CLASS_SERIAL = 879;
 
+		Reference mPath;
 		tlint mIdentifier;
 	public:
-		FileInputStream(tlint);
+		FileInputStream(Reference);
 		FileInputStream(const FileInputStream&) = delete;
 		FileInputStream& operator=(const FileInputStream&) = delete;
 		~FileInputStream();
@@ -41,7 +41,7 @@ private:
 		void reset();
 		void mark();
 		void rewind();
-		void close();
+		void shutDown();
 		static type_t type();
 		bool instanceof(type_t);
 	};
@@ -49,18 +49,20 @@ private:
 	class FileOutputStream: public virtual OutputStream {
 	private:
 		const static type_t CLASS_SERIAL = 880;
+		const static tlint DEFAULT_WRITE_ACCESS = S_IRUSR | S_IWUSR | S_IWGRP |
+		S_IROTH;
 
+		Reference mPath;
 		tlint mIdentifier;
 	public:
-		FileOutputStream(tlint);
-		FileOutputStream(tlint identifier, tlint bufferSize);
+		FileOutputStream(Reference, bool);
 		FileOutputStream(const FileOutputStream&) = delete;
 		FileOutputStream& operator=(const FileOutputStream&) = delete;
 		~FileOutputStream();
 		void writen(tlint, Reference);
 		void writeAll(Reference);
 		void writeByte(byte);
-		void close();
+		void shutDown();
 		void flush();
 		static type_t type();
 		bool instanceof(type_t);
@@ -69,6 +71,8 @@ private:
 	Reference mMutex;
 	Reference mInputStream;
 	Reference mOutputStream;
+	bool mAppending;
+
 public:
 	File(Reference, bool append = true);
 	File(Reference, Reference, bool append = true);
@@ -77,11 +81,12 @@ public:
 	File& operator=(const File &other) = delete;
 	Reference openInputStream();
 	Reference openOutputStream();
-	Reference openOutputStream(tlint);
 	tlint64 length();
 	bool canRead();
 	bool canWrite();
 	bool canExecute();
+	static bool isAbsolutePath(Reference);
+	static bool isRelativePath(Reference);
 	static void newFile(Reference);
 	static type_t type();
 	bool instanceof(type_t);

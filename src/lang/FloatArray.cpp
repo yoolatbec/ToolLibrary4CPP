@@ -7,19 +7,23 @@
 
 #include <tl/lang/FloatArray.h>
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <cstring>
 #include <cstdio>
 
 namespace tl {
 namespace lang {
 
-FloatArray::FloatArray(tlint size, float *initValues)
+FloatArray::FloatArray(tlint size, float *initValues, bool useInput)
 	: NOArray(size) {
-	mElements = new float[mSize];
+	if (useInput) {
+		mElements = initValues;
+	} else {
+		mElements = new float[mSize];
 
-	for (tlint index = 0; index < size; index++) {
-		mElements[index] = initValues[index];
+		for (tlint index = 0; index < size; index++) {
+			mElements[index] = initValues[index];
+		}
 	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -43,15 +47,26 @@ void FloatArray::initParameterCheck(tlint i) {
 		throw IllegalArgumentException();
 	}
 }
+//
+//Reference FloatArray::newInstance(tlint size, float *initValues) {
+//	initParameterCheck(size);
+//
+//	if (initValues == nullptr) {
+//		return Reference(new FloatArray(size, DEFAULT_VALUE));
+//	}
+//
+//	return Reference(new FloatArray(size, initValues, false));
+//}
 
-Reference FloatArray::newInstance(tlint size, float *initValues) {
+Reference FloatArray::newInstance(tlint size, float *initValues,
+	bool useInput) {
 	initParameterCheck(size);
 
-	if(initValues == nullptr){
+	if (initValues == nullptr) {
 		return Reference(new FloatArray(size, DEFAULT_VALUE));
 	}
 
-	return Reference(new FloatArray(size, initValues));
+	return Reference(new FloatArray(size, initValues, useInput));
 }
 
 Reference FloatArray::newInstance(tlint size, float value) {
@@ -73,7 +88,7 @@ void FloatArray::set(tlint index, float value) {
 }
 
 Reference FloatArray::clone() {
-	return Reference(new FloatArray(mSize, mElements));
+	return Reference(new FloatArray(mSize, mElements, false));
 }
 
 Reference FloatArray::toString() {

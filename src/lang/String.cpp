@@ -12,7 +12,7 @@
 #include <tl/lang/IndexOutOfBoundsException.h>
 #include <tl/lang/NullPointerException.h>
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <tl/utils/ArrayList.h>
 #include <tl/utils/KMPMachine.h>
 
@@ -164,7 +164,7 @@ Reference String::append(double d) {
 	return Reference(r_value);
 }
 
-Reference String::blank(){
+Reference String::blank() {
 	return sBlankString;
 }
 

@@ -23,13 +23,13 @@ private:
 
 	static void initParameterCheck(tlint);
 
-	IntArray(tlint, tlint*);
+	IntArray(tlint, tlint*, bool);
 	IntArray(tlint, tlint);
 public:
 	virtual ~IntArray();
 	IntArray(const IntArray &other) = delete;
 	IntArray& operator=(const IntArray &other) = delete;
-	static Reference newInstance(tlint, tlint*);
+	static Reference newInstance(tlint, tlint*, bool);
 	static Reference newInstance(tlint = NOArray::DEFAULT_SIZE, tlint = DEFAULT_VALUE);
 	tlint get(tlint);
 	void set(tlint, tlint);

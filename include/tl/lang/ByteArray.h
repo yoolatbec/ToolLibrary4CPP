@@ -21,19 +21,22 @@ class ByteArray: public virtual NOArray {
 	byte *mElements;
 
 	ByteArray(tlint, byte);
-	ByteArray(tlint, byte*);
+//	ByteArray(tlint, byte*);
+	ByteArray(tlint, byte*, bool);
 
 	static void initParameterCheck(tlint);
 public:
 	virtual ~ByteArray();
 	ByteArray(const ByteArray &other) = delete;
 	ByteArray& operator=(const ByteArray &other) = delete;
-	Reference newInstance(tlint = DEFAULT_SIZE, byte = DEFAULT_VALUE);
-	Reference newInstance(tlint, byte*);
+	static Reference newInstance(tlint = DEFAULT_SIZE, byte = DEFAULT_VALUE);
+//	static Reference newInstance(tlint, byte*);
+	static Reference newInstance(tlint, byte*, bool);
 	Reference toString();
 	Reference clone();
 	void set(tlint, byte);
 	byte get(tlint);
+	const byte* rawData();
 	static type_t type();
 	bool instanceof(type_t);
 };

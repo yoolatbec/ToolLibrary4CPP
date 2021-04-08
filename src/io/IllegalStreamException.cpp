@@ -1,21 +1,21 @@
 /*
- * FileOutputStream.cpp
+ * RecloseException.cpp
  *
- *  Created on: Mar 19, 2021
+ *  Created on: Apr 6, 2021
  *      Author: yoolatbec
  */
 
-#include "FileOutputStream.h"
+#include "IllegalStreamException.h"
 
 namespace tl {
 namespace io {
 
-FileOutputStream::FileOutputStream() {
+IllegalStreamException::IllegalStreamException() {
 	// TODO Auto-generated constructor stub
 
 }
 
-FileOutputStream::~FileOutputStream() {
+IllegalStreamException::~IllegalStreamException() {
 	// TODO Auto-generated destructor stub
 }
 

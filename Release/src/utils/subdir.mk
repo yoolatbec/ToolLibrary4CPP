@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/utils/Base64.cpp \
 ../src/utils/Collection.cpp \
 ../src/utils/Comparator.cpp \
+../src/utils/Encryptor.cpp \
 ../src/utils/HashMap.cpp \
 ../src/utils/HashSet.cpp \
 ../src/utils/InvalidIteratorException.cpp \
@@ -31,6 +32,7 @@ OBJS += \
 ./src/utils/Base64.o \
 ./src/utils/Collection.o \
 ./src/utils/Comparator.o \
+./src/utils/Encryptor.o \
 ./src/utils/HashMap.o \
 ./src/utils/HashSet.o \
 ./src/utils/InvalidIteratorException.o \
@@ -54,6 +56,7 @@ CPP_DEPS += \
 ./src/utils/Base64.d \
 ./src/utils/Collection.d \
 ./src/utils/Comparator.d \
+./src/utils/Encryptor.d \
 ./src/utils/HashMap.d \
 ./src/utils/HashSet.d \
 ./src/utils/InvalidIteratorException.d \

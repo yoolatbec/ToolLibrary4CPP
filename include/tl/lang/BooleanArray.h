@@ -21,15 +21,17 @@ private:
 
 	bool *mElements;
 	BooleanArray(tlint, bool);
-	BooleanArray(tlint, bool*);
+//	BooleanArray(tlint, bool*);
+	BooleanArray(tlint, bool*, bool);
 
 	static void initParameterCheck(tlint);
 public:
 	virtual ~BooleanArray();
 	BooleanArray(const BooleanArray &other) = delete;
 	BooleanArray& operator=(const BooleanArray &other) = delete;
-	static Reference newInstance(tlint, bool*);
+//	static Reference newInstance(tlint, bool*);
 	static Reference newInstance(tlint = NOArray::DEFAULT_SIZE, bool = false);
+	static Reference newInstance(tlint, bool*, bool);
 	bool get(tlint);
 	void set(tlint, bool);
 	Reference toString();

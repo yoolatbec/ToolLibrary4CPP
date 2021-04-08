@@ -21,6 +21,7 @@ private:
 
 protected:
 	const static tlint DEFAULT_BUFFER_SIZE = 4096;
+	const static tlint INVALID_IDENTIFIER = -1;
 	tlint64 mMarker;
 
 	InputStream();

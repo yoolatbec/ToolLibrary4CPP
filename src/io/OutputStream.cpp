@@ -15,9 +15,6 @@ using lang::UnsupportedOperationException;
 
 OutputStream::OutputStream() {
 	// TODO Auto-generated constructor stub
-	mBufferSize = DEFAULT_BUFFER_SIZE;
-	mBuffer = new byte[mBufferSize];
-	mUsedBufferSize = 0;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -25,33 +22,16 @@ OutputStream::OutputStream() {
 OutputStream::OutputStream(tlint bufferSize) {
 	dismissNegative(bufferSize);
 
-	mBufferSize = bufferSize;
-	mUsedBufferSize = 0;
-	if (mBufferSize == 0) {
-		mBuffer = nullptr;
-	} else {
-		mBuffer = new byte[mBufferSize];
-	}
-
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 OutputStream::~OutputStream() {
 	// TODO Auto-generated destructor stub
-	delete[] mBuffer;
 }
 
 void OutputStream::flush() {
 	//throw an exception
 	throw UnsupportedOperationException();
-}
-
-tlint OutputStream::bufferSize() {
-	return mBufferSize;
-}
-
-bool OutputStream::isBuffered() {
-	return mBufferSize != 0;
 }
 
 void OutputStream::flush(){
@@ -70,6 +50,16 @@ void OutputStream::writeAll(Reference ref){
 }
 
 void OutputStream::writeByte(byte b){
+	//cast an exception
+	throw UnsupportedOperationException();
+}
+
+void OutputStream::unbufferedWrite0(tlint length, Reference ref){
+	//cast an exception
+	throw UnsupportedOperationException();
+}
+
+void OutputStream::bufferedWrite0(tlint length, Reference ref){
 	//cast an exception
 	throw UnsupportedOperationException();
 }

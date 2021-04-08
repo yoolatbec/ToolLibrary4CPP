@@ -8,7 +8,7 @@
 #include <tl/lang/DoubleArray.h>
 #include <tl/lang/IndexOutOfBoundsException.h>
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <cstring>
 #include <cstdio>
 
@@ -25,12 +25,26 @@ DoubleArray::DoubleArray(tlint size, double defaultValue)
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
+//
+//DoubleArray::DoubleArray(tlint size, double *defaultValues)
+//	: NOArray(size) {
+//	mElements = new double[mSize];
+//	for (tlint index = 0; index < mSize; index++) {
+//		mElements[index] = defaultValues[index];
+//	}
+//
+//	mHashCode = genHashCode(CLASS_SERIAL);
+//}
 
-DoubleArray::DoubleArray(tlint size, double *defaultValues)
+DoubleArray::DoubleArray(tlint size, double *initValues, bool useInput)
 	: NOArray(size) {
-	mElements = new double[mSize];
-	for (tlint index = 0; index < mSize; index++) {
-		mElements[index] = defaultValues[index];
+	if (useInput) {
+		mElements = initValues;
+	} else {
+		mElements = new double[mSize];
+		for (tlint index = 0; index < mSize; index++) {
+			mElements[index] = initValues[index];
+		}
 	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -46,16 +60,16 @@ void DoubleArray::initParameterCheck(tlint size) {
 		throw IllegalArgumentException();
 	}
 }
-
-Reference DoubleArray::newInstance(tlint size, double *defaultValues) {
-	initParameterCheck(size);
-
-	if (defaultValues == nullptr) {
-		return Reference(new DoubleArray(size, DEFAULT_VALUE));
-	}
-
-	return Reference(new DoubleArray(size, defaultValues));
-}
+//
+//Reference DoubleArray::newInstance(tlint size, double *defaultValues) {
+//	initParameterCheck(size);
+//
+//	if (defaultValues == nullptr) {
+//		return Reference(new DoubleArray(size, DEFAULT_VALUE));
+//	}
+//
+//	return Reference(new DoubleArray(size, defaultValues));
+//}
 
 Reference DoubleArray::newInstance(tlint size, double initValue) {
 	initParameterCheck(size);
@@ -63,8 +77,18 @@ Reference DoubleArray::newInstance(tlint size, double initValue) {
 	return Reference(new DoubleArray(size, initValue));
 }
 
+Reference DoubleArray::newInstance(tlint size, double* initValues, bool useInput){
+	initParameterCheck(size);
+
+	if(initValues == nullptr){
+		return newInstance(size, DEFAULT_VALUE);
+	}
+
+	return Reference(new DoubleArray(size, initValues, useInput));
+}
+
 Reference DoubleArray::clone() {
-	return Reference(new DoubleArray(mSize, mElements));
+	return Reference(new DoubleArray(mSize, mElements, false));
 }
 
 void DoubleArray::set(tlint index, double value) {

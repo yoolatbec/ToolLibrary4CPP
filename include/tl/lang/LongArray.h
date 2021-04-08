@@ -19,18 +19,18 @@ private:
 	const static tlint64 DEFAULT_VALUE = 0;
 	const static tlint DEFAULT_WIDTH_FOR_EACH_ELEMENT = 30;
 
-	tlint64* mElements;
+	tlint64 *mElements;
 
 	LongArray(tlint, tlint64);
-	LongArray(tlint, tlint64*);
+	LongArray(tlint, tlint64*, bool);
 
 	static void initParameterCheck(tlint);
 public:
 	virtual ~LongArray();
 	LongArray(const LongArray &other) = delete;
 	LongArray& operator=(const LongArray &other) = delete;
-	Reference newInstance(tlint = DEFAULT_SIZE, tlint64 = DEFAULT_VALUE);
-	Reference newInstance(tlint, tlint64*);
+	static Reference newInstance(tlint = DEFAULT_SIZE, tlint64 = DEFAULT_VALUE);
+	static Reference newInstance(tlint, tlint64*, bool);
 	Reference toString();
 	Reference clone();
 	void set(tlint, tlint64);

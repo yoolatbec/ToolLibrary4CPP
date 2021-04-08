@@ -4,23 +4,26 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/math/BigDecimal.cpp \
-../src/math/BigInteger.cpp \
-../src/math/Complex.cpp 
+../src/net/ipv6/Inet6Address.cpp \
+../src/net/ipv6/TCPServer.cpp \
+../src/net/ipv6/TCPSocket.cpp \
+../src/net/ipv6/UDPSocket.cpp 
 
 OBJS += \
-./src/math/BigDecimal.o \
-./src/math/BigInteger.o \
-./src/math/Complex.o 
+./src/net/ipv6/Inet6Address.o \
+./src/net/ipv6/TCPServer.o \
+./src/net/ipv6/TCPSocket.o \
+./src/net/ipv6/UDPSocket.o 
 
 CPP_DEPS += \
-./src/math/BigDecimal.d \
-./src/math/BigInteger.d \
-./src/math/Complex.d 
+./src/net/ipv6/Inet6Address.d \
+./src/net/ipv6/TCPServer.d \
+./src/net/ipv6/TCPSocket.d \
+./src/net/ipv6/UDPSocket.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-src/math/%.o: ../src/math/%.cpp src/math/subdir.mk
+src/net/ipv6/%.o: ../src/net/ipv6/%.cpp src/net/ipv6/subdir.mk
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
 	g++ -std=c++17 -I"/home/yoolatbec/workspace/cpp/ToolLibrary/include" -O3 -Wall -c -fmessage-length=0 -fPIC -pthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"

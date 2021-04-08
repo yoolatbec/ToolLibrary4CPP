@@ -7,7 +7,7 @@
 
 #include <tl/lang/ByteArray.h>
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <cstdio>
 #include <cstring>
 
@@ -24,12 +24,26 @@ ByteArray::ByteArray(tlint size, byte initValue)
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
+//
+//ByteArray::ByteArray(tlint size, byte *initValues)
+//	: NOArray(size) {
+//	mElements = new byte[mSize];
+//	for (tlint index = 0; index < mSize; index++) {
+//		mElements[index] = initValues[index];
+//	}
+//
+//	mHashCode = genHashCode(CLASS_SERIAL);
+//}
 
-ByteArray::ByteArray(tlint size, byte *initValues)
+ByteArray::ByteArray(tlint size, byte *initValues, bool useInput)
 	: NOArray(size) {
-	mElements = new byte[mSize];
-	for (tlint index = 0; index < mSize; index++) {
-		mElements[index] = initValues[index];
+	if (useInput) {
+		mElements = initValues;
+	} else {
+		mElements = new byte[mSize];
+		for (tlint index = 0; index < mSize; index++) {
+			mElements[index] = initValues[index];
+		}
 	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -46,19 +60,29 @@ Reference ByteArray::newInstance(tlint size, byte initValue) {
 
 	return Reference(new ByteArray(size, initValue));
 }
+//
+//Reference ByteArray::newInstance(tlint size, byte *initValues) {
+//	initParameterCheck(size);
+//
+//	if (initValues == nullptr) {
+//		return newInstance(size, DEFAULT_VALUE);
+//	}
+//
+//	return Reference(new ByteArray(size, initValues, false));
+//}
 
-Reference ByteArray::newInstance(tlint size, byte *initValues) {
+Reference ByteArray::newInstance(tlint size, byte *initValues, bool useInput) {
+	initParameterCheck(size);
+
 	if (initValues == nullptr) {
 		return newInstance(size, DEFAULT_VALUE);
 	}
 
-	initParameterCheck(size);
-
-	return Reference(new ByteArray(size, initValues));
+	return Reference(new ByteArray(size, initValues, useInput));
 }
 
 Reference ByteArray::clone() {
-	return Reference(new ByteArray(mSize, mElements));
+	return Reference(new ByteArray(mSize, mElements, false));
 }
 
 Reference ByteArray::toString() {
@@ -90,6 +114,10 @@ byte ByteArray::get(tlint index) {
 	indexBoundCheck(index);
 
 	return mElements[index];
+}
+
+const byte* ByteArray::rawData() {
+	return mElements;
 }
 
 ByteArray::~ByteArray() {

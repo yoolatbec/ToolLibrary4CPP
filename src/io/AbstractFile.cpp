@@ -9,6 +9,7 @@
 #include <tl/lang/String.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include "Directory.h"
 
 namespace tl {
 namespace io {
@@ -21,7 +22,35 @@ AbstractFile::AbstractFile(Reference path) {
 	argumentTypeCheck(path, String::type());
 
 	mPath = path;
+	mIdentifier = INVALID_IDENTIFIER;
 	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+AbstractFile::AbstractFile(Reference parent, Reference path) {
+	dismissNull(parent);
+	argumentTypeCheck(parent, Directory::type());
+	dismissNull(path);
+	argumentTypeCheck(path, String::type());
+
+	mPath = concatPath(parent, path);
+	mIdentifier = INVALID_IDENTIFIER;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+AbstractFile::AbstractFile() {
+	mIdentifier = INVALID_IDENTIFIER;
+
+	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+Reference AbstractFile::concatPath(Reference parent, Reference path) {
+	Directory *dir = dynamic_cast<Directory*>(parent.getEntity());
+	String *str = dynamic_cast<String*>(path.getEntity());
+
+	Reference dirPath = dir->getPath();
+	String *p = dynamic_cast<String*>(dirPath.getEntity());
+	return p->append(path);
 }
 
 AbstractFile::~AbstractFile() {

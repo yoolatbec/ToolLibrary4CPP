@@ -24,6 +24,7 @@ CPP_SRCS += \
 ../src/advanced/math/Mat4x4.cpp \
 ../src/advanced/math/Matrix.cpp \
 ../src/advanced/math/MatrixFactory.cpp \
+../src/advanced/math/Quaternion.cpp \
 ../src/advanced/math/SquareMatrix.cpp \
 ../src/advanced/math/Vec.cpp \
 ../src/advanced/math/Vec2.cpp \
@@ -54,6 +55,7 @@ OBJS += \
 ./src/advanced/math/Mat4x4.o \
 ./src/advanced/math/Matrix.o \
 ./src/advanced/math/MatrixFactory.o \
+./src/advanced/math/Quaternion.o \
 ./src/advanced/math/SquareMatrix.o \
 ./src/advanced/math/Vec.o \
 ./src/advanced/math/Vec2.o \
@@ -84,6 +86,7 @@ CPP_DEPS += \
 ./src/advanced/math/Mat4x4.d \
 ./src/advanced/math/Matrix.d \
 ./src/advanced/math/MatrixFactory.d \
+./src/advanced/math/Quaternion.d \
 ./src/advanced/math/SquareMatrix.d \
 ./src/advanced/math/Vec.d \
 ./src/advanced/math/Vec2.d \

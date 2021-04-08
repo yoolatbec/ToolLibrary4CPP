@@ -8,20 +8,24 @@
 #include <tl/lang/IndexOutOfBoundsException.h>
 #include <tl/lang/IntArray.h>
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <cstring>
 #include <cstdio>
 
 namespace tl {
 namespace lang {
 
-IntArray::IntArray(tlint size, tlint *initValues)
+IntArray::IntArray(tlint size, tlint *initValues, bool useInput)
 	: NOArray(size) {
 	// TODO Auto-generated constructor stub
-	mElements = new tlint[mSize];
+	if (useInput) {
+		mElements = initValues;
+	} else {
+		mElements = new tlint[mSize];
 
-	for(tlint i = 0; i < mSize; i++){
-		mElements[i] = initValues[i];
+		for (tlint i = 0; i < mSize; i++) {
+			mElements[i] = initValues[i];
+		}
 	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -43,9 +47,9 @@ IntArray::~IntArray() {
 	delete[] mElements;
 }
 
-Reference IntArray::newInstance(tlint size, tlint *initValues) {
+Reference IntArray::newInstance(tlint size, tlint *initValues, bool useInput) {
 
-	return Reference(new IntArray(size, initValues));
+	return Reference(new IntArray(size, initValues, useInput));
 }
 
 tlint IntArray::get(tlint index) {
@@ -81,7 +85,7 @@ Reference IntArray::toString() {
 }
 
 Reference IntArray::clone() {
-	return Reference(new IntArray(mSize, mElements));
+	return Reference(new IntArray(mSize, mElements, false));
 }
 
 type_t IntArray::type() {

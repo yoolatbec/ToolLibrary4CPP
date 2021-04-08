@@ -7,7 +7,7 @@
 
 #include <tl/lang/LongArray.h>
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <cstdio>
 #include <cstring>
 
@@ -25,11 +25,15 @@ LongArray::LongArray(tlint size, tlint64 initValue)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-LongArray::LongArray(tlint size, tlint64 *initValues)
+LongArray::LongArray(tlint size, tlint64 *initValues, bool useInput)
 	: NOArray(size) {
-	mElements = new tlint64[mSize];
-	for (tlint index = 0; index < mSize; index++) {
-		mElements[index] = initValues[index];
+	if (useInput) {
+		mElements = initValues;
+	} else {
+		mElements = new tlint64[mSize];
+		for (tlint index = 0; index < mSize; index++) {
+			mElements[index] = initValues[index];
+		}
 	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -51,14 +55,14 @@ Reference LongArray::newInstance(tlint size, tlint64 initValue) {
 	return Reference(new LongArray(size, initValue));
 }
 
-Reference LongArray::newInstance(tlint size, tlint64 *initValues) {
+Reference LongArray::newInstance(tlint size, tlint64 *initValues, bool useInput) {
 	if (initValues == nullptr) {
 		return newInstance(size, DEFAULT_VALUE);
 	}
 
 	initParameterCheck(size);
 
-	return Reference(new LongArray(size, initValues));
+	return Reference(new LongArray(size, initValues, useInput));
 }
 
 Reference LongArray::toString() {
@@ -80,7 +84,7 @@ Reference LongArray::toString() {
 }
 
 Reference LongArray::clone() {
-	return Reference(new LongArray(mSize, mElements));
+	return Reference(new LongArray(mSize, mElements, false));
 }
 
 void LongArray::set(tlint index, tlint64 value) {

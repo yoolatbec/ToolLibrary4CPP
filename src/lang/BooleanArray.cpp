@@ -7,7 +7,7 @@
 
 #include <tl/lang/BooleanArray.h>
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <cstdio>
 #include <cstring>
 
@@ -25,16 +25,30 @@ BooleanArray::BooleanArray(tlint size, bool initValue)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-BooleanArray::BooleanArray(tlint size, bool *initValues)
+BooleanArray::BooleanArray(tlint size, bool *initValues, bool useInput)
 	: NOArray(size) {
-	mElements = new bool[mSize];
-
-	for (tlint index = 0; index < mSize; index++) {
-		mElements[index] = initValues[index];
+	if (useInput) {
+		mElements = initValues;
+	} else {
+		mElements = new bool[mSize];
+		for (tlint index = 0; index < mSize; index++) {
+			mElements[index] = initValues[index];
+		}
 	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
+//
+//BooleanArray::BooleanArray(tlint size, bool *initValues)
+//	: NOArray(size) {
+//	mElements = new bool[mSize];
+//
+//	for (tlint index = 0; index < mSize; index++) {
+//		mElements[index] = initValues[index];
+//	}
+//
+//	mHashCode = genHashCode(CLASS_SERIAL);
+//}
 
 void BooleanArray::initParameterCheck(tlint value) {
 	if (value <= 0) {
@@ -60,29 +74,40 @@ Reference BooleanArray::toString() {
 	return Reference(rtval);
 }
 
-Reference BooleanArray::clone(){
-	return Reference(new BooleanArray(mSize, mElements));
+Reference BooleanArray::clone() {
+	return Reference(new BooleanArray(mSize, mElements, false));
 }
 
 BooleanArray::~BooleanArray() {
 	// TODO Auto-generated destructor stub
 	delete[] mElements;
 }
+//
+//Reference BooleanArray::newInstance(tlint size, bool *initValues) {
+//	if (initValues == nullptr) {
+//		return newInstance(size, DEFAULT_VALUE);
+//	}
+//
+//	initParameterCheck(size);
+//
+//	return Reference(new BooleanArray(size, initValues));
+//}
 
-Reference BooleanArray::newInstance(tlint size, bool *initValues) {
+Reference BooleanArray::newInstance(tlint size, bool initValue) {
+	initParameterCheck(size);
+
+	return Reference(new BooleanArray(size, initValue));
+}
+
+Reference BooleanArray::newInstance(tlint size, bool *initValues,
+	bool useInput) {
 	if (initValues == nullptr) {
 		return newInstance(size, DEFAULT_VALUE);
 	}
 
 	initParameterCheck(size);
 
-	return Reference(new BooleanArray(size, initValues));
-}
-
-Reference BooleanArray::newInstance(tlint size, bool initValue) {
-	initParameterCheck(size);
-
-	return Reference(new BooleanArray(size, initValue));
+	return Reference(new BooleanArray(size, initValues, useInput));
 }
 
 bool BooleanArray::get(tlint index) {

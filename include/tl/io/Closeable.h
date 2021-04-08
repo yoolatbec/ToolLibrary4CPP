@@ -24,7 +24,7 @@ public:
 	virtual ~Closeable();
 	Closeable(const Closeable &other) = delete;
 	Closeable& operator=(const Closeable &other) = delete;
-	virtual void close() = 0;
+	virtual void shutDown() = 0;
 	bool isClosed();
 	static type_t type();
 	bool instanceof(type_t);

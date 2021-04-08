@@ -13,7 +13,11 @@
 #include <tl/io/ReopenStreamException.h>
 #include "SimultaneousReadWriteException.h"
 #include "Directory.h"
-#include <tl/lang/Pointer.h>
+#include <tl/lang/ByteArray.h>
+#include <tl/lang/IndexOutOfBoundsException.h>
+#include "FailedToOpenFileException.h"
+#include "IllegalStreamException.h"
+#include <tl/lang/Integer.h>
 
 namespace tl {
 namespace io {
@@ -21,7 +25,10 @@ namespace io {
 using thread::Mutex;
 using lang::String;
 using lang::Reference;
-using lang::Pointer;
+using lang::ByteArray;
+using lang::IndexOutOfBoundsException;
+using lang::Integer;
+
 
 File::File(Reference path, bool append)
 	: AbstractFile(path) {
@@ -35,25 +42,24 @@ File::File(Reference path, bool append)
 			DEFAULT_ACCESS);
 	}
 
-	if (mIdentifier < 0) {
+	if (mIdentifier == INVALID_IDENTIFIER) {
 		//cast an exception
+		throw FailedToOpenFileException();
 	}
 
 	mMutex = Reference(new Mutex());
 	mInputStream = Reference();
 	mOutputStream = Reference();
+	mAppending = append;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-File::File(Reference parent, Reference path, bool append) {
-	dismissNull(parent);
-	argumentTypeCheck(parent, Directory::type());
-	dismissNull(path);
-	argumentTypeCheck(path, String::type());
-
+File::File(Reference parent, Reference path, bool append)
+	: AbstractFile(parent, path) {
 	Directory *dir = dynamic_cast<Directory*>(parent.getEntity());
 	String *str = dynamic_cast<String*>(path.getEntity());
+
 	if (append) {
 		mIdentifier = openat(dir->mIdentifier, str->toCharArray(),
 		O_RDWR | O_CREAT | O_APPEND, DEFAULT_ACCESS);
@@ -62,13 +68,15 @@ File::File(Reference parent, Reference path, bool append) {
 		O_RDWR | O_CREAT | O_TRUNC, DEFAULT_ACCESS);
 	}
 
-	if (mIdentifier < 0) {
+	if (mIdentifier == INVALID_IDENTIFIER) {
 		//cast an exception
+		throw FailedToOpenFileException();
 	}
 
 	mMutex = Reference(new Mutex());
 	mInputStream = Reference();
 	mOutputStream = Reference();
+	mAppending = append;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
@@ -99,7 +107,7 @@ Reference File::openInputStream() {
 		}
 	}
 
-	mInputStream = Reference(new FileInputStream(mIdentifier));
+	mInputStream = Reference(new FileInputStream(mPath));
 
 	mutex->unlock();
 	return mInputStream;
@@ -126,38 +134,9 @@ Reference File::openOutputStream() {
 		}
 	}
 
-	mOutputStream = Reference(new FileOutputStream(mIdentifier));
+	mOutputStream = Reference(new FileOutputStream(mPath, mAppending));
 	mutex->unlock();
 
-	return mOutputStream;
-}
-
-Reference File::openOutputStream(tlint bufferSize) {
-	dismissNegative(bufferSize);
-
-	Mutex *mutex = dynamic_cast<Mutex*>(mMutex.getEntity());
-	mutex->lock();
-
-	if (!mInputStream.isNull()) {
-		InputStream *in = dynamic_cast<InputStream*>(mInputStream.getEntity());
-		if (!in->isClosed()) {
-			//cast an exception
-			throw SimultaneousReadWriteException();
-		}
-	}
-
-	if (!mOutputStream.isNull()) {
-		OutputStream *out =
-			dynamic_cast<OutputStream*>(mOutputStream.getEntity());
-		if (!out->isClosed()) {
-			//cast an exception
-			throw ReopenStreamException();
-		}
-	}
-
-	mOutputStream = Reference(new FileOutputStream(mIdentifier, bufferSize));
-
-	mutex->unlock();
 	return mOutputStream;
 }
 
@@ -187,11 +166,17 @@ tlint64 File::length() {
 }
 
 void File::newFile(Reference path) {
-	dismissNull(path);
-	argumentTypeCheck(path, String::type());
+	if (!isAbsolutePath(path)) {
+		//cast an exception
+	}
 
 	String *str = dynamic_cast<String*>(path.getEntity());
+	tlint identifier = open(str->toCharArray(), O_RDONLY | O_CREAT | O_EXCL,
+		DEFAULT_ACCESS);
 
+	if (identifier == INVALID_IDENTIFIER) {
+
+	}
 }
 
 type_t File::type() {
@@ -203,19 +188,39 @@ bool File::instanceof(type_t type) {
 		|| Streaming::instanceof(type);
 }
 
-File::FileInputStream::FileInputStream(tlint identifier) {
-	mIdentifier = identifier;
+File::FileInputStream::FileInputStream(Reference path) {
+	mPath = path;
+	String *p = dynamic_cast<String*>(mPath.getEntity());
+	mIdentifier = open(p->toCharArray(), O_RDONLY);
+
+	if (mIdentifier == INVALID_IDENTIFIER) {
+		//cast an exception
+		throw FailedToOpenFileException();
+	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
 tlint File::FileInputStream::readn(tlint length, Reference ref) {
 	dismissNull(ref);
-	argumentTypeCheck(ref, Pointer::type());
+	argumentTypeCheck(ref, ByteArray::type());
 	dismissNegative(length);
 
-	Pointer *ptr = dynamic_cast<Pointer*>(ref.getEntity());
-	return read(mIdentifier, ptr->get(), length);
+	ByteArray *arr = dynamic_cast<ByteArray*>(ref.getEntity());
+	if (arr->size() < length) {
+		//cast an exception
+		throw IndexOutOfBoundsException();
+	}
+
+	byte *data = new byte[length];
+	tlint realLength = read(mIdentifier, data, length);
+
+	for (tlint index = 0; index < realLength; index++) {
+		arr->set(index, data[index]);
+	}
+	delete[] data;
+
+	return realLength;
 }
 
 Reference File::FileInputStream::readAll() {
@@ -223,13 +228,19 @@ Reference File::FileInputStream::readAll() {
 	tlint64 length = lseek(mIdentifier, 0, SEEK_END);
 	lseek(mIdentifier, 0, SEEK_SET);
 
+	if (length > Integer::MAX_VALUE) {
+		length = Integer::MAX_VALUE;
+	}
+
 	byte *data = new byte[length];
 	//add new handler to detect memory shortness
 
 	read(mIdentifier, data, length);
 	lseek(mIdentifier, marker, SEEK_SET);
 
-	return Reference(new Pointer(data, length));
+	Reference rtval = ByteArray::newInstance(length, data, true);
+
+	return rtval;
 }
 
 void File::FileInputStream::skip(tlint64 offset) {
@@ -249,8 +260,21 @@ void File::FileInputStream::rewind() {
 	mMarker = 0;
 }
 
-File::FileInputStream::~FileInputStream() {
+void File::FileInputStream::shutDown() {
+	if (mIdentifier == INVALID_IDENTIFIER) {
+		//cast an exception
+		throw IllegalStreamException();
+	}
 
+	close(mIdentifier);
+	mIdentifier = INVALID_IDENTIFIER;
+	mClosed = true;
+}
+
+File::FileInputStream::~FileInputStream() {
+	if (mIdentifier != INVALID_IDENTIFIER) {
+		close(mIdentifier);
+	}
 }
 
 type_t File::FileInputStream::type() {
@@ -261,48 +285,73 @@ bool File::FileInputStream::instanceof(type_t type) {
 	return (CLASS_SERIAL == type) || InputStream::instanceof(type);
 }
 
-File::FileOutputStream::FileOutputStream(tlint identifier) {
-	mIdentifier = identifier;
+File::FileOutputStream::FileOutputStream(Reference path, bool append) {
+	mPath = path;
+	String *p = dynamic_cast<String*>(mPath.getEntity());
+	if (append) {
+		mIdentifier = open(p->toCharArray(), O_WRONLY | O_CREAT | O_APPEND,
+			DEFAULT_WRITE_ACCESS);
+	} else {
+		mIdentifier = open(p->toCharArray(), O_WRONLY | O_CREAT | O_TRUNC,
+			DEFAULT_WRITE_ACCESS);
+	}
+
+	if (mIdentifier == INVALID_IDENTIFIER) {
+		//cast an exception
+		throw FailedToOpenFileException();
+	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-File::FileOutputStream::FileOutputStream(tlint identifier, tlint bufferSize)
-	: OutputStream(bufferSize) {
-	mIdentifier = identifier;
-
-	mHashCode = genHashCode(CLASS_SERIAL);
-}
-
-void File::FileOutputStream::writen(tlint length, Reference ref){
+void File::FileOutputStream::writen(tlint length, Reference ref) {
 	dismissNull(ref);
 	dismissNegative(length);
+	argumentTypeCheck(ref, ByteArray::type());
 
-	if(length == 0){
+	if (length == 0) {
 		return;
 	}
 
-	argumentTypeCheck(ref, Pointer::type());
-	if(mBuffer == nullptr){
-		unbufferedWrite0(length, ref);
-	} else {
-		bufferedWrite0(length, ref);
+	ByteArray *arr = dynamic_cast<ByteArray*>(ref.getEntity());
+	if (arr->size() < length) {
+		//cast an exception
+		throw IndexOutOfBoundsException();
 	}
-}
 
-void File::FileOutputStream::writeAll(Reference ref){
-	dismissNull(ref);
-	argumentTypeCheck(ref, Pointer::type());
-}
-
-void File::FileOutputStream::flush(){
-	tlint err = write(mIdentifier, mBuffer, mUsedBufferSize);
-	if(err == -1){
+	tlint count = write(mIdentifier, arr->rawData(), length);
+	if (count == UNSUCCESS_WRITE) {
 		//cast an exception
 		throw IOException();
 	}
+}
 
-	mUsedBufferSize = 0;
+void File::FileOutputStream::writeAll(Reference ref) {
+	dismissNull(ref);
+	argumentTypeCheck(ref, ByteArray::type());
+
+	ByteArray *arr = dynamic_cast<ByteArray*>(ref.getEntity());
+
+	tlint count = write(mIdentifier, arr->rawData(), arr->size());
+	if (count == UNSUCCESS_WRITE) {
+		//cast an exception
+		throw IOException();
+	}
+}
+
+void File::FileOutputStream::shutDown() {
+	if (mIdentifier == INVALID_IDENTIFIER) {
+		//cast an exception
+		throw IllegalStreamException();
+	}
+
+	close(mIdentifier);
+	mIdentifier = INVALID_IDENTIFIER;
+	mClosed = true;
+}
+
+void File::FileOutputStream::flush() {
+	//do nothing
 }
 
 } /* namespace io */

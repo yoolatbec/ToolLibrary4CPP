@@ -7,7 +7,7 @@
 
 #include <tl/lang/ShortArray.h>
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <cstdio>
 #include <cstring>
 
@@ -25,11 +25,15 @@ ShortArray::ShortArray(tlint size, short initValue)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-ShortArray::ShortArray(tlint size, short *initValues)
+ShortArray::ShortArray(tlint size, short *initValues, bool useInput)
 	: NOArray(size) {
-	mElements = new short[mSize];
-	for (tlint index = 0; index < mSize; index++) {
-		mElements[index] = initValues[index];
+	if (useInput) {
+		mElements = initValues;
+	} else {
+		mElements = new short[mSize];
+		for (tlint index = 0; index < mSize; index++) {
+			mElements[index] = initValues[index];
+		}
 	}
 
 	mHashCode = genHashCode(CLASS_SERIAL);
@@ -58,15 +62,15 @@ short ShortArray::get(tlint index) {
 }
 
 Reference ShortArray::clone() {
-	return Reference(new ShortArray(mSize, mElements));
+	return Reference(new ShortArray(mSize, mElements, false));
 }
 
-Reference ShortArray::toString(){
-	char* str = new char[mSize * DEFAULT_WIDTH_FOR_EACH_ELEMENT + 3];
+Reference ShortArray::toString() {
+	char *str = new char[mSize * DEFAULT_WIDTH_FOR_EACH_ELEMENT + 3];
 	str[0] = '[';
 	str[1] = '\0';
 
-	for(tlint index = 0; index < mSize; index++){
+	for (tlint index = 0; index < mSize; index++) {
 		sprintf(str + strlen(str), "%d ", mElements[index]);
 	}
 
@@ -74,19 +78,20 @@ Reference ShortArray::toString(){
 	str[index] = ']';
 	str[index + 1] = '\0';
 
-	String* rtval = new String(str);
+	String *rtval = new String(str);
 	delete[] str;
 	return Reference(rtval);
 }
 
-Reference ShortArray::newInstance(tlint size, short *initValues) {
+Reference ShortArray::newInstance(tlint size, short *initValues,
+	bool useInput) {
 	if (initValues == nullptr) {
 		return newInstance(size, DEFAULT_VALUE);
 	}
 
 	initParameterCheck(size);
 
-	return Reference(new ShortArray(size, initValues));
+	return Reference(new ShortArray(size, initValues, useInput));
 }
 
 Reference ShortArray::newInstance(tlint size, short initValue) {

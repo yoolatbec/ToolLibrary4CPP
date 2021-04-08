@@ -23,12 +23,16 @@ protected:
 	const static tlint FILE_ACCESSIBLE = 0;
 	const static tlint SUCCESS = 0;
 	const static tlint UNSUCCESS = -1;
+	const static tlint INVALID_IDENTIFIER = -1;
 
 	Reference  mPath;
 	tlint mIdentifier;
 
 	AbstractFile(Reference);
+	AbstractFile(Reference, Reference);
 	AbstractFile();
+
+	Reference concatPath(Reference, Reference);
 public:
 	virtual ~AbstractFile();
 	AbstractFile(const AbstractFile &other) = delete;

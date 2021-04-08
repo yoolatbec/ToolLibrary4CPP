@@ -24,9 +24,11 @@ C_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 src/advanced/math \
+src/io \
 src/lang \
 src/math \
 src/net \
+src/net/ipv6 \
 src/thread \
 src/utils \
 

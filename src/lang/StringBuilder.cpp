@@ -11,7 +11,7 @@
 #include <tl/lang/Long.h>
 #include <tl/lang/String.h>
 #include <tl/lang/StringBuilder.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <cstdio>
 #include <cstring>
 
