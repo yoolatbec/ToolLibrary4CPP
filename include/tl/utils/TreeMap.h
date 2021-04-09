@@ -34,6 +34,7 @@ private:
 		TreeEntry(Reference, Reference, Reference = Reference());
 		TreeEntry(const TreeEntry&) = delete;
 		TreeEntry& operator=(const TreeEntry&) = delete;
+		virtual ~TreeEntry();
 		Reference getLeft();
 		Reference getRight();
 		Reference getParent();
@@ -81,6 +82,7 @@ private:
 		EntrySetView(Reference);
 		EntrySetView(const EntrySetView&) = delete;
 		EntrySetView& operator=(const EntrySetView&) = delete;
+		~EntrySetView();
 		bool contains(Reference);
 		bool containsAll(Reference);
 		void clear();
@@ -118,6 +120,7 @@ private:
 		Values(type_t, Reference);
 		Values(const Values&) = delete;
 		Values& operator=(const Values&) = delete;
+		virtual ~Values();
 		virtual bool contains(Reference);
 		virtual bool containsAll(Reference);
 		virtual void clear();
@@ -144,6 +147,7 @@ private:
 		PrivateEntryIterator(Reference map);
 		PrivateEntryIterator(const PrivateEntryIterator&) = delete;
 		PrivateEntryIterator& operator=(const PrivateEntryIterator&) = delete;
+		virtual ~PrivateEntryIterator();
 		Reference nextEntry();
 		Reference previousEntry();
 		virtual bool hasNext();
@@ -159,6 +163,7 @@ private:
 		EntryIterator(Reference);
 		EntryIterator(const EntryIterator&) = delete;
 		EntryIterator& operator=(const EntryIterator&) = delete;
+		~EntryIterator();
 		Reference next();
 		static type_t type();
 		bool instanceof(type_t);
@@ -171,6 +176,7 @@ private:
 		ValueIterator(Reference);
 		ValueIterator(const ValueIterator&) = delete;
 		ValueIterator& operator=(const ValueIterator&) = delete;
+		~ValueIterator();
 		Reference next();
 		static type_t type();
 		bool instanceof(type_t);
@@ -188,6 +194,7 @@ private:
 		KeySet(type_t, Reference);
 		KeySet(const KeySet&) = delete;
 		KeySet& operator=(const KeySet&) = delete;
+		~KeySet();
 		virtual bool add(Reference);
 		virtual bool addAll(Reference);
 		virtual bool remove(Reference);
@@ -222,6 +229,7 @@ private:
 		KeyIterator(Reference);
 		KeyIterator(const KeyIterator&) = delete;
 		KeyIterator& operator=(const KeyIterator&) = delete;
+		~KeyIterator();
 		Reference next();
 		static type_t type();
 		bool instanceof(type_t);
@@ -234,6 +242,7 @@ private:
 		DescendingKeyIterator(Reference);
 		DescendingKeyIterator(const DescendingKeyIterator&) = delete;
 		DescendingKeyIterator& operator=(const DescendingKeyIterator&) = delete;
+		~DescendingKeyIterator();
 		Reference next();
 		static type_t type();
 		bool instanceof(type_t);

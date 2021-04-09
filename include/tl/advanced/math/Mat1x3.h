@@ -20,8 +20,8 @@ private:
 	const static MatrixType MATRIX_ARRANGEMENT = MATRIX_1X3;
 	const static tlint MAX_ROW_INDEX = 2;
 	const static tlint MIN_ROW_INDEX = 0;
-	const static tlint MAX_COLUMN_INDEX;
-	const static tlint MIN_COLUMN_INDEX;
+	const static tlint MAX_COLUMN_INDEX = 0;
+	const static tlint MIN_COLUMN_INDEX = 0;
 	constexpr const static mat1x3 DEFAULT_VALUE = { { 0, 0, 0 } };
 
 	mat1x3 mValue;

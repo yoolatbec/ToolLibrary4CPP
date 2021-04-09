@@ -72,8 +72,6 @@ private:
 	};
 
 	Reference mMutex;
-	Reference mInputStream;
-	Reference mOutputStream;
 	bool mAppending;
 
 public:

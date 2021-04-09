@@ -8,18 +8,20 @@
 #ifndef NET_DATAGRAMPACKET_H_
 #define NET_DATAGRAMPACKET_H_
 
-#include <tl/lang/Reference.h>
+#include <tl/io/Streaming.h>
 
 namespace tl {
 namespace net {
 
 using lang::Reference;
+using io::Streaming;
 
-class DatagramPacket: public virtual lang::Object {
+class DatagramPacket: public virtual io::Streaming {
 private:
 	const static type_t CLASS_SERIAL = 829;
 	const static tlint DEFAULT_DATA_SIZE = 4096;
 
+	tlint mDataSize;
 	byte* mData;
 
 public:
@@ -27,6 +29,9 @@ public:
 	virtual ~DatagramPacket();
 	DatagramPacket(const DatagramPacket &other) = delete;
 	DatagramPacket& operator=(const DatagramPacket &other) = delete;
+	Reference openInputStream();
+	Reference openOutputStream();
+	tlint getDataSize();
 };
 
 } /* namespace net */

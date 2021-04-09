@@ -8,7 +8,7 @@
 #ifndef ADVANCED_MATH_QUATERNION_H_
 #define ADVANCED_MATH_QUATERNION_H_
 
-#include <tl/lang/Object.h>
+#include <tl/lang/Reference.h>
 
 namespace tl {
 namespace advanced {

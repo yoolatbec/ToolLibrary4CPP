@@ -19,23 +19,12 @@ OutputStream::OutputStream() {
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
-OutputStream::OutputStream(tlint bufferSize) {
-	dismissNegative(bufferSize);
-
-	mHashCode = genHashCode(CLASS_SERIAL);
-}
-
 OutputStream::~OutputStream() {
 	// TODO Auto-generated destructor stub
 }
 
 void OutputStream::flush() {
 	//throw an exception
-	throw UnsupportedOperationException();
-}
-
-void OutputStream::flush(){
-	//cast an exception
 	throw UnsupportedOperationException();
 }
 
@@ -50,16 +39,6 @@ void OutputStream::writeAll(Reference ref){
 }
 
 void OutputStream::writeByte(byte b){
-	//cast an exception
-	throw UnsupportedOperationException();
-}
-
-void OutputStream::unbufferedWrite0(tlint length, Reference ref){
-	//cast an exception
-	throw UnsupportedOperationException();
-}
-
-void OutputStream::bufferedWrite0(tlint length, Reference ref){
 	//cast an exception
 	throw UnsupportedOperationException();
 }

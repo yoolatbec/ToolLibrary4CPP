@@ -60,7 +60,6 @@ private:
 		PrivateEntryIterator(Reference);
 		PrivateEntryIterator(const PrivateEntryIterator&) = delete;
 		PrivateEntryIterator& operator=(const PrivateEntryIterator&) = delete;
-		virtual ~PrivateEntryIterator();
 		virtual Reference nextEntry();
 		virtual bool hasNext();
 		virtual void remove();

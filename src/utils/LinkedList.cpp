@@ -496,7 +496,8 @@ Reference LinkedList::sublist(tlint fromIndex, tlint toIndex) {
 
 Reference LinkedList::toArray() {
 	Array *arr = new Array(mElementType, mSize);
-	Reference current = (dynamic_cast<LinkedListNode*>(mHead.getEntity()))->next();
+	Reference current =
+		(dynamic_cast<LinkedListNode*>(mHead.getEntity()))->next();
 	for (tlint index = 0; index < mSize; index++) {
 		arr->set(index,
 			dynamic_cast<LinkedListNode*>(current.getEntity())->value());
@@ -604,12 +605,20 @@ void LinkedList::LinkedListNode::setPrevious(Reference ref) {
 	mPrevious = ref;
 }
 
+void LinkedList::LinkedListNode::setValue(Reference ref) {
+	mValue = ref;
+}
+
 Reference LinkedList::LinkedListNode::next() {
 	return mNext;
 }
 
 Reference LinkedList::LinkedListNode::previous() {
 	return mPrevious;
+}
+
+Reference LinkedList::LinkedListNode::value() {
+	return mValue;
 }
 
 type_t LinkedList::LinkedListNode::type() {
@@ -657,6 +666,10 @@ Reference LinkedList::LinkedListIterator::next() {
 	mLastCursor = mCursor;
 	mCursor++;
 	return node->value();
+}
+
+tlint LinkedList::LinkedListIterator::nextIndex() {
+	return mCursor + 1;
 }
 
 bool LinkedList::LinkedListIterator::hasPrevious() {
@@ -707,6 +720,10 @@ void LinkedList::LinkedListIterator::remove() {
 	mCursor = mLastCursor;
 	mLastCursor = -1;
 	mLastNode = Reference();
+}
+
+void LinkedList::LinkedListIterator::set(Reference ref) {
+
 }
 
 type_t LinkedList::LinkedListIterator::type() {

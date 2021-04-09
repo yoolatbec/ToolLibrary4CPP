@@ -207,8 +207,9 @@ Reference TreeMap::balance0(Reference ref) {
 	left = entry->getLeft();
 	right = entry->getRight();
 
-	entry->setHeight(lang::Integer::larger(TreeMap::height0(left),
-		TreeMap::height0(right)) + 1);
+	entry->setHeight(
+		lang::Integer::larger(TreeMap::height0(left), TreeMap::height0(right))
+			+ 1);
 	return ref;
 }
 
@@ -953,11 +954,19 @@ Reference TreeMap::Values::iterator() {
 	return Reference(new ValueIterator(map->firstEntry()));
 }
 
+TreeMap::Values::~Values() {
+
+}
+
 TreeMap::EntrySetView::EntrySetView(Reference map)
 	: Collection(Map::Entry::type()), Set(Map::Entry::type()) {
 	mMap = map;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+TreeMap::EntrySetView::~EntrySetView() {
+
 }
 
 bool TreeMap::EntrySetView::contains(Reference ref) {
@@ -1170,6 +1179,10 @@ TreeMap::PrivateEntryIterator::PrivateEntryIterator(Reference map) {
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
+TreeMap::PrivateEntryIterator::~PrivateEntryIterator() {
+
+}
+
 bool TreeMap::PrivateEntryIterator::hasNext() {
 	return !mNext.isNull();
 }
@@ -1231,6 +1244,10 @@ TreeMap::EntryIterator::EntryIterator(Reference map)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
+TreeMap::EntryIterator::~EntryIterator() {
+
+}
+
 Reference TreeMap::EntryIterator::next() {
 	return nextEntry();
 }
@@ -1246,6 +1263,10 @@ bool TreeMap::EntryIterator::instanceof(type_t type) {
 TreeMap::ValueIterator::ValueIterator(Reference map)
 	: PrivateEntryIterator(map) {
 	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+TreeMap::ValueIterator::~ValueIterator() {
+
 }
 
 Reference TreeMap::ValueIterator::next() {
@@ -1266,6 +1287,10 @@ TreeMap::KeyIterator::KeyIterator(Reference map)
 	: PrivateEntryIterator(map) {
 
 	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+TreeMap::KeyIterator::~KeyIterator() {
+
 }
 
 Reference TreeMap::KeyIterator::next() {
@@ -1290,6 +1315,10 @@ TreeMap::DescendingKeyIterator::DescendingKeyIterator(Reference map)
 	mHashCode = genHashCode(CLASS_SERIAL);
 }
 
+TreeMap::DescendingKeyIterator::~DescendingKeyIterator() {
+
+}
+
 Reference TreeMap::DescendingKeyIterator::next() {
 	Reference entryRef = TreeMap::PrivateEntryIterator::previousEntry();
 	Map::Entry *entry = dynamic_cast<Map::Entry*>(entryRef.getEntity());
@@ -1310,6 +1339,10 @@ TreeMap::KeySet::KeySet(type_t elementType, Reference map)
 	mMap = map;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
+}
+
+TreeMap::KeySet::~KeySet() {
+
 }
 
 bool TreeMap::KeySet::add(Reference ref) {

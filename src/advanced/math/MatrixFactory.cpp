@@ -11,7 +11,7 @@
 #include <tl/advanced/math/VectorType.h>
 #include <tl/lang/IllegalArgumentTypeException.h>
 #include <tl/lang/Math.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <tl/lang/UndefinedException.h>
 
 namespace tl {

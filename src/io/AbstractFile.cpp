@@ -47,11 +47,10 @@ AbstractFile::AbstractFile() {
 
 Reference AbstractFile::concatPath(Reference parent, Reference path) {
 	Directory *dir = dynamic_cast<Directory*>(parent.getEntity());
-	String *str = dynamic_cast<String*>(path.getEntity());
 
 	Reference dirPath = dir->getPath();
-	String *p = dynamic_cast<String*>(dirPath.getEntity());
-	return p->append(path);
+	String *str = dynamic_cast<String*>(dirPath.getEntity());
+	return str->append(path);
 }
 
 AbstractFile::~AbstractFile() {

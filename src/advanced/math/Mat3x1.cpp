@@ -205,6 +205,10 @@ type_t Mat3x1::type() {
 	return CLASS_SERIAL;
 }
 
+bool Mat3x1::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Matrix::instanceof(type);
+}
+
 } /* namespace math */
 } /* namespace advanced */
 } /* namespace tl */

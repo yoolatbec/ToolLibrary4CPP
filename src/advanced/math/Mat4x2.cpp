@@ -48,6 +48,53 @@ void Mat4x2::update() {
 	mTranspose = transpose0();
 }
 
+vec2 Mat4x2::getRow0(tlint i) {
+	vec2 v;
+	switch (i) {
+	case 0:
+		v = mValue.r0;
+		break;
+	case 1:
+		v = mValue.r1;
+		break;
+	case 2:
+		v = mValue.r2;
+		break;
+	case 3:
+		v = mValue.r3;
+		break;
+	default:
+		//cast an exception
+		throw IndexOutOfBoundsException();
+		break;
+	}
+
+	return v;
+}
+
+vec4 Mat4x2::getColumn0(tlint i) {
+	vec4 v;
+	switch (i) {
+	case 0:
+		v.x = mValue.r0.x;
+		v.y = mValue.r1.x;
+		v.z = mValue.r2.x;
+		v.w = mValue.r3.x;
+		break;
+	case 1:
+		v.x = mValue.r0.y;
+		v.y = mValue.r1.y;
+		v.z = mValue.r2.y;
+		v.w = mValue.r3.y;
+		break;
+	default:
+		//cast an exception
+		throw IndexOutOfBoundsException();
+	}
+
+	return v;
+}
+
 mat4x2 Mat4x2::values() {
 	return mValue;
 }

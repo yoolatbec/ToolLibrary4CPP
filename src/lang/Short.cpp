@@ -9,7 +9,7 @@
 #include <tl/lang/IndexOutOfBoundsException.h>
 #include <tl/lang/Short.h>
 #include <tl/lang/String.h>
-#include <tl/lang/UnacceptableArgumentException.h>
+#include <tl/lang/IllegalArgumentException.h>
 #include <cstdio>
 
 namespace tl {

@@ -14,6 +14,8 @@ namespace utils {
 using lang::Reference;
 using lang::String;
 
+Reference NoSuchElementException::sDefaultMessage = Reference(new String(DEFAULT_MESSAGE));
+
 NoSuchElementException::NoSuchElementException() {
 	// TODO Auto-generated constructor stub
 	mMessage = sDefaultMessage;

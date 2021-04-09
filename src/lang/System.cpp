@@ -34,5 +34,13 @@ void System::systemMutexUnlock() {
 	mutex->unlock();
 }
 
+type_t System::type() {
+	return CLASS_SERIAL;
+}
+
+bool System::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Object::instanceof(type);
+}
+
 } /* namespace lang */
 } /* namespace tl */

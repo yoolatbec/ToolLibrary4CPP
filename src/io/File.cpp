@@ -56,14 +56,13 @@ File::File(Reference path, bool append)
 
 File::File(Reference parent, Reference path, bool append)
 	: AbstractFile(parent, path) {
-	Directory *dir = dynamic_cast<Directory*>(parent.getEntity());
-	String *str = dynamic_cast<String*>(path.getEntity());
+	String *str = dynamic_cast<String*>(mPath.getEntity());
 
 	if (append) {
-		mIdentifier = openat(dir->mIdentifier, str->toCharArray(),
+		mIdentifier = open(str->toCharArray(),
 		O_RDWR | O_CREAT | O_APPEND, DEFAULT_ACCESS);
 	} else {
-		mIdentifier = openat(dir->mIdentifier, str->toCharArray(),
+		mIdentifier = open(str->toCharArray(),
 		O_RDWR | O_CREAT | O_TRUNC, DEFAULT_ACCESS);
 	}
 

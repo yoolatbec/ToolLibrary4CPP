@@ -12,7 +12,7 @@ namespace io {
 
 Closeable::Closeable() {
 	// TODO Auto-generated constructor stub
-	mClosed = false
+	mClosed = false;
 
 	mHashCode = genHashCode(CLASS_SERIAL);
 }

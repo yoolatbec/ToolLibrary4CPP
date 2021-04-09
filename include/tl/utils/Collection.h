@@ -31,14 +31,13 @@ public:
 	virtual bool addAll(Reference) = 0;
 	virtual bool contains(Reference) = 0;
 	virtual bool containsAll(Reference) = 0;
-	virtual Reference iterator() = 0;
 	virtual bool remove(Reference) = 0;
 	virtual bool removeAll(Reference) = 0;
 	virtual void clear() = 0;
 	virtual Reference toArray() = 0;
-	virtual tlint size();
-	virtual type_t elementType();
-	virtual bool isEmpty();
+	tlint size();
+	type_t elementType();
+	bool isEmpty();
 	virtual bool instanceof(type_t);
 	static type_t type();
 };

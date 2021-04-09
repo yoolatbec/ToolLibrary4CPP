@@ -13,6 +13,9 @@ namespace thread {
 
 using lang::String;
 
+Reference DeadlockException::sDefaultMessage = Reference(
+	new String(DEFAULT_MESSAGE));
+
 DeadlockException::DeadlockException() {
 	// TODO Auto-generated constructor stub
 	mMessage = sDefaultMessage;

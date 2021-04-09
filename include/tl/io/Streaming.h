@@ -20,6 +20,9 @@ private:
 	const static type_t CLASS_SERIAL = 489;
 protected:
 	Streaming();
+
+	Reference mInputStream;
+	Reference mOutputStream;
 public:
 	virtual ~Streaming();
 	Streaming(const Streaming &other) = delete;

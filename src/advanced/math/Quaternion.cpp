@@ -121,6 +121,14 @@ float Quaternion::dot(Reference p, Reference q) {
 	return value;
 }
 
+type_t Quaternion::type() {
+	return CLASS_SERIAL;
+}
+
+bool Quaternion::instanceof(type_t type) {
+	return (CLASS_SERIAL == type) || Object::instanceof(type);
+}
+
 } /* namespace math */
 } /* namespace advanced */
 } /* namespace tl */
