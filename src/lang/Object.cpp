@@ -53,6 +53,10 @@ bool Object::equals(Reference other) {
 }
 
 bool Object::operator ==(Reference other) {
+	if (other.isNull()) {
+		return false;
+	}
+
 	return this->mHashCode == other.getEntity()->mHashCode;
 }
 
