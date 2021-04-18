@@ -31,7 +31,7 @@ public:
 	virtual bool contains(Reference) = 0;
 	virtual bool containsAll(Reference) = 0;
 	virtual bool remove(Reference) = 0;
-	virtual bool removeAll(Reference) = 0;
+	virtual void removeAll(Reference) = 0;
 	virtual Reference toArray() = 0;
 	bool isEmpty();
 	tlint size();

@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#include "List.h"
 #include <tl/lang/IndexOutOfBoundsException.h>
+#include <tl/utils/List.h>
 
 namespace tl {
 namespace utils {
@@ -53,7 +53,7 @@ List::ListIterator::ListIterator(type_t elementType, Reference list,
 	tlint index) {
 	mElementType = elementType;
 	mList = list;
-	mCurrentIndex = 0;
+	mCurrentIndex = index;
 	mLastIndex = -1;
 	mForward = true;
 
@@ -73,12 +73,12 @@ tlint List::ListIterator::currentIndex() {
 	return mCurrentIndex;
 }
 
-tlint List::ListIterator::previousIndex() {
-	return mCurrentIndex - 1;
+tlint List::ListIterator::lastIndex() {
+	return mLastIndex;
 }
 
 tlint List::ListIterator::nextIndex() {
-	return mCurrentIndex + 1;
+	return mCurrentIndex;
 }
 
 type_t List::ListIterator::type() {

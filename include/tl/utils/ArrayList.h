@@ -8,10 +8,13 @@
 #ifndef TL_UTILS_ARRAYLIST_H_
 #define TL_UTILS_ARRAYLIST_H_
 
-#include "List.h"
+#include <tl/utils/List.h>
+#include <tl/lang/Integer.h>
 
 namespace tl {
 namespace utils {
+
+using lang::Integer;
 /*
  * null-allowed list implementation
  */
@@ -20,7 +23,7 @@ private:
 	const static type_t CLASS_SERIAL = 1029;
 	const static tlint DEFAULT_CAPACITY = 10;
 	const static constexpr double EXPAND_FACTOR = 1.5;
-	const static tlint MAX_CAPACITY;
+	const static tlint MAX_CAPACITY = Integer::MAX_VALUE;
 
 	class ArrayListIterator: public virtual ListIterator {
 	private:
@@ -57,7 +60,7 @@ private:
 		 * Set the value of the last element returned by previous() or next()
 		 * Null is not allowed. This method clears the last index.
 		 */
-		void set(Reference) = 0;
+		void set(Reference);
 		static type_t type();
 		bool instanceof(type_t);
 	};
@@ -67,6 +70,7 @@ private:
 
 	void tryExpand();
 	bool anyVacancy();
+	void invalidateIterators();
 
 public:
 	/*
@@ -126,6 +130,7 @@ public:
 	 */
 	tlint lastIndexOf(Reference);
 	Reference listIterator();
+	Reference listIterator(tlint);
 
 	/*
 	 * Remove the first occurrence of the given object
@@ -144,7 +149,13 @@ public:
 	/*
 	 * If null is given, the method is the same as remove(index)
 	 */
-	void set(tlint, Reference);
+	Reference set(tlint, Reference);
+	/*
+	 * Return the sublist which includes the from element and excludes the
+	 * to element
+	 */
+	Reference subList(tlint, tlint);
+	Reference toArray();
 	void trim();
 	static type_t type();
 	bool instanceof(type_t);

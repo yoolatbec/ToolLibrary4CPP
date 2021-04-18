@@ -5,8 +5,8 @@
  *      Author: yoolatbec
  */
 
-#ifndef UTILS_LIST_H_
-#define UTILS_LIST_H_
+#ifndef TL_UTILS_LIST_H_
+#define TL_UTILS_LIST_H_
 
 #include <tl/utils/Collection.h>
 #include <tl/utils/Iterator.h>
@@ -45,7 +45,7 @@ public:
 		virtual bool hasNext();
 		virtual tlint nextIndex();
 		virtual Reference previous() = 0;
-		virtual tlint previousIndex();
+		virtual tlint lastIndex();
 		virtual void set(Reference) = 0;
 		static type_t type();
 		bool instanceof(type_t);
@@ -60,10 +60,11 @@ public:
 	virtual tlint indexOf(Reference) = 0;
 	virtual tlint lastIndexOf(Reference) = 0;
 	virtual Reference listIterator() = 0;
+	virtual Reference listIterator(tlint) = 0;
 	virtual Reference remove(tlint) = 0;
 	virtual void removeAll(Reference) = 0;
 	virtual bool removeLast(Reference) = 0;
-	virtual Reference set(Reference, tlint) = 0;
+	virtual Reference set(tlint, Reference) = 0;
 	virtual Reference subList(tlint, tlint) = 0;
 	static type_t type();
 	bool instanceof(type_t);
@@ -72,4 +73,4 @@ public:
 } /* namespace utils */
 } /* namespace tl */
 
-#endif /* UTILS_LIST_H_ */
+#endif /* TL_UTILS_LIST_H_ */

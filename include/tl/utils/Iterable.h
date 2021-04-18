@@ -20,7 +20,10 @@ private:
 	const static type_t CLASS_SERIAL = 1024;
 
 protected:
+	Reference mIterator;
+
 	Iterable();
+	virtual void invalidateIterators() = 0;
 public:
 	virtual ~Iterable();
 	Iterable(const Iterable &other) = delete;
