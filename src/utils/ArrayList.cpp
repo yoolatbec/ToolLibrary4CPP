@@ -354,20 +354,16 @@ Reference ArrayList::subList(tlint fromIndex, tlint toIndex) {
 }
 
 Reference ArrayList::toArray() {
-	Reference array = Reference(new Array(mElementType, mSize));
-	Array *arr = dynamic_cast<Array*>(array.getEntity());
+	Array *elements = dynamic_cast<Array*>(mElements.getEntity());
 
-	Reference ref = iterator();
-	Iterator *iterator = dynamic_cast<Iterator*>(ref.getEntity());
+	Reference rtval = Reference(new Array(mElementType, mSize));
+	Array *arr = dynamic_cast<Array*>(rtval.getEntity());
 
-	tlint index = 0;
-	while (iterator->hasNext()) {
-		ref = iterator->next();
-		arr->set(index, ref);
-		index++;
+	for (tlint index = 0; index < mSize; index++) {
+		arr->set(index, elements->get(index));
 	}
 
-	return array;
+	return rtval;
 }
 
 void ArrayList::trim() {

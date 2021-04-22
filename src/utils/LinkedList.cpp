@@ -394,6 +394,23 @@ Reference LinkedList::subList(tlint fromIndex, tlint toIndex) {
 
 }
 
+Reference LinkedList::toArray() {
+	Reference array = Reference(new Array(mElementType, mSize));
+	Array *arr = dynamic_cast<Array*>(array.getEntity());
+
+	Reference iteratorRef = iterator();
+	Iterator *iterator = dynamic_cast<Iterator*>(iteratorRef.getEntity());
+
+	tlint index = 0;
+	while (iterator->hasNext()) {
+		Reference ref = iterator->next();
+		arr->set(index, ref);
+		index++;
+	}
+
+	return array;
+}
+
 LinkedList::~LinkedList() {
 	// TODO Auto-generated destructor stub
 }

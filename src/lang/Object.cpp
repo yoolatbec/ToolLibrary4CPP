@@ -9,6 +9,7 @@
 #include <tl/lang/NullPointerException.h>
 #include <tl/lang/IllegalArgumentException.h>
 #include <tl/lang/String.h>
+#include <tl/lang/UnsupportedOperationException.h>
 #include <cstdio>
 
 namespace tl {
@@ -61,7 +62,7 @@ bool Object::operator ==(Reference other) {
 }
 
 Reference Object::clone() {
-	return Reference(new Object);
+	throw UnsupportedOperationException();
 }
 
 Reference Object::toString() {
