@@ -23,7 +23,7 @@ protected:
 	Reference mIterator;
 
 	Iterable();
-	virtual void invalidateIterators() = 0;
+	virtual void invalidateIterators();
 public:
 	virtual ~Iterable();
 	Iterable(const Iterable &other) = delete;

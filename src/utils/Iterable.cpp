@@ -6,6 +6,7 @@
  */
 
 #include <tl/utils/Iterable.h>
+#include <tl/utils/Iterator.h>
 
 namespace tl {
 namespace utils {
@@ -17,6 +18,13 @@ Iterable::Iterable() {
 
 Iterable::~Iterable() {
 	// TODO Auto-generated destructor stub
+}
+
+void Iterable::invalidateIterators() {
+	if (!mIterator.isNull()) {
+		Iterator *iterator = dynamic_cast<Iterator*>(mIterator.getEntity());
+		iterator->invalidate();
+	}
 }
 
 type_t Iterable::type() {
